@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="SSAT Verbal">
+<meta name="description" content="Missed SSAT verbal questions — retest, answers and flashcards.">
+<title>SSAT Verbal — Missed Questions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1B1A17;
+  --paper:#FFFFFF;
+  --rule:#E0DCD3;
+  --rule-soft:#F0EDE7;
+  --red:#C0392B;
+  --red-soft:#FBEDEB;
+  --blue:#28457F;
+  --muted:#7C776D;
+  --serif:"Newsreader", Georgia, "Times New Roman", serif;
+  --sans:"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:#F7F5F1;
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.sheet{
+  max-width:940px;
+  margin:0 auto;
+  background:var(--paper);
+  min-height:100vh;
+  padding:0 clamp(20px,5vw,64px) 96px;
+  box-shadow:0 0 0 1px rgba(0,0,0,.05);
+}
+
+/* ---------- masthead ---------- */
+.masthead{
+  padding:clamp(36px,6vw,64px) 0 24px;
+  border-bottom:2px solid var(--ink);
+}
+.masthead h1{
+  font-family:var(--serif);
+  font-weight:500;
+  font-size:clamp(30px,5.4vw,46px);
+  line-height:1.1;
+  margin:0 0 14px;
+  letter-spacing:-.01em;
+}
+.masthead .mark{
+  position:relative;
+  display:inline-block;
+  padding:0 .18em;
+}
+.masthead .mark svg{
+  position:absolute;
+  left:-14%; top:-32%;
+  width:128%; height:164%;
+  overflow:visible;
+  pointer-events:none;
+}
+.masthead .mark svg path{
+  fill:none;
+  stroke:var(--red);
+  stroke-width:2.6;
+  stroke-linecap:round;
+  stroke-dasharray:340;
+  stroke-dashoffset:340;
+  animation:draw 1.1s .25s cubic-bezier(.6,.05,.3,1) forwards;
+}
+@keyframes draw{to{stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){
+  .masthead .mark svg path{animation:none;stroke-dashoffset:0}
+}
+.masthead p{
+  margin:0;
+  color:var(--muted);
+  font-size:15px;
+  max-width:60ch;
+}
+.masthead .counts{
+  margin-top:16px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:22px;
+  font-size:14px;
+  color:var(--muted);
+}
+.masthead .counts b{color:var(--ink);font-weight:700}
+
+/* ---------- tabs ---------- */
+.tabs{
+  display:flex;
+  gap:2px;
+  border-bottom:1px solid var(--rule);
+  margin-bottom:32px;
+  position:sticky; top:0; z-index:10;
+  background:var(--paper);
+}
+.tabs button{
+  appearance:none;
+  border:0;
+  background:none;
+  font-family:var(--sans);
+  font-size:15px;
+  font-weight:500;
+  color:var(--muted);
+  padding:16px 18px 14px;
+  cursor:pointer;
+  border-bottom:3px solid transparent;
+  margin-bottom:-1px;
+}
+.tabs button:hover{color:var(--ink)}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--red)}
+.tabs button:focus-visible{outline:2px solid var(--blue);outline-offset:-4px}
+.tools{margin-left:auto;display:flex;align-items:center;gap:8px;padding:10px 0}
+.tools button{
+  font-size:13px;padding:7px 13px;border:1px solid var(--rule);
+  border-radius:2px;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);cursor:pointer;
+}
+.tools button:hover{border-color:var(--ink)}
+
+.panel[hidden]{display:none}
+
+/* ---------- test sheet ---------- */
+.section-head{
+  display:flex;align-items:baseline;gap:14px;
+  margin:38px 0 20px;
+  padding-bottom:8px;
+  border-bottom:1px solid var(--rule);
+}
+.section-head:first-child{margin-top:0}
+.section-head h2{
+  font-family:var(--serif);font-weight:600;font-size:22px;margin:0;
+}
+.section-head span{font-size:13px;color:var(--muted)}
+.instructions{
+  font-size:14px;color:var(--muted);
+  border-left:3px solid var(--rule);
+  padding:2px 0 2px 14px;
+  margin:0 0 28px;
+  max-width:64ch;
+}
+
+.qgrid{
+  column-count:2;
+  column-gap:48px;
+}
+@media (max-width:720px){.qgrid{column-count:1}}
+.q{
+  break-inside:avoid;
+  margin:0 0 26px;
+  page-break-inside:avoid;
+}
+.q-head{
+  font-family:var(--serif);
+  font-size:18px;
+  font-weight:600;
+  letter-spacing:.02em;
+  margin-bottom:4px;
+}
+.q-head .num{
+  display:inline-block;
+  min-width:2.1em;
+  font-family:var(--sans);
+  font-size:14px;
+  font-weight:700;
+  color:var(--muted);
+}
+.q ol{list-style:none;margin:0;padding:0 0 0 2.1em}
+.q li{
+  font-family:var(--serif);
+  font-size:16.5px;
+  line-height:1.75;
+}
+.q li .lt{color:var(--muted);font-family:var(--sans);font-size:13px;margin-right:7px}
+
+/* ---------- answer key ---------- */
+.key{border-top:1px solid var(--ink)}
+.key-row{
+  display:grid;
+  grid-template-columns:34px 1fr;
+  gap:0 16px;
+  padding:18px 0;
+  border-bottom:1px solid var(--rule-soft);
+}
+.key-row .n{
+  font-size:13px;font-weight:700;color:var(--muted);
+  padding-top:5px;
+}
+.key-row h3{
+  font-family:var(--serif);font-size:19px;font-weight:600;
+  margin:0 0 3px;letter-spacing:.02em;
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;
+}
+.key-row h3 .ko{
+  font-family:var(--sans);font-size:14.5px;font-weight:500;color:var(--ink);
+}
+.key-row .ans{
+  font-family:var(--serif);font-size:16px;
+  margin:0 0 6px;
+}
+.key-row .ans b{
+  color:var(--red);font-weight:600;
+  border-bottom:1.5px solid var(--red);
+  padding-bottom:1px;
+}
+.key-row .tip{
+  margin:0;font-size:14px;color:var(--muted);max-width:70ch;
+}
+.key-row .tip strong{color:var(--ink);font-weight:500}
+.lvl-tag{
+  font-family:var(--sans);font-size:11px;font-weight:700;
+  color:var(--muted);border:1px solid var(--rule);
+  padding:1px 6px;border-radius:2px;letter-spacing:.04em;
+}
+
+/* ---------- flashcards ---------- */
+.fc-wrap{max-width:600px;margin:0 auto}
+.fc-meta{
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:13px;color:var(--muted);margin-bottom:14px;
+}
+.fc-progress{height:2px;background:var(--rule-soft);margin-bottom:26px}
+.fc-progress i{display:block;height:2px;background:var(--red);transition:width .25s ease}
+.card{
+  position:relative;
+  width:100%;
+  min-height:330px;
+  perspective:1400px;
+  cursor:pointer;
+  background:none;border:0;padding:0;
+  font-family:inherit;text-align:left;
+  display:block;
+}
+.card:focus-visible{outline:2px solid var(--blue);outline-offset:6px}
+.card-inner{
+  position:relative;width:100%;min-height:330px;
+  transition:transform .5s cubic-bezier(.4,.15,.2,1);
+  transform-style:preserve-3d;
+}
+.card.flipped .card-inner{transform:rotateY(180deg)}
+@media (prefers-reduced-motion:reduce){.card-inner{transition:none}}
+.face{
+  position:absolute;inset:0;
+  backface-visibility:hidden;
+  border:1px solid var(--rule);
+  background:var(--paper);
+  padding:36px 34px;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.face.front{border-top:3px solid var(--ink)}
+.face.back{transform:rotateY(180deg);border-top:3px solid var(--red);background:#FEFCFB}
+.face .word{
+  font-family:var(--serif);font-size:clamp(30px,7vw,44px);
+  font-weight:500;letter-spacing:.01em;margin:0 0 10px;line-height:1.15;
+}
+.face .pos{font-size:13px;color:var(--muted);margin:0}
+.face .hint{
+  margin-top:auto;padding-top:22px;font-size:12.5px;color:var(--muted);
+}
+.face.back .syn{
+  font-family:var(--serif);font-size:26px;color:var(--red);
+  margin:0 0 4px;font-weight:600;
+}
+.face.back .word{font-size:22px;margin:0 0 16px;color:var(--muted);font-weight:400}
+.face.back .kor{font-size:17px;font-weight:500;margin:0 0 14px}
+.face.back .trap{
+  font-size:14px;color:var(--muted);line-height:1.65;margin:0;
+  border-left:2px solid var(--rule);padding-left:12px;
+}
+.fc-nav{display:flex;gap:10px;margin-top:22px;align-items:center}
+.fc-nav button{
+  flex:1;padding:12px;border:1px solid var(--rule);background:var(--paper);
+  font-family:var(--sans);font-size:14px;cursor:pointer;border-radius:2px;color:var(--ink);
+}
+.fc-nav button:hover:not(:disabled){border-color:var(--ink)}
+.fc-nav button:disabled{opacity:.35;cursor:default}
+.fc-nav .known{flex:0 0 auto;padding:12px 16px;border-color:var(--rule)}
+.fc-hint{text-align:center;font-size:12.5px;color:var(--muted);margin-top:16px}
+
+
+.q-head.an{font-size:16.5px;font-weight:500;letter-spacing:0}
+.key-row h3.an{font-size:17px;font-weight:500;letter-spacing:0}
+.key-row .def{
+  font-family:var(--serif);font-size:15.5px;color:var(--ink);
+  margin:0 0 6px;max-width:70ch;
+}
+@media print{.q-head.an{font-size:11pt}}
+
+/* ---------- grouping toggle ---------- */
+.seg{display:flex;border:1px solid var(--rule);border-radius:2px;overflow:hidden}
+.seg button{
+  border:0;border-radius:0;padding:7px 12px;font-size:13px;
+  background:var(--paper);color:var(--muted);cursor:pointer;font-family:var(--sans);
+}
+.seg button + button{border-left:1px solid var(--rule)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.seg button:hover[aria-pressed="false"]{color:var(--ink)}
+
+.badge{
+  font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.04em;
+  color:var(--red);border:1px solid var(--red);background:var(--red-soft);
+  padding:1px 6px;border-radius:2px;
+}
+.q-head .badge{font-size:10px;margin-left:8px;vertical-align:2px}
+
+.tools select{
+  font-family:var(--sans);font-size:13px;color:var(--ink);
+  border:1px solid var(--rule);border-radius:2px;background:var(--paper);
+  padding:7px 10px;max-width:230px;
+}
+.tools select:hover{border-color:var(--ink)}
+.fc-deck{
+  font-family:var(--serif);font-size:15px;color:var(--ink);
+  margin:0 0 16px;padding-bottom:12px;border-bottom:1px solid var(--rule-soft);
+}
+.fc-deck b{font-family:var(--sans);font-size:12px;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-right:10px}
+.fc-empty{
+  border:1px solid var(--rule);padding:40px 24px;text-align:center;
+  color:var(--muted);font-size:14px;
+}
+@media print{
+  .seg{display:none!important}
+  .tools select{display:none!important}
+}
+
+
+/* ---------- known / progress ---------- */
+.fc-deckbar{
+  display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+  margin:0 0 16px;padding-bottom:12px;border-bottom:1px solid var(--rule-soft);
+}
+.fc-deck{font-family:var(--serif);font-size:15px;color:var(--ink);margin:0}
+.fc-deck b{font-family:var(--sans);font-size:12px;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-right:10px}
+.fc-known-count{font-size:13px;color:var(--muted);white-space:nowrap}
+.face.known{border-top-color:#3F7A56}
+.known-flag{
+  position:absolute;top:14px;right:16px;font-size:11px;font-weight:700;
+  letter-spacing:.06em;color:#3F7A56;font-family:var(--sans);
+}
+#fc-known{flex:0 0 auto;padding:12px 16px}
+#fc-known.on{background:#EFF5F1;border-color:#3F7A56;color:#2F5C41}
+
+/* ---------- phone ---------- */
+@media (max-width:720px){
+  body{font-size:15px}
+  .sheet{padding-bottom:64px}
+  .masthead{padding-top:28px}
+  .masthead .counts{gap:6px 16px;font-size:13px}
+  .tabs{flex-wrap:wrap;gap:0}
+  .tabs button[role="tab"]{flex:1;padding:14px 6px 12px;font-size:14px;text-align:center}
+  .tools{
+    width:100%;margin-left:0;order:3;gap:8px;
+    padding:10px 0;border-top:1px solid var(--rule-soft);
+  }
+  .seg{flex:1}
+  .seg button{flex:1;padding:9px 4px;font-size:12.5px}
+  .tools select{flex:1;max-width:none;padding:9px 8px}
+  #btn-print{display:none}
+  .section-head{margin:26px 0 14px}
+  .q{margin-bottom:20px}
+  .card,.card-inner{min-height:300px}
+  .face{padding:28px 22px}
+  .fc-nav button{padding:15px 10px;font-size:15px}
+  .fc-nav{gap:8px}
+  .fc-hint{display:none}
+  .fc-deckbar{flex-direction:column;align-items:flex-start;gap:4px}
+}
+
+/* ---------- print ---------- */
+@media print{
+  body{background:#fff;font-size:11pt}
+  .sheet{box-shadow:none;max-width:none;padding:0}
+  .tabs,.tools,.masthead p,.masthead .counts{display:none!important}
+  .masthead{border-bottom:1.5pt solid #000;padding:0 0 10pt;margin-bottom:14pt}
+  .masthead h1{font-size:19pt;margin:0}
+  .masthead .mark svg{display:none}
+  #panel-key,#panel-cards{display:none!important}
+  #panel-test{display:block!important}
+  .qgrid{column-gap:32pt}
+  .q{margin-bottom:14pt}
+  .q-head{font-size:11.5pt}
+  .q li{font-size:11pt;line-height:1.5}
+  .section-head{margin:16pt 0 10pt}
+  .instructions{margin-bottom:12pt}
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header class="masthead">
+    <h1>SSAT Verbal<br><span class="mark">Retake<svg viewBox="0 0 300 100" aria-hidden="true"><path d="M150 8 C 60 8, 12 30, 12 52 C 12 76, 78 94, 156 92 C 236 90, 290 70, 288 46 C 286 24, 224 8, 146 9"/></svg></span></h1>
+    <p>Questions marked with a plain red circle counted as correct. Every question with an X, a star, or a slash through it was pulled out and reprinted exactly as it appears in the book, with the same choices in the same order.</p>
+    <div class="counts">
+      <span><b>90</b> questions</span>
+      <span>Synonyms <b>83</b></span>
+      <span>Analogies <b>7</b></span>
+      <span>2 sessions · <b>Sep 5</b>, <b>Sep 6</b></span>
+      <span>pp. 40–61, 207–214</span>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" aria-selected="true" aria-controls="panel-test" id="tab-test">Test</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-key" id="tab-key">Answers</button>
+    <button role="tab" aria-selected="false" aria-controls="panel-cards" id="tab-cards">Flashcards</button>
+    <div class="tools">
+      <div class="seg" id="grouping" role="group" aria-label="Grouping">
+        <button data-mode="level" aria-pressed="true">By level</button>
+        <button data-mode="date" aria-pressed="false">By date</button>
+        <button data-mode="part" aria-pressed="false">By part</button>
+      </div>
+      <select id="scope" aria-label="Which set to study"></select>
+      <button id="btn-print">Print test</button>
+    </div>
+  </nav>
+
+  <section class="panel" id="panel-test" role="tabpanel" aria-labelledby="tab-test">
+    <p class="instructions">Synonyms: choose the word closest in meaning to the word in capital letters. Analogies: choose the pair whose relationship matches. 90 questions in 55 minutes. If you do not know a word, mark it and move on instead of guessing.</p>
+    <div id="test-body"></div>
+  </section>
+
+  <section class="panel" id="panel-key" role="tabpanel" aria-labelledby="tab-key" hidden>
+    <div class="key" id="key-body"></div>
+  </section>
+
+  <section class="panel" id="panel-cards" role="tabpanel" aria-labelledby="tab-cards" hidden>
+    <div class="fc-wrap">
+      <div class="fc-deckbar">
+        <p class="fc-deck" id="fc-deck"></p>
+        <span class="fc-known-count" id="fc-known-count"></span>
+      </div>
+      <div class="fc-meta">
+        <span id="fc-count"></span>
+        <span id="fc-level"></span>
+      </div>
+      <div class="fc-progress"><i id="fc-bar"></i></div>
+      <button class="card" id="card" aria-live="polite">
+        <div class="card-inner">
+          <div class="face front" id="face-front">
+            <span class="known-flag" id="f-flag"></span>
+            <p class="pos" id="f-pos"></p>
+            <p class="word" id="f-word"></p>
+            <p class="hint">Tap to flip</p>
+          </div>
+          <div class="face back">
+            <p class="syn" id="b-syn"></p>
+            <p class="word" id="b-word"></p>
+            <p class="kor" id="b-kor"></p>
+            <p class="trap" id="b-trap"></p>
+          </div>
+        </div>
+      </button>
+      <div class="fc-nav">
+        <button id="fc-prev">Back</button>
+        <button class="known" id="fc-shuffle">Shuffle</button>
+        <button id="fc-known">Known</button>
+        <button id="fc-next">Next</button>
+      </div>
+      <p class="fc-hint">Keys: ← → to move, space to flip. On a phone, swipe left or right.</p>
+    </div>
+  </section>
+
+</div>
+
+<script>
+const DATA = [
+/* ---- BASIC (p.40-42) ---- */
+{date:"2026-09-05", lv:"Basic", w:"MIRACLE", pos:"noun", o:["gift","fortune","life","wonder","symbol"], a:3, ko:"an amazing event that can't be explained",
+ tip:"Gift and fortune only capture &quot;something good.&quot; The heart of a miracle is that it is <strong>astonishing beyond explanation</strong>."},
+{date:"2026-09-05", lv:"Basic", w:"TECHNIQUE", pos:"noun", o:["point","engineer","detail","direction","method"], a:4, ko:"a way of doing something",
+ tip:"A technique is <strong>how a job gets done</strong>. Detail and direction are pieces of a method, not the method itself."},
+{date:"2026-09-05", lv:"Basic", w:"CRATER", pos:"noun", o:["cavity","lake","mountain","sphere","moon"], a:0, ko:"a bowl-shaped hole in a surface",
+ tip:"Moon and mountain are things you picture near a crater, not what the word means. Answer the <strong>shape itself</strong>."},
+{date:"2026-09-05", lv:"Basic", w:"FERTILE", pos:"adjective", o:["productive","deserted","warm","sympathetic","girlish"], a:0, ko:"able to produce a great deal",
+ tip:"Do not limit this to soil. Fertile describes anything that <strong>yields a lot</strong>, so productive fits."},
+{date:"2026-09-05", lv:"Basic", w:"COMBINE", pos:"verb", o:["join","whisk","list","braid","visit"], a:0, ko:"to bring together into one",
+ tip:"Whisk and braid are <strong>specific ways</strong> of combining. On synonym questions the broader word usually wins."},
+{date:"2026-09-05", lv:"Basic", w:"TRIUMPH", pos:"noun", o:["happiness","truth","obstacle","wound","victory"], a:4, ko:"a great victory",
+ tip:"Happiness is what <strong>follows</strong> a triumph, not the triumph itself. Watch for choices that name the effect."},
+
+/* ---- MEDIUM (p.43-48) ---- */
+{date:"2026-09-05", lv:"Medium", w:"PACT", pos:"noun", o:["hymn","agreement","angle","family","interest"], a:1, ko:"a formal agreement between two sides",
+ tip:"Read it as pact, not pack. It is a <strong>deal that people agree to keep</strong>."},
+{date:"2026-09-05", lv:"Medium", w:"VOCAL", pos:"adjective", o:["patient","intriguing","likeable","calm","outspoken"], a:4, ko:"freely speaking your opinions",
+ tip:"&quot;Voice&quot; is not enough. Called vocal, a person <strong>says what they think, loudly</strong> — the opposite of calm."},
+{date:"2026-09-05", lv:"Medium", w:"CONFIDE", pos:"verb", o:["hide","rescue","ruin","entrust","develop"], a:3, ko:"to tell a secret to someone you trust",
+ tip:"Confidential pulls you toward hide. But to confide is to <strong>hand something over in trust</strong>, not to conceal it."},
+{date:"2026-09-05", lv:"Medium", w:"EXTINCT", pos:"adjective", o:["joyous","dull","short","completed","dead"], a:4, ko:"no longer existing",
+ tip:"Extinguish drags you toward completed. Extinct means <strong>none are left</strong>."},
+{date:"2026-09-05", lv:"Medium", w:"BASHFUL", pos:"adjective", o:["sunken","confident","cruel","hurtful","shy"], a:4, ko:"shy and easily embarrassed",
+ tip:"&quot;Bash&quot; makes it look aggressive, so cruel and hurtful tempt you. The meaning runs the <strong>opposite way</strong>."},
+{date:"2026-09-05", lv:"Medium", w:"THOROUGH", pos:"adjective", o:["thoughtful","physical","complete","partial","inefficient"], a:2, ko:"leaving nothing out",
+ tip:"Thoughtful looks almost identical. Thorough is not about kindness — it is about <strong>covering everything</strong>."},
+{date:"2026-09-05", lv:"Medium", w:"RENEW", pos:"verb", o:["sparkle","finish","dampen","clean","regenerate"], a:4, ko:"to make new or bring back to life",
+ tip:"&quot;Like new&quot; suggests clean. But renew is about <strong>coming into being again</strong>."},
+{date:"2026-09-05", lv:"Medium", w:"INSTINCTIVE", pos:"adjective", o:["detestable","favorable","intuitive","varied","forgiving"], a:2, ko:"done without having to learn it",
+ tip:"Turn instinct into an adjective. What the body <strong>knows before thinking</strong> is intuitive."},
+{date:"2026-09-05", lv:"Medium", w:"PARADE", pos:"noun", o:["procession","holiday","festival","dance","umbrella"], a:0, ko:"a line of people moving along",
+ tip:"A festival scene comes to mind, but a parade is not the whole event — it is the <strong>moving line</strong> itself."},
+{date:"2026-09-05", lv:"Medium", w:"REPOSE", pos:"noun", o:["death","silence","pomp","rest","delight"], a:3, ko:"rest, calm stillness",
+ tip:"The funeral sense pulls you to death, but the plain meaning is just <strong>rest</strong>. Extreme choices are usually traps."},
+{date:"2026-09-05", lv:"Medium", w:"MATURE", pos:"adjective", o:["capable","knowledgeable","developing","adult","decayed"], a:3, ko:"fully grown",
+ tip:"Capable and knowledgeable are <strong>side effects</strong> of maturity. Developing is still on the way."},
+{date:"2026-09-05", lv:"Medium", w:"SYNOPSIS", pos:"noun", o:["letter","dialogue","diagnosis","summary","argument"], a:3, ko:"a short account of the main points",
+ tip:"Diagnosis sounds similar. Syn- (together) + opsis (view) = <strong>the whole thing shrunk to one look</strong>."},
+{date:"2026-09-05", lv:"Medium", w:"SURLY", pos:"adjective", o:["unfriendly","mournful","hopeful","nostalgic","amused"], a:0, ko:"bad-tempered and unfriendly",
+ tip:"&quot;Surely&quot; makes it look positive, so hopeful tempts you. Surly is a <strong>rude, sullen attitude</strong>."},
+
+/* ---- DIFFICULT (p.48-53) ---- */
+{date:"2026-09-05", lv:"Difficult", w:"CONVENTIONAL", pos:"adjective", o:["assembled","constructive","representative","customary","irregular"], a:3, ko:"following the usual way of doing things",
+ tip:"If convention only means &quot;a gathering&quot; to you, assembled looks right. Here it means <strong>the way it has always been done</strong>."},
+{date:"2026-09-05", lv:"Difficult", w:"COUNSEL", pos:"noun", o:["treasure","restraint","assembly","advice","committee"], a:3, ko:"advice",
+ tip:"Split it from its homophone council. A council is a <strong>group of people</strong>; counsel is <strong>what someone tells you</strong>."},
+{date:"2026-09-05", lv:"Difficult", w:"RECREATION", pos:"noun", o:["regulation","gathering","production","reviewing","amusement"], a:4, ko:"activity done for enjoyment",
+ tip:"Read as re-creation and you drift to production. As one word it means <strong>having fun</strong>."},
+{date:"2026-09-05", lv:"Difficult", w:"ROUT", pos:"verb", o:["trip","perish","defeat","exhibit","conspire"], a:2, ko:"to defeat completely",
+ tip:"Route shares the sound and pulls you to trip. To rout is to <strong>crush an opponent</strong>."},
+{date:"2026-09-05", lv:"Difficult", w:"ASSESS", pos:"verb", o:["interrogate","determine","speculate","nominate","regress"], a:1, ko:"to judge the value or quality of",
+ tip:"Speculate is guessing with no basis. Assess is <strong>weighing evidence and reaching a judgment</strong>."},
+{date:"2026-09-05", lv:"Difficult", w:"DISCLOSE", pos:"verb", o:["insult","estimate","refrain","shut","reveal"], a:4, ko:"to make known",
+ tip:"&quot;Close&quot; tempts you to shut, but dis- flips it. Disclose <strong>opens what was closed</strong>."},
+{date:"2026-09-05", lv:"Difficult", w:"CONCISE", pos:"adjective", o:["contrary","decisive","specific","terse","gracious"], a:3, ko:"short and to the point",
+ tip:"Specific is about accuracy. Concise measures <strong>length</strong>, and terse sits on that same axis."},
+{date:"2026-09-05", lv:"Difficult", w:"CONTRACT", pos:"verb", o:["shorten","dilute","uphold","extend","absorb"], a:0, ko:"to become smaller",
+ tip:"Knowing only the noun leads to uphold. The verb means to <strong>shrink</strong>, the opposite of extend."},
+{date:"2026-09-05", lv:"Difficult", w:"FRINGE", pos:"noun", o:["interior","edge","minimum","skirt","conclusion"], a:1, ko:"the outer edge",
+ tip:"Interior is the exact opposite. Skirt can mean &quot;to go around,&quot; but as a noun the answer is the <strong>border</strong>."},
+{date:"2026-09-05", lv:"Difficult", w:"AIL", pos:"verb", o:["afflict","soothe","interfere","aid","whine"], a:0, ko:"to cause pain or trouble to",
+ tip:"One letter from aid, and the opposite meaning. Remember ailment, an illness, to fix the direction."},
+{date:"2026-09-05", lv:"Difficult", w:"EMBELLISH", pos:"verb", o:["cleanse","resonate","decorate","individualize","belittle"], a:2, ko:"to add details to make more attractive",
+ tip:"Belittle sounds close but reverses it. To embellish is to <strong>add things that make it look better</strong>."},
+{date:"2026-09-05", lv:"Difficult", w:"SERIAL", pos:"adjective", o:["granular","vicious","flying","recurring","usual"], a:3, ko:"happening in a repeating sequence",
+ tip:"Cereal sends you to granular. It shares a root with series: <strong>the same thing over and over</strong>."},
+{date:"2026-09-05", lv:"Difficult", w:"ADAMANT", pos:"adjective", o:["flexible","demonstrative","evident","obstinate","encouraging"], a:3, ko:"refusing to change your mind",
+ tip:"Flexible is the opposite. The word came from a name for an <strong>unbreakable stone</strong>."},
+{date:"2026-09-05", lv:"Difficult", w:"SUBSIDE", pos:"verb", o:["diminish","advance","descend","immerse","humiliate"], a:0, ko:"to become less intense",
+ tip:"Sub- (under) points you at descend. But subside is not about position — it is about <strong>strength dying down</strong>."},
+{date:"2026-09-05", lv:"Difficult", w:"INTRICATE", pos:"adjective", o:["confusing","systematic","distinctive","elaborate","elementary"], a:3, ko:"having many finely fitted parts",
+ tip:"Confusing is the <strong>effect</strong> of intricacy, not its meaning. Intricate carries a note of skillful design."},
+{date:"2026-09-05", lv:"Difficult", w:"EMIT", pos:"verb", o:["escape","enclose","inhale","expel","mumble"], a:3, ko:"to send out",
+ tip:"Escape is something leaving on its own; emit is <strong>sending something out</strong>. The direction is reversed."},
+{date:"2026-09-05", lv:"Difficult", w:"TOIL", pos:"verb", o:["enjoy oneself","contrast","act like","pressure","exert oneself"], a:4, ko:"to work long and hard",
+ tip:"Enjoy oneself is the opposite. Toil is <strong>labor that costs you effort</strong>."},
+{date:"2026-09-05", lv:"Difficult", w:"ECLECTIC", pos:"adjective", o:["soothing","confined","assorted","rhythmic","perpetual"], a:2, ko:"drawn from many different sources",
+ tip:"Confined is the opposite. Eclectic means <strong>picked from all over and mixed</strong>."},
+{date:"2026-09-05", lv:"Difficult", w:"ENGROSS", pos:"verb", o:["smell","release","disguise","consume","block"], a:3, ko:"to take up all of someone's attention",
+ tip:"&quot;Gross&quot; pushes you toward smell. Engross <strong>swallows your attention whole</strong>."},
+
+/* ---- CHALLENGE (p.54-58) ---- */
+{date:"2026-09-05", lv:"Challenge", w:"IMPAIR", pos:"verb", o:["criticize","acquire","harm","conjoin","deliberate"], a:2, ko:"to damage or weaken",
+ tip:"&quot;Pair&quot; tempts you toward conjoin. Impair <strong>breaks how something works</strong>."},
+{date:"2026-09-05", lv:"Challenge", w:"OBSCURE", pos:"adjective", o:["indispensable","tangible","uncovered","cryptic","ameliorated"], a:3, ko:"hard to see or understand",
+ tip:"Tangible and uncovered are exact opposites. Obscure is <strong>hidden and hard to make out</strong>."},
+{date:"2026-09-05", lv:"Challenge", w:"INCOMPETENT", pos:"adjective", o:["inconsistent","pacifist","pertinent","unskillful","ingenious"], a:3, ko:"lacking skill or ability",
+ tip:"Just flip competent. Reading it as compete leads you to pacifist, a completely different road."},
+{date:"2026-09-05", lv:"Challenge", w:"ASSIMILATE", pos:"verb", o:["recognize","interpret","understand","negotiate","incorporate"], a:4, ko:"to absorb and make part of yourself",
+ tip:"Understand is what comes <strong>after</strong> absorbing. Assimilate is taking something in until it becomes one with you."},
+{date:"2026-09-05", lv:"Challenge", w:"EFFUSIVE", pos:"adjective", o:["obtuse","harmonious","overflowing","integrative","parsimonious"], a:2, ko:"pouring out feeling without restraint",
+ tip:"&quot;Fusion&quot; sends you to integrative. The root is ef- (out) + fuse (pour): <strong>spilling over</strong>."},
+{date:"2026-09-05", lv:"Challenge", w:"REMORSE", pos:"noun", o:["compunction","aversion","sentiment","misfortune","representation"], a:0, ko:"deep regret for something you did",
+ tip:"Misfortune is just bad luck. Remorse is <strong>guilt about your own act</strong>, which is compunction."},
+{date:"2026-09-05", lv:"Challenge", w:"SLANDER", pos:"noun", o:["admonish","debate","defamation","approval","attend to"], a:2, ko:"a false spoken statement that damages a reputation",
+ tip:"Almost every choice is a verb and the answer is the only noun. <strong>Matching part of speech</strong> cuts the field instantly."},
+{date:"2026-09-05", lv:"Challenge", w:"PERUSE", pos:"verb", o:["browse","recover","bypass","overlook","reprocess"], a:0, ko:"to read through",
+ tip:"Broken up as per-use it looks like reprocess. Peruse is about <strong>reading</strong>."},
+{date:"2026-09-05", lv:"Challenge", w:"DEXTERITY", pos:"noun", o:["assurance","aptitude","ostentation","slyness","affliction"], a:1, ko:"skill in using your hands or mind",
+ tip:"Assurance is <strong>confidence</strong>, not ability. Dexterity is real, practiced skill."},
+{date:"2026-09-05", lv:"Challenge", w:"CONVICTION", pos:"noun", o:["belief","confusion","facility","concept","imprisonment"], a:0, ko:"a firmly held belief",
+ tip:"Convict pulls you toward imprisonment. Here the word means <strong>something you believe strongly</strong>."},
+{date:"2026-09-05", lv:"Challenge", w:"ERADICATE", pos:"verb", o:["neglect","repurpose","dismay","radiate","remove"], a:4, ko:"to wipe out completely",
+ tip:"Radiate overlaps in spelling. The root means <strong>to pull up by the roots</strong>."},
+{date:"2026-09-05", lv:"Challenge", w:"SPORADIC", pos:"adjective", o:["crowded","calculating","fitful","linear","bountiful"], a:2, ko:"happening now and then, at irregular times",
+ tip:"This is about <strong>timing</strong>, not amount. Crowded and bountiful measure quantity — the wrong axis."},
+{date:"2026-09-05", lv:"Challenge", w:"WANE", pos:"verb", o:["misguide","embolden","decrease","disconcert","glimmer"], a:2, ko:"to grow smaller or weaker",
+ tip:"Embolden is the opposite. Think of the moon: waxing grows, <strong>waning shrinks</strong>."},
+{date:"2026-09-05", lv:"Challenge", w:"CURTAIL", pos:"verb", o:["astonish","implore","persevere","ridicule","abbreviate"], a:4, ko:"to cut short",
+ tip:"Picture cutting off the tail. Persevere, meaning to keep going, runs the other way."},
+{date:"2026-09-05", lv:"Challenge", w:"EMULATE", pos:"verb", o:["assuage","astound","imitate","reinforce","misrepresent"], a:2, ko:"to copy someone you admire",
+ tip:"It carries a note of aiming high, but the action itself is <strong>copying</strong>."},
+{date:"2026-09-05", lv:"Challenge", w:"BESTOW", pos:"verb", o:["give away","hold","present","keep","fulfill"], a:2, ko:"to give as a gift or honor",
+ tip:"&quot;Stow&quot; suggests keep, the exact opposite. Bestow is <strong>formally handing something over</strong>."},
+{date:"2026-09-05", lv:"Upper Challenge", w:"JOCUND", pos:"adjective", o:["fortuitous","masculine","cheerful","large","ascetic"], a:2, ko:"cheerful and light-hearted",
+ tip:"It shares a root with joke. Do not let it look like a man's name and pull you to masculine."},
+{date:"2026-09-05", lv:"Upper Challenge", w:"FURTIVE", pos:"adjective", o:["changing","secretive","malignant","wise","defiant"], a:1, ko:"done secretly to avoid being noticed",
+ tip:"Defiant means openly resisting, the opposite. Furtive is <strong>trying not to be seen</strong>."},
+
+/* ---- UPPER LEVEL CHALLENGE (p.58-61) ---- */
+{date:"2026-09-05", lv:"Upper Challenge", w:"BELLIGERENT", pos:"adjective", o:["noble","exuberant","argumentative","stubborn","brave"], a:2, ko:"eager to fight or argue",
+ tip:"Exuberant shares the energy but not the direction. Belli- means <strong>war</strong>: looking for a fight."},
+{date:"2026-09-05", lv:"Upper Challenge", w:"PRETENTIOUS", pos:"adjective", o:["priceless","nonchalant","sneaky","careful","pompous"], a:4, ko:"trying to seem more important than you are",
+ tip:"From pretend. It is not about deceiving — it is about <strong>showing off</strong>, so pompous fits."},
+{date:"2026-09-05", lv:"Upper Challenge", w:"RECALCITRANT", pos:"adjective", o:["incongruous","reluctant","noisy","disobedient","shy"], a:3, ko:"stubbornly refusing to obey",
+ tip:"Reluctant is merely <strong>unwilling</strong>. Recalcitrant is openly refusing orders."},
+{date:"2026-09-05", lv:"Upper Challenge", w:"AFFABLE", pos:"adjective", o:["disrespectful","weak","insignificant","lying","friendly"], a:4, ko:"easy to talk to, friendly",
+ tip:"Mistake a- for a negative prefix and you drift to disrespectful. Affable people are <strong>easy to approach</strong>."},
+{date:"2026-09-05", lv:"Upper Challenge", w:"FICKLE", pos:"adjective", o:["headstrong","vacillating","preserved","outrageous","fabricated"], a:1, ko:"changing your mind often",
+ tip:"Headstrong is the opposite. Fickle means feelings that <strong>keep swinging</strong>."},
+{date:"2026-09-05", lv:"Upper Challenge", w:"INSOLENT", pos:"adjective", o:["educational","fervent","rude","narcissistic","tasteless"], a:2, ko:"rude and disrespectful",
+ tip:"Narcissistic is self-love and tasteless is a matter of style. Insolent is <strong>talking back to someone</strong>."},
+{date:"2026-09-05", lv:"Upper Challenge", w:"ABATE", pos:"verb", o:["obliterate","coalesce","placate","dwindle","apprehend"], a:3, ko:"to become less intense",
+ tip:"Placate is calming <strong>a person</strong>; abate is rain, pain, or noise <strong>dying down on its own</strong>."},
+{date:"2026-09-05", lv:"Upper Challenge", w:"CONDONE", pos:"verb", o:["spread","nourish","accept","confirm","hoard"], a:2, ko:"to overlook or allow something wrong",
+ tip:"One letter from condemn, with the opposite meaning. To condone is to <strong>let it pass</strong>."},
+{date:"2026-09-05", lv:"Upper Challenge", w:"LISTLESS", pos:"adjective", o:["quiet","hidden","frank","unruly","lethargic"], a:4, ko:"having no energy or interest",
+ tip:"Nothing to do with a list. Here list is an old word for desire: <strong>no wish to do anything</strong>."},
+{date:"2026-09-05", lv:"Upper Challenge", w:"GERMANE", pos:"adjective", o:["poignant","applicable","heroic","familiar","contaminated"], a:1, ko:"closely relevant",
+ tip:"Nothing to do with German. It means <strong>fitting the matter at hand</strong>, the same slot as relevant."},
+{date:"2026-09-05", lv:"Upper Challenge", w:"ARCANE", pos:"adjective", o:["secret","overused","royal","concave","obsolete"], a:0, ko:"known to only a few",
+ tip:"Obsolete means <strong>no longer used</strong>; arcane means <strong>few people know it</strong>. Both feel old but measure different things."},
+{date:"2026-09-05", lv:"Upper Challenge", w:"INANE", pos:"adjective", o:["fond of","dingy","silly","crazed","barren"], a:2, ko:"silly and empty of meaning",
+ tip:"Insane pulls you to crazed. Inane is not madness — it is <strong>having no substance</strong>."},
+{date:"2026-09-05", lv:"Upper Challenge", w:"DISTENDED", pos:"adjective", o:["offensive","splendid","unsettled","swollen","calm"], a:3, ko:"swollen from inside pressure",
+ tip:"Distress and disturbed blur into unsettled. Dis- (out) + tend (stretch): <strong>stretched outward</strong>."},
+{date:"2026-09-05", lv:"Upper Challenge", w:"BALEFUL", pos:"adjective", o:["helpful","menacing","contemptuous","friendly","compliant"], a:1, ko:"threatening harm",
+ tip:"Assuming -ful means something good leads to helpful. Bale is an old word for <strong>evil or disaster</strong>."},
+
+/* ================= 2026-09-06 · Practice Test 4 (pp.207-214) ================= */
+/* ---- SYNONYMS (p.207-210) ---- */
+{date:"2026-09-06", lv:"PT4 Synonyms", pg:"p.207 #3", w:"IMPLICATE", pos:"verb", o:["imply","involve","mislead","induce","intricate"], a:1, ko:"to show that someone took part in something wrong",
+ tip:"He circled (A) imply \u2014 implicate, implicit and imply all crowd the same corner of the dictionary. But implicate points at <strong>a person</strong>: it drags someone into the wrongdoing."},
+{date:"2026-09-06", lv:"PT4 Synonyms", pg:"p.207 #4", w:"INFALLIBLE", pos:"adjective", o:["substantial","omnivorous","absurd","unerring","furious"], a:3, ko:"never wrong, incapable of making a mistake",
+ tip:"in- + fallible (able to fail). He took (C) absurd, which is what an infallible claim is <strong>not</strong>. Unerring says the same thing twice: never in error."},
+{date:"2026-09-06", lv:"PT4 Synonyms", pg:"p.208 #14", w:"AUSPICIOUS", pos:"adjective", o:["obsolete","dogmatic","mythical","lugubrious","favorable"], a:4, ko:"showing signs that something good will happen",
+ tip:"He picked (A) obsolete, which shares nothing with the word \u2014 a sign he was guessing. Auspicious is the friendly twin of suspicious: <strong>a good omen</strong>."},
+{date:"2026-09-06", lv:"PT4 Synonyms", pg:"p.209 #15", w:"SELF-RELIANT", pos:"adjective", o:["autonomous","sensitive","advantageous","baffled","venturesome"], a:0, ko:"able to act without help from others",
+ tip:"He crossed (A) out and took (B) sensitive. Autonomous is self-reliant in one word \u2014 auto (self) + nomos (rule): <strong>governed by yourself</strong>."},
+{date:"2026-09-06", lv:"PT4 Synonyms", pg:"p.209 #17", w:"BOURGEOIS", pos:"adjective", o:["daunting task","middle class","compelling conundrum","serious obstacle","profound mystery"], a:1, ko:"belonging to the middle class",
+ tip:"The French spelling makes the word feel weighty, so (E) profound mystery pulled him in. It is a plain social label: <strong>the middle class</strong>."},
+{date:"2026-09-06", lv:"PT4 Synonyms", pg:"p.209 #19", w:"ELUSIVE", pos:"adjective", o:["agile","acute","substantial","chronic","ambiguous"], a:4, ko:"hard to catch, pin down, or define",
+ tip:"He took (B) acute. Elusive is not about sharpness or speed \u2014 it is about <strong>slipping away when you try to grasp it</strong>."},
+{date:"2026-09-06", lv:"PT4 Synonyms", pg:"p.209 #22", w:"NEFARIOUS", pos:"adjective", o:["uproarious","aesthetic","pragmatic","amorphous","egregious"], a:4, ko:"extremely wicked",
+ tip:"He wrote &quot;morally bad&quot; in the margin, so the headword was not the problem \u2014 <strong>egregious</strong> was. Egregious means standing out for being bad."},
+{date:"2026-09-06", lv:"PT4 Synonyms", pg:"p.209 #23", w:"BALEFUL", pos:"adjective", o:["threatening","artless","exacting","punctilious","benign"], a:0, ko:"threatening harm",
+ tip:"Second miss on this word, same trap. This time -ful read as positive pushed him all the way to (E) benign, the exact opposite. Bale is an old word for <strong>evil or disaster</strong>."},
+{date:"2026-09-06", lv:"PT4 Synonyms", pg:"p.210 #26", w:"RUSE", pos:"noun", o:["stigma","prejudice","rampart","blockade","stratagem"], a:4, ko:"a trick used to deceive someone",
+ tip:"He circled (B) prejudice. A ruse is not an attitude but <strong>a planned trick</strong>, which is exactly what a stratagem is."},
+{date:"2026-09-06", lv:"PT4 Synonyms", pg:"p.210 #27", w:"QUIXOTIC", pos:"adjective", o:["ribald","acrimonious","idealistic","luminary","copious"], a:2, ko:"chasing ideals that are noble but impractical",
+ tip:"He took (B) acrimonious. The word comes from Don Quixote charging windmills: <strong>impractically idealistic</strong>, not bitter."},
+{date:"2026-09-06", lv:"PT4 Synonyms", pg:"p.210 #28", w:"REVULSION", pos:"noun", o:["disgust","rendezvous","admiration","pretension","grimace"], a:0, ko:"a strong feeling of disgust",
+ tip:"He wrote &quot;disgust&quot; at the top of the page and then circled (D) pretension anyway. Trust the note: revulsion shares a root with revolt \u2014 <strong>turning away in disgust</strong>."},
+{date:"2026-09-06", lv:"PT4 Synonyms", pg:"p.210 #29", w:"INFAMY", pos:"noun", o:["bedlam","remission","notoriety","amity","nomination"], a:2, ko:"the state of being well known for something bad",
+ tip:"in- + fame. He circled (B) remission. Infamy is <strong>fame turned bad</strong>, and notoriety is the word for it."},
+{date:"2026-09-06", lv:"PT4 Synonyms", pg:"p.210 #30", w:"METICULOUS", pos:"adjective", o:["reverent","limpid","contrite","tyrannical","fastidious"], a:4, ko:"very careful about small details",
+ tip:"He circled (C) contrite, which is about regret. Fastidious is the harder half of the pair: <strong>fussy about every detail</strong>."},
+
+/* ---- ANALOGIES (p.211-214) ---- */
+{date:"2026-09-06", t:"an", lv:"PT4 Analogies", pg:"p.211 #33", w:"Needle is to sew as", pos:"tool : the action it performs", o:["cane is to walk","tweezers is to hold","loom is to weave","tongs is to pluck","pliers is to snip"], a:2, ko:"A needle is the tool you sew with, so the answer is the tool you weave with.",
+ tip:"He took (A) cane is to walk, but a cane only <strong>helps</strong> you walk \u2014 you do not walk with it the way you sew with a needle. Tweezers pluck, tongs hold, pliers grip: those three swap their verbs."},
+{date:"2026-09-06", t:"an", lv:"PT4 Analogies", pg:"p.211 #34", w:"Bee is to apiary as", pos:"animal : the structure built to keep it", o:["snake is to hiss","bird is to aviary","camel is to stream","parrot is to jungle","elephant is to tusk"], a:1, ko:"An apiary is the built place where bees are kept; an aviary is the built place where birds are kept.",
+ tip:"(D) parrot is to jungle is the trap: a jungle is <strong>where it lives on its own</strong>, not something people build to hold it. Apiary and aviary are the same word shape for bees and birds."},
+{date:"2026-09-06", t:"an", lv:"PT4 Analogies", pg:"p.211 #35", w:"Trucker is to cab as", pos:"operator : where he sits to work", o:["balloonist is to parachute","burro is to wagon","pilot is to cockpit","driver is to mill","taxi is to commuter"], a:2, ko:"A cab is the compartment a trucker works from; a cockpit is the compartment a pilot works from.",
+ tip:"He circled (A) balloonist is to parachute \u2014 same transport world, wrong relationship. <strong>A parachute is not where a balloonist sits.</strong>"},
+{date:"2026-09-06", t:"an", lv:"PT4 Analogies", pg:"p.212 #42", w:"Gasp is to surprise as", pos:"involuntary reaction : the feeling it reveals", o:["lie is to honesty","dishonesty is to distrust","wheeze is to breathing","blush is to embarrassment","squint is to clarity"], a:3, ko:"A gasp is the body's automatic sign of surprise, the way a blush is the automatic sign of embarrassment.",
+ tip:"He took (C) wheeze is to breathing, matching one body sound to another. But the second half has to be <strong>a feeling</strong>, and breathing is not one."},
+{date:"2026-09-06", t:"an", lv:"PT4 Analogies", pg:"p.213 #47", w:"Thirst is to quench as", pos:"something that rises : the verb that ends it", o:["picturesque is to scenic","flexibility is to lithe","uprising is to quell","chisel is to etch","ignite is to fire"], a:2, ko:"You quench a thirst to put an end to it, and you quell an uprising to put an end to it.",
+ tip:"He circled (B) flexibility is to lithe \u2014 a noun paired with an adjective, so the parts of speech alone rule it out before meaning even comes up."},
+{date:"2026-09-06", t:"an", lv:"PT4 Analogies", pg:"p.213 #53", w:"Municipal is to city as", pos:"adjective : the domain it describes", o:["judicial is to recreation","interstellar is to moon","administrative is to park","maritime is to seafaring","corporate is to federation"], a:3, ko:"Municipal means \u201cof a city\u201d; maritime means \u201cof the sea and sailing.\u201d",
+ tip:"He circled (E) corporate is to federation. Test each pair as a definition: judicial has nothing to do with recreation, and interstellar is far bigger than the moon. Only <strong>maritime and seafaring</strong> line up."},
+{date:"2026-09-06", t:"an", lv:"PT4 Analogies", pg:"p.214 #58", w:"Indistinct is to discern as", pos:"adjective : the action it makes hard", o:["quaint is to renovate","authentic is to real","practical is to utilize","abstruse is to comprehend","valid is to authenticate"], a:3, ko:"Something indistinct is hard to discern; something abstruse is hard to comprehend.",
+ tip:"He circled (A) quaint is to renovate. The sentence has to come out as <strong>\u201chard to ___\u201d</strong>, and nothing about quaint makes renovating hard."}
+];
+
+const LT = ["A","B","C","D","E"];
+const LEVELS = [
+  {key:"Basic",  ko:"Basic",     note:"40\u201342"},
+  {key:"Medium", ko:"Medium",    note:"43\u201348"},
+  {key:"Difficult", ko:"Difficult", note:"48\u201353"},
+  {key:"Challenge", ko:"Challenge", note:"54\u201358"},
+  {key:"Upper Challenge", ko:"Upper Level Challenge", note:"58\u201361"},
+  {key:"PT4 Synonyms", ko:"Practice Test 4 \u00b7 Synonyms", note:"207\u2013210"},
+  {key:"PT4 Analogies", ko:"Practice Test 4 \u00b7 Analogies", note:"211\u2013214"}
+];
+/* one entry per scanning session; add a row when a new scan is processed */
+const DATES = [
+  {key:"2026-09-05", label:"Sep 5, 2026", note:"40\u201361"},
+  {key:"2026-09-06", label:"Sep 6, 2026", note:"207\u2013214"}
+];
+const PARTS = [
+  {key:"syn", label:"Synonyms", test:d=>d.t!=="an"},
+  {key:"an",  label:"Analogies", test:d=>d.t==="an"}
+];
+
+/* how many times this word appears across all sessions */
+function missCount(d){
+  return d.miss || DATA.filter(x=>x.w===d.w).length;
+}
+function badge(d){
+  const m = missCount(d);
+  return m>1 ? ` <span class="badge">missed \u00d7${m}</span>` : "";
+}
+function lvLabel(d){
+  const L = LEVELS.find(x=>x.key===d.lv);
+  return (L ? L.ko : d.lv) + (d.pg ? " \u00b7 " + d.pg : "");
+}
+
+/* ---- per-device progress (survives reloads; never leaves the phone) ---- */
+const KEY = "ssat-verbal-known-v1";
+function cardId(d){ return (d.date||"undated") + "|" + d.w; }
+let known = new Set();
+try{
+  const raw = localStorage.getItem(KEY);
+  if(raw) known = new Set(JSON.parse(raw));
+}catch(e){}
+function saveKnown(){
+  try{ localStorage.setItem(KEY, JSON.stringify([...known])); }catch(e){}
+}
+function isKnown(d){ return known.has(cardId(d)); }
+
+let mode = "level";   /* level | date | part */
+let scope = "all";    /* all | <group key> | repeat */
+
+/* every group in the current mode, unfiltered */
+function allGroups(){
+  const all = DATA.map((d,i)=>({d,i}));
+  if(mode==="part"){
+    return PARTS.map(P=>{
+      const items = all.filter(x=>P.test(x.d));
+      return {key:P.key, title:P.label, meta:`${items.length} questions`, items};
+    }).filter(g=>g.items.length);
+  }
+  if(mode==="date"){
+    const out = DATES.map(D=>{
+      const items = all.filter(x=>x.d.date===D.key);
+      return {key:D.key, title:D.label, meta:`${items.length} questions \u00b7 pp. ${D.note}`, items};
+    }).filter(g=>g.items.length);
+    const und = all.filter(x=>!x.d.date);
+    if(und.length) out.push({key:"undated", title:"Undated", meta:`${und.length} questions`, items:und});
+    return out;
+  }
+  return LEVELS.map(L=>{
+    const items = all.filter(x=>x.d.lv===L.key);
+    return {key:L.key, title:L.ko, meta:`${items.length} questions \u00b7 pp. ${L.note}`, items};
+  }).filter(g=>g.items.length);
+}
+
+/* what the three tabs are currently showing */
+function activeGroups(){
+  const gs = allGroups();
+  if(scope==="repeat"){
+    return gs.map(g=>{
+      const items = g.items.filter(x=>missCount(x.d)>1);
+      return {key:g.key, title:g.title, meta:`${items.length} repeat misses`, items};
+    }).filter(g=>g.items.length);
+  }
+  if(scope==="unlearned"){
+    return gs.map(g=>{
+      const items = g.items.filter(x=>!isKnown(x.d));
+      return {key:g.key, title:g.title, meta:`${items.length} not yet known`, items};
+    }).filter(g=>g.items.length);
+  }
+  if(scope==="all") return gs;
+  const one = gs.filter(g=>g.key===scope);
+  return one.length ? one : gs;
+}
+
+function allLabel(){
+  return mode==="date" ? "All sessions" : mode==="part" ? "Both parts" : "All levels";
+}
+function scopeLabel(){
+  if(scope==="repeat") return "Repeat misses";
+  if(scope==="unlearned") return "Not yet known";
+  if(scope==="all") return allLabel();
+  const g = allGroups().find(x=>x.key===scope);
+  return g ? g.title : allLabel();
+}
+
+/* rebuild the dropdown for the current mode */
+const scopeEl = document.getElementById("scope");
+function buildScope(){
+  let html = `<option value="all">${allLabel()} \u2014 ${DATA.length}</option>`;
+  allGroups().forEach(g=>{
+    html += `<option value="${g.key}">${g.title} \u2014 ${g.items.length}</option>`;
+  });
+  const un = DATA.filter(d=>!isKnown(d)).length;
+  if(un && un<DATA.length) html += `<option value="unlearned">Not yet known \u2014 ${un}</option>`;
+  const rep = DATA.filter(d=>missCount(d)>1).length;
+  if(rep) html += `<option value="repeat">Repeat misses \u2014 ${rep}</option>`;
+  scopeEl.innerHTML = html;
+  if(![...scopeEl.options].some(o=>o.value===scope)) scope = "all";
+  scopeEl.value = scope;
+}
+
+/* ---- render test + answers ---- */
+function render(){
+  let n = 0, test = "", key = "";
+  const gs = activeGroups();
+  gs.forEach(g=>{
+    test += `<div class="section-head"><h2>${g.title}</h2><span>${g.meta}</span></div><div class="qgrid">`;
+    key  += `<div class="section-head"><h2>${g.title}</h2><span>${g.meta}</span></div><div>`;
+    g.items.forEach(({d})=>{
+      n++;
+      const an = d.t==="an";
+      test += `<div class="q"><div class="q-head${an?" an":""}"><span class="num">${n}.</span>${d.w}${an?"":":"}${badge(d)}</div><ol>` +
+        d.o.map((t,i)=>`<li><span class="lt">(${LT[i]})</span>${t}</li>`).join("") +
+        `</ol></div>`;
+      key += `<div class="key-row">
+        <div class="n">${n}</div>
+        <div>
+          <h3 class="${an?"an":""}">${d.w} <span class="lvl-tag">${lvLabel(d)}</span>${badge(d)}</h3>
+          <p class="ans">Answer (${LT[d.a]}) <b>${d.o[d.a]}</b></p>
+          <p class="def">${d.ko}</p>
+          <p class="tip">${d.tip}</p>
+        </div>
+      </div>`;
+    });
+    test += `</div>`;
+    key  += `</div>`;
+  });
+  if(!n){
+    test = `<p class="instructions">Nothing in this set yet.</p>`;
+    key  = test;
+  }
+  document.getElementById("test-body").innerHTML = test;
+  document.getElementById("key-body").innerHTML = key;
+  buildDeck();
+}
+
+/* ---- flashcards follow the same scope ---- */
+let order = [], idx = 0;
+const cardEl = document.getElementById("card");
+
+function buildDeck(){
+  order = [];
+  activeGroups().forEach(g=>g.items.forEach(({i})=>order.push(i)));
+  idx = 0;
+  document.getElementById("fc-deck").innerHTML =
+    `<b>Deck</b>${scopeLabel()} \u2014 ${order.length} card${order.length===1?"":"s"}`;
+  updateKnownCount();
+  paint();
+}
+
+function updateKnownCount(){
+  const k = order.filter(i=>isKnown(DATA[i])).length;
+  document.getElementById("fc-known-count").textContent =
+    order.length ? `${k} of ${order.length} marked known` : "";
+}
+
+function paint(){
+  if(!order.length){
+    document.getElementById("fc-count").textContent = "0 / 0";
+    document.getElementById("fc-level").textContent = "";
+    document.getElementById("fc-bar").style.width = "0%";
+    return;
+  }
+  const d = DATA[order[idx]];
+  cardEl.classList.remove("flipped");
+  const k = isKnown(d);
+  document.getElementById("face-front").classList.toggle("known", k);
+  document.getElementById("f-flag").textContent = k ? "KNOWN" : "";
+  const kb = document.getElementById("fc-known");
+  kb.classList.toggle("on", k);
+  kb.textContent = k ? "Known \u2713" : "Known";
+  const fw = document.getElementById("f-word");
+  fw.textContent = d.w;
+  fw.style.fontSize = d.w.length>22 ? "clamp(22px,4.6vw,30px)" : "";
+  document.getElementById("f-pos").textContent = d.pos;
+  document.getElementById("b-syn").textContent = d.o[d.a];
+  const bw = document.getElementById("b-word");
+  bw.textContent = d.w;
+  bw.style.fontSize = d.w.length>22 ? "17px" : "";
+  document.getElementById("b-kor").textContent = d.ko;
+  document.getElementById("b-trap").innerHTML = d.tip;
+  document.getElementById("fc-count").textContent = `${idx+1} / ${order.length}`;
+  const m = missCount(d);
+  document.getElementById("fc-level").textContent =
+    lvLabel(d) + (d.date ? " \u00b7 " + d.date : "") + (m>1 ? ` \u00b7 missed \u00d7${m}` : "");
+  document.getElementById("fc-bar").style.width = ((idx+1)/order.length*100)+"%";
+  document.getElementById("fc-prev").disabled = idx===0;
+  document.getElementById("fc-next").disabled = idx===order.length-1;
+}
+
+/* ---- controls ---- */
+document.querySelectorAll("#grouping button").forEach(b=>{
+  b.addEventListener("click",()=>{
+    if(mode===b.dataset.mode) return;
+    mode = b.dataset.mode;
+    if(scope!=="repeat" && scope!=="unlearned") scope = "all";
+    document.querySelectorAll("#grouping button").forEach(x=>
+      x.setAttribute("aria-pressed", x===b));
+    buildScope();
+    render();
+  });
+});
+scopeEl.addEventListener("change",()=>{ scope = scopeEl.value; render(); });
+
+buildScope();
+render();
+
+/* ---- tabs ---- */
+const tabs = [...document.querySelectorAll('[role="tab"]')];
+tabs.forEach(t=>t.addEventListener("click",()=>{
+  tabs.forEach(x=>{
+    const on = x===t;
+    x.setAttribute("aria-selected", on);
+    document.getElementById(x.getAttribute("aria-controls")).hidden = !on;
+  });
+  window.scrollTo({top:0,behavior:"instant"});
+}));
+document.getElementById("btn-print").addEventListener("click",()=>window.print());
+
+cardEl.addEventListener("click",()=>cardEl.classList.toggle("flipped"));
+document.getElementById("fc-prev").addEventListener("click",()=>{if(idx>0){idx--;paint();}});
+document.getElementById("fc-next").addEventListener("click",()=>{if(idx<order.length-1){idx++;paint();}});
+document.getElementById("fc-shuffle").addEventListener("click",()=>{
+  for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];}
+  idx=0;paint();
+});
+document.getElementById("fc-known").addEventListener("click",e=>{
+  e.stopPropagation();
+  if(!order.length) return;
+  const d = DATA[order[idx]];
+  if(isKnown(d)) known.delete(cardId(d)); else known.add(cardId(d));
+  saveKnown();
+  const flipped = cardEl.classList.contains("flipped");
+  paint();
+  if(flipped) cardEl.classList.add("flipped");
+  updateKnownCount();
+  const cur = scope;
+  buildScope();
+  scopeEl.value = [...scopeEl.options].some(o=>o.value===cur) ? cur : "all";
+});
+
+/* swipe on the card */
+let sx=0, sy=0, moved=false;
+cardEl.addEventListener("touchstart",e=>{
+  sx=e.touches[0].clientX; sy=e.touches[0].clientY; moved=false;
+},{passive:true});
+cardEl.addEventListener("touchmove",e=>{
+  if(Math.abs(e.touches[0].clientX-sx)>12 || Math.abs(e.touches[0].clientY-sy)>12) moved=true;
+},{passive:true});
+cardEl.addEventListener("touchend",e=>{
+  const dx = e.changedTouches[0].clientX - sx;
+  const dy = e.changedTouches[0].clientY - sy;
+  if(Math.abs(dx)>50 && Math.abs(dx)>Math.abs(dy)){
+    if(dx<0 && idx<order.length-1){ idx++; paint(); }
+    if(dx>0 && idx>0){ idx--; paint(); }
+  }
+},{passive:true});
+cardEl.addEventListener("click",e=>{ if(moved){ e.stopImmediatePropagation(); moved=false; } },true);
+
+document.addEventListener("keydown",e=>{
+  if(document.getElementById("panel-cards").hidden) return;
+  if(e.key==="ArrowRight"){e.preventDefault();if(idx<order.length-1){idx++;paint();}}
+  if(e.key==="ArrowLeft"){e.preventDefault();if(idx>0){idx--;paint();}}
+  if(e.key===" "){e.preventDefault();cardEl.classList.toggle("flipped");}
+});
+</script>
+</body>
+</html>
