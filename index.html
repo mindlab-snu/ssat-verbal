@@ -395,6 +395,47 @@ body{
   .passage{font-size:16.5px;padding-left:14px}
 }
 
+.print-head{display:none}
+@media print{
+  .print-head{display:block;margin-top:8pt;font-family:var(--sans)}
+  .print-head .ph-main{font-size:13pt;color:#000}
+  .print-head .ph-main b{font-family:var(--serif);font-size:15pt;font-weight:600;color:var(--red)}
+  .print-head .ph-sub{font-size:9.5pt;color:#444;margin-top:2pt}
+  .print-head .ph-score{font-size:10pt;color:#000;margin-top:8pt}
+  body[data-print-answers] .print-head .ph-score{display:none}
+}
+
+.snote{border-top:1px solid var(--rule);padding:26px 0 8px}
+.snote:first-of-type{border-top:none;padding-top:8px}
+.snote-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 16px}
+.snote h3{margin:0;font-family:var(--serif);font-size:21px;font-weight:600}
+.snote h3 small{font-family:var(--sans);font-size:13px;font-weight:400;color:var(--muted);margin-left:8px}
+.snote .src{font-size:13px;color:var(--muted);margin:4px 0 0}
+.snote .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px 22px;margin:16px 0 4px}
+.snote .stats div{font-size:13.5px;line-height:1.55;color:var(--muted)}
+.snote .stats h4{margin:0 0 3px;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
+.snote .stats b{color:var(--ink);font-weight:600}
+.snote .rep{font-size:13.5px;color:var(--muted);margin:10px 0 0}
+.snote .rep b{color:var(--red);font-weight:600}
+.snote .blk{margin:18px 0 0}
+.snote .blk h4{margin:0 0 6px;font-family:var(--serif);font-size:16.5px;font-weight:600}
+.snote .blk ol,.snote .blk ul{margin:0;padding-left:20px;font-size:14.5px;line-height:1.65}
+.snote .blk li{margin-bottom:7px}
+.snote .blk li b{font-weight:600}
+.snote .todo{margin:14px 0 0;padding:10px 14px;border-left:3px solid var(--red);background:rgba(192,57,43,.05);font-size:14px;line-height:1.6}
+@media print{
+  body[data-print="notes"] #sec-notes{display:block!important}
+  body[data-print="notes"] .snote{display:none}
+  body[data-print="notes"]:not([data-print-one]) .snote,
+  body[data-print="notes"] .snote.printme{display:block}
+  body[data-print="notes"]:not([data-print-one]) .snote + .snote{page-break-before:always;border:none}
+  .snote{padding-top:0}
+  .snote .stats{grid-template-columns:repeat(3,1fr)}
+  .snote .stats div,.snote .rep,.snote .blk ol,.snote .blk ul,.snote .todo{font-size:10.5pt;color:#000}
+  .snote .todo{background:none}
+  .snote .blk li{break-inside:avoid}
+}
+
 /* ---------- print ---------- */
 @media print{
   body{background:#fff;font-size:11pt}
@@ -429,6 +470,7 @@ body{
     <h1>SSAT <span class="mark">Workbook<svg viewBox="0 0 300 100" aria-hidden="true"><path d="M150 8 C 60 8, 12 30, 12 52 C 12 76, 78 94, 156 92 C 236 90, 290 70, 288 46 C 286 24, 224 8, 146 9"/></svg></span></h1>
     <p>Everything missed so far, rebuilt as questions you can answer here. Pick a set, work through it, then submit to see the answers and why each wrong choice pulled.</p>
     <div class="counts" id="counts"></div>
+    <div class="print-head" id="print-head"></div>
   </header>
 
   <nav class="nav" role="tablist" id="nav">
@@ -436,6 +478,7 @@ body{
     <button role="tab" aria-selected="false" aria-controls="sec-ana"  data-sec="ana">Analogies</button>
     <button role="tab" aria-selected="false" aria-controls="sec-read" data-sec="read">Reading</button>
     <button role="tab" aria-selected="false" aria-controls="sec-cards" data-sec="cards">Flashcards</button>
+    <button role="tab" aria-selected="false" aria-controls="sec-notes" data-sec="notes">Notes</button>
   </nav>
 
   <!-- ============ SYNONYMS ============ -->
@@ -609,6 +652,18 @@ body{
         <ol id="ql-steps"></ol>
       </div>
     </div>
+  </section>
+
+  <!-- ============ SESSION NOTES ============ -->
+  <section class="panel" id="sec-notes" role="tabpanel" hidden>
+    <h2 class="sec-head">Session notes</h2>
+    <p class="sec-sub">What each test session showed: how many were missed of each kind, which words came back, and what to work on next. The counts are worked out from the questions themselves; the notes are written after each session is marked.</p>
+    <div class="controls no-print">
+      <label>Show <select id="notes-view"></select></label>
+      <span class="spacer"></span>
+      <button class="btn" id="notes-print">Print</button>
+    </div>
+    <div id="notes-list"></div>
   </section>
 
   <footer class="progress no-print">
@@ -2882,13 +2937,16 @@ function applySet(pool, v){
   if(v==="known") return pool.filter(d=>isKnown(d));
   if(v==="repeat") return pool.filter(d=>bookMisses(d)>1);
   if(v.startsWith("qw:")){ const n=+v.slice(3); return pool.filter(d=>st(d).w>=n); }
-  if(v.startsWith("date:")) return pool.filter(d=>d.date===v.slice(5));
+  if(v.startsWith("date:")){
+    const [k,t] = v.slice(5).split("|");
+    return pool.filter(d=>d.date===k && (!t || (t==="ana") === isAna(d)));
+  }
   if(v.startsWith("lv:")) return pool.filter(d=>d.lv===v.slice(3));
   return pool.slice();
 }
 function setLabel(sel){
   const o = sel.options[sel.selectedIndex];
-  return o ? o.textContent.replace(/\s+\u2014\s+\d+$/,"") : "All";
+  return o ? o.textContent.replace(/\s+\u2014\s+\d+$/,"").replace(/^[\s\u2003\u21b3]+/,"") : "All";
 }
 
 /* =========================================================
@@ -3096,7 +3154,37 @@ function Board(id, pool){
 /* =========================================================
    printing
    ========================================================= */
-function printSection(sec, withAnswers){
+const SECNAME = {syn:"Verbal \u2014 Synonyms", ana:"Verbal \u2014 Analogies", read:"Reading", notes:"Session notes"};
+function fmtDate(d){ return d.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}); }
+function setPrintHead(sec, withAnswers, extra){
+  const h = document.getElementById("print-head");
+  let what = "", n = 0, kind = "";
+  if(sec==="tips"){
+    const s = document.body.dataset.printSec;
+    what = SECNAME[s] || s; kind = "Error patterns and tips";
+  } else if(sec==="notes"){
+    what = SECNAME.notes; kind = extra || "All sessions";
+  } else {
+    what = SECNAME[sec];
+    const panel = document.getElementById("sec-" + sec);
+    n = panel.querySelectorAll(".qz").length;
+    if(sec==="read"){
+      kind = setLabel(document.getElementById("read-view"));
+    } else {
+      kind = setLabel(document.getElementById(sec + "-set"));
+      const q = document.getElementById(sec + "-find");
+      if(q && q.value.trim()) kind += ` \u00b7 search \u201c${q.value.trim()}\u201d`;
+    }
+  }
+  h.innerHTML =
+    `<div class="ph-main"><b>${what}</b>${kind ? " \u00b7 " + kind : ""}</div>` +
+    `<div class="ph-sub">${n ? n + " question" + (n===1?"":"s") + " \u00b7 " : ""}` +
+    (sec==="tips"||sec==="notes" ? "" : (withAnswers ? "with answers and explanations \u00b7 " : "questions only \u00b7 ")) +
+    `printed ${fmtDate(new Date())}</div>` +
+    (sec==="syn"||sec==="ana"||sec==="read" ? `<div class="ph-score">Name ________________ &nbsp; Score ______ / ${n || "__"}</div>` : "");
+}
+function printSection(sec, withAnswers, extra){
+  setPrintHead(sec, withAnswers, extra);
   document.body.dataset.print = sec;
   if(withAnswers) document.body.dataset.printAnswers = "1";
   else delete document.body.dataset.printAnswers;
@@ -3356,8 +3444,14 @@ function buildDeckMenu(){
   let html = opt("syn:all","Synonyms \u00b7 all", SYN.length) + opt("ana:all","Analogies \u00b7 all", ANA.length);
   let byDate = "";
   DATES.forEach(D=>{
-    const n = DATA.filter(d=>d.date===D.key).length;
-    if(n) byDate += opt("date:"+D.key, D.label, n);
+    const all = DATA.filter(d=>d.date===D.key);
+    if(!all.length) return;
+    const ns = all.filter(d=>!isAna(d)).length, na = all.length - ns;
+    byDate += opt("date:"+D.key, D.label, all.length);
+    if(ns && na){
+      byDate += opt("date:"+D.key+"|syn", "\u2003\u21b3 " + D.label + " \u00b7 Synonyms", ns);
+      byDate += opt("date:"+D.key+"|ana", "\u2003\u21b3 " + D.label + " \u00b7 Analogies", na);
+    }
   });
   if(byDate) html += `<optgroup label="\u2500\u2500 BY SESSION \u2500\u2500">${byDate}</optgroup>`;
   let q = "";
@@ -3718,6 +3812,116 @@ document.getElementById("pg-file").addEventListener("change",e=>{
   };
   r.readAsText(f);
 });
+
+
+/* =========================================================
+   session notes — one entry per DATES key.
+   blocks: [{h:"heading", li:["..."], todo:"..."}]  (HTML allowed)
+   The counts above each note are computed from DATA / PASSAGES.
+   ========================================================= */
+const SESSION_NOTES = {
+"2026-09-05": [
+ {h:"교재 pp.40–61 전체 스캔 · 오답 70개",
+  li:["이 회차는 기찬이가 고른 답(pick)이 스캔에 남아 있지 않아 유형 집계에서 빠진다.",
+      "가장 많은 오답은 <b>철자·소리가 비슷한 단어</b>에 끌려간 경우: counsel/council, ail/aid, condone/condemn, surly/surely, inane/insane, germane/German.",
+      "뒤쪽 고난도 구간으로 갈수록 <b>접두사·접미사 오독</b>이 늘었다: BALEFUL→helpful(-ful을 긍정으로), AFFABLE(a-를 부정으로), LISTLESS(list를 목록으로), INCOMPETENT(compete를 경쟁으로).",
+      "결과를 뜻으로 착각한 오답도 있었다: TRIUMPH→happiness, INTRICATE→confusing.",
+      "교재에 직접 적어둔 메모 “the broader one is almost always the answer”는 구체어·상위어 혼동을 겨냥한 것이다."],
+  todo:"확인 대기: PERUSE(#30)의 정답이 browse인지, RARE(#40)의 채점 표시가 정답인지 오답인지."}
+],
+"2026-09-06": [
+ {h:"Practice Test 4 · Section 3 (syn 13 / ana 7) + Section 2 Reading 15",
+  li:["이 회차는 빨간 사선이 <b>오답에만</b> 그어져 있었다. 정답 문항에는 아무 표시가 없다.",
+      "<b>BALEFUL</b>을 두 번째로 틀렸다. 이번에도 -ful을 긍정으로 읽어 benign을 골랐다. 같은 함정에 같은 방식으로 걸린 첫 사례다.",
+      "Reading은 지문 7개, 40문항이 모두 스캔돼 있다."],
+  todo:"확인 대기: ELUSIVE(p.209 #19)의 정답을 ambiguous로 잡아두었다. agile도 읽기에 따라 통한다."}
+],
+"2026-09-08": [
+ {h:"어휘 오답노트 · synonym 141개",
+  li:["기찬이가 직접 정리한 오답노트다. 선택지가 원본에 없어서, 고른 오답을 넣고 나머지 보기를 새로 만들었다.",
+      "09-05 회차와 겹치는 단어가 9개 나왔다: ABATE, AFFABLE, BELLIGERENT, CONCISE, CONVENTIONAL, ELUSIVE, INDEFATIGABLE, PERUSE, RECALCITRANT.",
+      "<b>같은 함정 반복</b>: ABATE는 두 번 다 placate, PERUSE는 두 번 다 per-use로 쪼갰다."]}
+],
+"2026-09-19": [
+ {h:"Practice Test 1 · Section 3 (syn 10 / ana 11) + Section 2 Reading 15",
+  li:["채점은 정답에 동그라미, 오답에 사선을 둘 다 썼다.",
+      "Reading에서는 <b>글 전체의 목적·어조</b>를 묻는 문항이 많이 틀렸다. 지문 속 인물의 감정 한 조각을 글쓴이의 태도로 착각하는 패턴(penny 지문의 entitlement)이 나왔다."],
+  todo:"Reading pp.44–45(문항 22–24)는 스캔이 올라오지 않았다."}
+],
+"2026-09-20": [
+ {h:"Upper Level PT1 · Section 3 (syn 13 / ana 16) + Upper/Middle PT1 Reading 6",
+  li:["처음 스캔은 빨간 동그라미가 엉뚱한 선택지에 찍혀 있어서, 다시 표시한 스캔으로 정답을 바로잡았다.",
+      "<b>INDEFATIGABLE</b>을 두 번째로 틀렸다. fatigue를 못 알아보고 09-08 undefinable, 이번엔 unbeatable.",
+      "Analogy 16개로 이때까지 가장 많았다. 문두가 동의어인데 반의어 짝을 고르는 <b>방향 혼동</b>이 가장 컸다(INFANTILE:PUERILE→miserly:generous, ENERVATE:ENERGIZE→obstruct:block)."],
+  todo:"확인 대기: Chicken:pig(#31)의 정답 근거, JARGON(#4)의 정답(gibberish vs communication)."}
+],
+"2026-09-23": [
+ {h:"한세희 PT2 · Section 3 (syn 10 / ana 10) + Section 2 Reading 11",
+  li:["표지에 40/60이 적혀 있었고, 판독한 오답 20개와 일치했다.",
+      "Analogy에서 <b>정도·세기 차이</b>를 묻는 문항을 4개 한꺼번에 틀렸다: daydream:hallucination, limousine:jalopy, misdemeanor:felony, caricature:portrait. 모두 소재가 비슷한 짝을 고르고 세기의 차이를 놓쳤다."],
+  todo:"Reading pp.89–90·92·103(문항 1–11, 39–40)은 스캔이 올라오지 않았다."},
+ {h:"Upper Level PT1 재시험 · Section 3 39/60 (syn 14 / ana 7) + Section 2 Reading 6",
+  li:["<b>유형별</b> — Synonyms: 발음·철자 혼동 4, 뜻을 모름 4, 정반대를 고름 3, 뜻을 결과로 착각 2, 접사 오독 1. Analogies: 동의·반의 방향 3, 기능·측정 3, 성질 1. Reading: 세부 사실 3, 주제 1, 용어 정의 1, 인용 목적 1.",
+      "<b>재시험 결과가 영역별로 크게 갈렸다</b> — Analogies는 9/20에 틀린 16개 중 11개를 고쳤다. Synonyms는 13개 중 <b>11개를 또 틀렸다</b>(맞힌 것은 THRIFTY, PARCH뿐).",
+      "정반대를 고른 오답이 3개 새로 생겼다: NEOPHYTE→veteran, FORTUITOUS→deliberate, PERFUNCTORY→thorough.",
+      "<b>반복 오답 16개</b>가 새로 생겼다. INDEFATIGABLE은 세 번째. 지난번과 <b>똑같은 보기</b>를 또 고른 문항: JARGON→communication, ATROPHY→victory, PERFUNCTORY→thorough, INDEFATIGABLE→unbeatable, Infantile:puerile→miserly:generous, Toady:lionize→coward:aggrandize.",
+      "Reading의 세부 사실 오답 3개는 모두 <b>지문에 없는 말을 덧붙인 보기</b>(aquatic shelter, totalitarian)나 다른 문장을 재조합한 보기를 고른 경우다. 용어 정의 문제(horror paradox)에서는 지문 속 <b>다른 용어</b>(symbiotic catharsis)의 정의를 골랐다."],
+  todo:"<b>다음에 할 것</b> — Synonyms는 한 번 틀린 뒤 단어를 따로 외우지 않아서 거의 그대로 다시 틀리고 있다. 다음 시험 전에 Flashcards에서 <b>Sep 20 · Synonyms</b> 덱과 <b>Repeat misses</b> 덱을 반복한다. Analogies는 문두 두 단어가 같은 방향인지 반대 방향인지 먼저 적는 습관을 들인다."}
+]
+};
+
+function sessionStats(key){
+  const items = DATA.filter(d=>d.date===key);
+  const syn = items.filter(d=>!isAna(d)), ana = items.filter(isAna);
+  const rq = []; PASSAGES.filter(P=>P.date===key).forEach(P=>P.qs.forEach(q=>rq.push(q)));
+  const tally = (arr, names) => {
+    const c = {}; arr.forEach(x=>{ if(x.cat) c[x.cat]=(c[x.cat]||0)+1; });
+    const rows = Object.entries(c).sort((a,b)=>b[1]-a[1]).map(([k,n])=>`${names[k]||k} <b>${n}</b>`);
+    return rows.length ? rows.join("<br>") : "—";
+  };
+  const earlier = items.filter(d=>DATA.some(x=>x.w===d.w && x.date && x.date < key));
+  return {syn, ana, rq, nPass: PASSAGES.filter(P=>P.date===key).length,
+    synT: tally(syn, SYNNAME), anaT: tally(ana, ANANAME), readT: tally(rq, CATNAME), again: earlier};
+}
+function renderNotes(){
+  const sel = document.getElementById("notes-view");
+  const v = sel.value || "all";
+  const keys = DATES.map(D=>D.key).filter(k=>v==="all" || v===k).slice().reverse();
+  document.getElementById("notes-list").innerHTML = keys.map(k=>{
+    const D = DATES.find(x=>x.key===k), S = sessionStats(k);
+    const blocks = (SESSION_NOTES[k]||[]).map(b=>
+      `<div class="blk"><h4>${b.h}</h4>${b.li?`<ul>${b.li.map(x=>`<li>${x}</li>`).join("")}</ul>`:""}${b.todo?`<div class="todo">${b.todo}</div>`:""}</div>`).join("");
+    const again = S.again.length
+      ? `<p class="rep">Missed again from an earlier session (${S.again.length}): <b>${[...new Set(S.again.map(d=>isAna(d)?d.w.replace(/ as$/,"").replace(" is to ",":"):d.w))].join(", ")}</b></p>` : "";
+    return `<article class="snote" data-key="${k}">
+      <div class="snote-head"><h3>${D.label}<small>${D.note}</small></h3>
+        <button class="btn no-print" data-print-one="${k}">Print this session</button></div>
+      <p class="src">Missed: ${S.syn.length} synonyms · ${S.ana.length} analogies · ${S.rq.length} reading questions${S.nPass?` in ${S.nPass} passage${S.nPass===1?"":"s"}`:""}</p>
+      <div class="stats">
+        <div><h4>Synonyms</h4>${S.synT}</div>
+        <div><h4>Analogies</h4>${S.anaT}</div>
+        <div><h4>Reading</h4>${S.readT}</div>
+      </div>${again}${blocks}
+    </article>`;
+  }).join("");
+  document.querySelectorAll("[data-print-one]").forEach(b=>b.addEventListener("click",()=>{
+    const k = b.dataset.printOne;
+    document.querySelectorAll(".snote").forEach(a=>a.classList.toggle("printme", a.dataset.key===k));
+    document.body.dataset.printOne = "1";
+    printSection("notes", false, DATES.find(x=>x.key===k).label);
+    setTimeout(()=>{ delete document.body.dataset.printOne; document.querySelectorAll(".snote.printme").forEach(a=>a.classList.remove("printme")); }, 600);
+  }));
+}
+(function(){
+  const sel = document.getElementById("notes-view");
+  sel.innerHTML = `<option value="all">All sessions, newest first</option>` +
+    DATES.slice().reverse().map(D=>`<option value="${D.key}">${D.label} · ${D.note}</option>`).join("");
+  sel.addEventListener("change", renderNotes);
+  document.getElementById("notes-print").addEventListener("click",()=>{
+    printSection("notes", false, sel.value==="all" ? "All sessions" : DATES.find(x=>x.key===sel.value).label);
+  });
+  renderNotes();
+})();
 
 /* =========================================================
    section nav + boot
