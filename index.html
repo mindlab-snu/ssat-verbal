@@ -539,6 +539,7 @@ body{
 .mp-foot .btn{min-height:40px}
 @media (max-width:720px){.mp{flex:1 1 100%;max-width:none}.mp-panel{min-width:0}}
 
+.ql-count{font-size:13px;color:var(--muted);margin:0 0 8px}
 /* ---------- print ---------- */
 @media print{
   body{background:#fff;font-size:11pt}
@@ -779,6 +780,7 @@ body{
             </select>
           </label>
         </div>
+        <p class="ql-count" id="ql-count"></p>
         <textarea id="ql-text" readonly spellcheck="false"></textarea>
         <div class="acts">
           <button class="btn primary" id="ql-copy">Copy all</button>
@@ -4272,9 +4274,9 @@ function quizletText(){
   const notes = document.getElementById("ql-notes").checked;
   const mcq = document.getElementById("ql-format").value === "mcq";
   const sep = mcq ? "@@@\n" : "\n";
-  return deck.map(d=>{
+  return qlDeck().map(d=>{
     if(mcq){
-      const stem = d.w + (isAna(d) ? "" : ":") + "\n" +
+      const stem = qlTerm(d) + (isAna(d) ? "" : ":") + "\n" +
         d.o.map((t,i)=>`(${LT[i]}) ${t}`).join("\n");
       let def = LT[d.a];
       if(notes){
@@ -4282,12 +4284,35 @@ function quizletText(){
       }
       return stem + "\t" + def;
     }
-    let def = d.o[d.a] + " \u2014 " + stripTags(d.ko);
+    const answers = [...new Set(d._answers || [d.o[d.a]])].join(" / ");
+    let def = answers + " \u2014 " + stripTags(d.ko);
     if(notes) def += " | " + stripTags(d.tip);
-    return d.w + "\t" + def.replace(/\s+/g," ").trim();
+    return qlTerm(d) + "\t" + def.replace(/\s+/g," ").trim();
   }).join(sep);
 }
-function buildQuizlet(){ document.getElementById("ql-text").value = quizletText(); }
+/* Quizlet export: one card per word. Synonym headwords are lowercased.
+   When a word was missed more than once, the latest session's question is kept
+   and every distinct right answer is listed on the card. */
+function qlTerm(d){ return isAna(d) ? d.w : d.w.toLowerCase(); }
+let qlDupes = 0;
+function qlDeck(){
+  const byKey = new Map();
+  deck.forEach(d=>{
+    const k = (isAna(d) ? "a|" : "s|") + d.w.trim().toLowerCase();
+    const prev = byKey.get(k);
+    if(!prev){ byKey.set(k, {...d, _answers:[d.o[d.a]]}); return; }
+    const answers = prev._answers.concat(d.o[d.a]);
+    const newer = (d.date||"") > (prev.date||"") ? d : prev;
+    byKey.set(k, {...newer, _answers:answers});
+  });
+  qlDupes = deck.length - byKey.size;
+  return [...byKey.values()];
+}
+function buildQuizlet(){
+  document.getElementById("ql-text").value = quizletText();
+  const c = document.getElementById("ql-count");
+  if(c) c.textContent = (deck.length - qlDupes) + " cards" + (qlDupes ? ` \u00b7 ${qlDupes} repeated word${qlDupes===1?"":"s"} merged` : "") + (deck.some(d=>!isAna(d)) ? " \u00b7 words in lowercase" : "");
+}
 
 document.getElementById("ql-notes").addEventListener("change", ()=>{ buildQuizlet(); qlHint(); });
 document.getElementById("ql-format").addEventListener("change", ()=>{ buildQuizlet(); qlHint(); });
@@ -4400,68 +4425,68 @@ document.getElementById("pg-file").addEventListener("change",e=>{
    ========================================================= */
 const SESSION_NOTES = {
 "2026-09-05": [
- {h:"교재 pp.40–61 전체 스캔 · 오답 70개",
-  li:["이 회차는 기찬이가 고른 답(pick)이 스캔에 남아 있지 않아 유형 집계에서 빠진다.",
-      "가장 많은 오답은 <b>철자·소리가 비슷한 단어</b>에 끌려간 경우: counsel/council, ail/aid, condone/condemn, surly/surely, inane/insane, germane/German.",
-      "뒤쪽 고난도 구간으로 갈수록 <b>접두사·접미사 오독</b>이 늘었다: BALEFUL→helpful(-ful을 긍정으로), AFFABLE(a-를 부정으로), LISTLESS(list를 목록으로), INCOMPETENT(compete를 경쟁으로).",
-      "결과를 뜻으로 착각한 오답도 있었다: TRIUMPH→happiness, INTRICATE→confusing.",
-      "교재에 직접 적어둔 메모 “the broader one is almost always the answer”는 구체어·상위어 혼동을 겨냥한 것이다."],
-  todo:"확인 대기: PERUSE(#30)의 정답이 browse인지, RARE(#40)의 채점 표시가 정답인지 오답인지."}
+ {h:"Workbook pp.40–61, full scan · 70 misses",
+  li:["The answers he chose were not recorded for this session, so these 70 are left out of the error-type counts.",
+      "The biggest group was being pulled by <b>words that look or sound alike</b>: counsel/council, ail/aid, condone/condemn, surly/surely, inane/insane, germane/German.",
+      "In the harder sections toward the end, <b>misread prefixes and suffixes</b> grew: BALEFUL→helpful (-ful read as positive), AFFABLE (a- read as negative), LISTLESS (list read as a list), INCOMPETENT (compete read as competition).",
+      "Some misses took an effect for the meaning: TRIUMPH→happiness, INTRICATE→confusing.",
+      "His own note in the book, “the broader one is almost always the answer”, targets the specific-vs-general mix-up."],
+  todo:"To confirm: whether PERUSE (#30) is browse, and whether the red mark on RARE (#40) means right or wrong."}
 ],
 "2026-09-06": [
  {h:"Practice Test 4 · Section 3 (syn 13 / ana 7) + Section 2 Reading 15",
-  li:["이 회차는 빨간 사선이 <b>오답에만</b> 그어져 있었다. 정답 문항에는 아무 표시가 없다.",
-      "<b>BALEFUL</b>을 두 번째로 틀렸다. 이번에도 -ful을 긍정으로 읽어 benign을 골랐다. 같은 함정에 같은 방식으로 걸린 첫 사례다.",
-      "Reading은 지문 7개, 40문항이 모두 스캔돼 있다."],
-  todo:"확인 대기: ELUSIVE(p.209 #19)의 정답을 ambiguous로 잡아두었다. agile도 읽기에 따라 통한다."}
+  li:["In this session the red slash was drawn <b>only on wrong answers</b>; correct ones carry no mark.",
+      "<b>BALEFUL</b> missed a second time — again -ful read as positive, this time choosing benign. The first case of the same trap caught the same way.",
+      "Reading: all 7 passages and 40 questions were scanned."],
+  todo:"To confirm: ELUSIVE (p.209 #19) is set to ambiguous; agile can also work depending on the reading."}
 ],
 "2026-09-08": [
- {h:"어휘 오답노트 · synonym 141개",
-  li:["기찬이가 직접 정리한 오답노트다. 선택지가 원본에 없어서, 고른 오답을 넣고 나머지 보기를 새로 만들었다.",
-      "09-05 회차와 겹치는 단어가 9개 나왔다: ABATE, AFFABLE, BELLIGERENT, CONCISE, CONVENTIONAL, ELUSIVE, INDEFATIGABLE, PERUSE, RECALCITRANT.",
-      "<b>같은 함정 반복</b>: ABATE는 두 번 다 placate, PERUSE는 두 번 다 per-use로 쪼갰다."]}
+ {h:"Vocabulary notebook · 141 synonyms",
+  li:["His own list of missed words. The original choices weren't there, so the wrong answer he wrote down was kept and the other choices were built around it.",
+      "9 words overlap with the Sep 5 session: ABATE, AFFABLE, BELLIGERENT, CONCISE, CONVENTIONAL, ELUSIVE, INDEFATIGABLE, PERUSE, RECALCITRANT.",
+      "<b>Same trap twice</b>: ABATE went to placate both times; PERUSE was split as per-use both times."]}
 ],
 "2026-09-19": [
  {h:"Practice Test 1 · Section 3 (syn 10 / ana 11) + Section 2 Reading 15",
-  li:["채점은 정답에 동그라미, 오답에 사선을 둘 다 썼다.",
-      "Reading에서는 <b>글 전체의 목적·어조</b>를 묻는 문항이 많이 틀렸다. 지문 속 인물의 감정 한 조각을 글쓴이의 태도로 착각하는 패턴(penny 지문의 entitlement)이 나왔다."],
-  todo:"Reading pp.44–45(문항 22–24)는 스캔이 올라오지 않았다."}
+  li:["Marking: circle on right answers, slash on wrong ones.",
+      "Reading misses clustered on the <b>purpose and tone of the whole passage</b>. A recurring slip: taking one character’s feeling for the author’s attitude (entitlement in the penny passage)."],
+  todo:"Reading pp.44–45 (questions 22–24) were not scanned."}
 ],
 "2026-09-20": [
  {h:"Upper Level PT1 · Section 3 (syn 13 / ana 16) + Upper/Middle PT1 Reading 6",
-  li:["처음 스캔은 빨간 동그라미가 엉뚱한 선택지에 찍혀 있어서, 다시 표시한 스캔으로 정답을 바로잡았다.",
-      "<b>INDEFATIGABLE</b>을 두 번째로 틀렸다. fatigue를 못 알아보고 09-08 undefinable, 이번엔 unbeatable.",
-      "Analogy 16개로 이때까지 가장 많았다. 문두가 동의어인데 반의어 짝을 고르는 <b>방향 혼동</b>이 가장 컸다(INFANTILE:PUERILE→miserly:generous, ENERVATE:ENERGIZE→obstruct:block)."],
-  todo:"확인 대기: Chicken:pig(#31)의 정답 근거, JARGON(#4)의 정답(gibberish vs communication)."}
+  li:["The first scan had red circles on the wrong choices; answers were corrected from a re-marked scan.",
+      "<b>INDEFATIGABLE</b> missed a second time — fatigue not recognized: undefinable on Sep 8, unbeatable now.",
+      "16 analogy misses, the most so far. The biggest issue was <b>direction</b>: the stem pair are synonyms but he chose an antonym pair (INFANTILE:PUERILE→miserly:generous, ENERVATE:ENERGIZE→obstruct:block)."],
+  todo:"To confirm: the reasoning for Chicken:pig (#31) and the answer to JARGON (#4) (gibberish vs communication)."}
+],
+"2026-09-23": [
+ {h:"Han Sehee PT2 · Section 3 (syn 10 / ana 10) + Section 2 Reading 11",
+  li:["Score on the cover: 40/60, matching the 20 misses found.",
+      "Four analogy misses at once on <b>difference of degree</b>: daydream:hallucination, limousine:jalopy, misdemeanor:felony, caricature:portrait. Each time he matched the subject and missed the step up in intensity."],
+  todo:"Reading pp.89–90, 92, 103 (questions 1–11, 39–40) were not scanned."},
+ {h:"Upper Level PT1 retake · Section 3 39/60 (syn 14 / ana 7) + Section 2 Reading 6",
+  li:["<b>By type</b> — Synonyms: look-alike 4, answer word unknown 4, opposite chosen 3, effect taken for meaning 2, prefix/suffix 1. Analogies: same-or-opposite direction 3, tool/measure 3, trait 1. Reading: detail 3, main idea 1, term definition 1, purpose of a quotation 1.",
+      "<b>The retake split sharply by section</b> — Analogies: 11 of the 16 Sep 20 misses fixed. Synonyms: <b>11 of 13 missed again</b> (only THRIFTY and PARCH fixed).",
+      "Three new opposite-chosen misses: NEOPHYTE→veteran, FORTUITOUS→deliberate, PERFUNCTORY→thorough.",
+      "<b>16 new repeat misses</b>; INDEFATIGABLE is now the third time. <b>Exactly the same wrong choice</b> as last time: JARGON→communication, ATROPHY→victory, PERFUNCTORY→thorough, INDEFATIGABLE→unbeatable, Infantile:puerile→miserly:generous, Toady:lionize→coward:aggrandize.",
+      "All three reading detail misses picked a choice that <b>adds something the passage never says</b> (aquatic shelter, totalitarian) or stitches other sentences together. On the term question (horror paradox) he chose the definition of <b>a different term</b> in the passage (symbiotic catharsis)."],
+  todo:"<b>Next</b> — Synonym words aren’t being learned after a miss, so they come back wrong almost unchanged. Before the next test, run the <b>Sep 20 · Synonyms</b> and <b>Repeat misses</b> decks in Flashcards. For analogies, write down first whether the stem pair points the same way or opposite ways."}
 ],
 "2026-09-24": [
  {h:"Ivy Global Upper Level Test 1 · Section 3 · 47/60 (syn 8 / ana 5)",
-  li:["표지 47/60, 판독한 오답 13개와 일치. 올라오지 않은 pp.32–33·36(문항 27–36, 57–60)은 모두 맞은 것으로 본다.",
-      "<b>유형별</b> — Synonyms: 발음·철자 혼동 2, 접사 오독 2, 뜻을 모름 2, 정반대 1, 뜻을 결과로 착각 1. Analogies: 장소·거처 2, 기능 1, 부분·가장자리 1, 성질 1.",
-      "<b>점수가 가장 좋았다</b>(47/60). 이전 회차는 39~40/60.",
-      "<b>Synonym 오답 8개 중 6개가 9/8 오답노트에 이미 있던 단어</b>다: DEMURE, IMPARTIAL, DISCOURSE, CLAIRVOYANT, ACCOLADE, ABERRATION. 특히 DISCOURSE→deviation, ABERRATION→indication은 노트에 적어둔 함정 보기를 그대로 또 골랐다. 반면 RECALCITRANT는 이번에 맞혔다.",
-      "Analogy는 <b>장소</b> 관계(Factory:manufacturing, Bee:hive)를 두 개 틀렸다. 여백 메모(manufacturing is done in a factory, hive is a house of bees)는 정확했는데 보기에서 그 관계를 끝까지 대입하지 않았다. Precipice:abyss는 syn이라고 적었지만 실제로는 가장자리:깊은 곳 관계였다."],
-  todo:"<b>다음에 할 것</b> — 오답노트 단어가 시험에 그대로 나오고 있다. Flashcards의 <b>Sep 8, 2026</b> 덱(오답노트 141개)을 Not yet known 위주로 돌리면 바로 점수로 이어진다. Analogy는 여백에 적은 관계 문장에 보기 다섯 개를 하나씩 넣어보는 습관만 붙이면 된다."},
- {h:"Ivy Global Upper Level Test 1 · Section 2 Reading · 오답 8개 (지문 6개)",
-  li:["<b>유형별</b> — 세부 사실 4, 추론 2, 주제 1, 어조 1.",
-      "<b>세부 사실 오답 4개가 모두 같은 원인</b>이다. 지문의 조건·시제 표시어를 놓쳤다: Great Library #8은 <em>may have</em> burned를 확정 사실로(III), Miller-Urey #20은 <em>had proposed</em>(1952년 이전)를 1952년 사건으로, 방향감각 #25는 마지막 줄의 <em>If you have it not</em>(재능 없는 사람)을 초심자 전체 이야기로, Socrates #38은 적혀 있지 않은 avenge를 골랐다.",
-      "주제 #10과 추론 #11(과일·채소 지문)은 둘 다 (D)를 골랐다. 과학계 <b>내부</b>의 갈등으로 읽었지만, 실제 대립은 과학 정의 vs 일반인·대법원이다. 'An admirably clear definition!'이 비꼬는 말이라는 점을 놓쳤다.",
-      "어조 #17은 rash를 골랐는데, 바로 앞 줄에 <em>thoughtfully and deliberately</em>가 적혀 있다.",
-      "누적 Reading에서 <b>세부 사실(detail)이 13개로 늘어</b> whole(12)을 넘어 가장 큰 유형이 됐다."],
-  todo:"<b>다음에 할 것</b> — 세부 사실 문제는 보기를 고르기 전에 지문에서 그 문장을 찾아 <b>may / could / some / had + p.p.</b> 같은 표시어에 밑줄을 긋게 한다. 이번 오답 4개는 전부 이 한 가지로 풀린다. 페이지 13–14·18·20·22·25–26·28(문항 1–5, 12–13, 18, 21–22, 28–35, 40)은 스캔이 올라오지 않았다."}
-],
-"2026-09-23": [
- {h:"한세희 PT2 · Section 3 (syn 10 / ana 10) + Section 2 Reading 11",
-  li:["표지에 40/60이 적혀 있었고, 판독한 오답 20개와 일치했다.",
-      "Analogy에서 <b>정도·세기 차이</b>를 묻는 문항을 4개 한꺼번에 틀렸다: daydream:hallucination, limousine:jalopy, misdemeanor:felony, caricature:portrait. 모두 소재가 비슷한 짝을 고르고 세기의 차이를 놓쳤다."],
-  todo:"Reading pp.89–90·92·103(문항 1–11, 39–40)은 스캔이 올라오지 않았다."},
- {h:"Upper Level PT1 재시험 · Section 3 39/60 (syn 14 / ana 7) + Section 2 Reading 6",
-  li:["<b>유형별</b> — Synonyms: 발음·철자 혼동 4, 뜻을 모름 4, 정반대를 고름 3, 뜻을 결과로 착각 2, 접사 오독 1. Analogies: 동의·반의 방향 3, 기능·측정 3, 성질 1. Reading: 세부 사실 3, 주제 1, 용어 정의 1, 인용 목적 1.",
-      "<b>재시험 결과가 영역별로 크게 갈렸다</b> — Analogies는 9/20에 틀린 16개 중 11개를 고쳤다. Synonyms는 13개 중 <b>11개를 또 틀렸다</b>(맞힌 것은 THRIFTY, PARCH뿐).",
-      "정반대를 고른 오답이 3개 새로 생겼다: NEOPHYTE→veteran, FORTUITOUS→deliberate, PERFUNCTORY→thorough.",
-      "<b>반복 오답 16개</b>가 새로 생겼다. INDEFATIGABLE은 세 번째. 지난번과 <b>똑같은 보기</b>를 또 고른 문항: JARGON→communication, ATROPHY→victory, PERFUNCTORY→thorough, INDEFATIGABLE→unbeatable, Infantile:puerile→miserly:generous, Toady:lionize→coward:aggrandize.",
-      "Reading의 세부 사실 오답 3개는 모두 <b>지문에 없는 말을 덧붙인 보기</b>(aquatic shelter, totalitarian)나 다른 문장을 재조합한 보기를 고른 경우다. 용어 정의 문제(horror paradox)에서는 지문 속 <b>다른 용어</b>(symbiotic catharsis)의 정의를 골랐다."],
-  todo:"<b>다음에 할 것</b> — Synonyms는 한 번 틀린 뒤 단어를 따로 외우지 않아서 거의 그대로 다시 틀리고 있다. 다음 시험 전에 Flashcards에서 <b>Sep 20 · Synonyms</b> 덱과 <b>Repeat misses</b> 덱을 반복한다. Analogies는 문두 두 단어가 같은 방향인지 반대 방향인지 먼저 적는 습관을 들인다."}
+  li:["Cover score 47/60 matches the 13 misses found. The pages not scanned (pp.32–33, 36; questions 27–36, 57–60) were therefore all correct.",
+      "<b>By type</b> — Synonyms: look-alike 2, prefix/suffix 2, answer word unknown 2, opposite 1, effect for meaning 1. Analogies: place/home 2, function 1, edge/part 1, trait 1.",
+      "<b>Best score so far</b> (47/60; previous sessions 39–40/60).",
+      "<b>6 of the 8 synonym misses were already in the Sep 8 notebook</b>: DEMURE, IMPARTIAL, DISCOURSE, CLAIRVOYANT, ACCOLADE, ABERRATION. DISCOURSE→deviation and ABERRATION→indication repeat the very trap written in the notebook. RECALCITRANT, on the other hand, was right this time.",
+      "Two analogy misses were <b>place</b> relations (Factory:manufacturing, Bee:hive). His margin notes were right (manufacturing is done in a factory; a hive is a house of bees) but he didn’t test each choice against them. Precipice:abyss was noted as synonyms but is really edge : the depth beyond."],
+  todo:"<b>Next</b> — Notebook words are showing up on tests as they are. Running the <b>Sep 8, 2026</b> deck (141 notebook words) in Flashcards, focusing on Not yet known, should turn straight into points. For analogies: plug each of the five choices into the relation he already wrote in the margin."},
+ {h:"Ivy Global Upper Level Test 1 · Section 2 Reading · 8 misses (6 passages)",
+  li:["<b>By type</b> — detail 4, inference 2, main idea 1, tone 1.",
+      "<b>All four detail misses have one cause</b>: missing a hedge or tense marker. Great Library #8 took <em>may have</em> burned as fact (III); Miller-Urey #20 took <em>had proposed</em> (before 1952) as the 1952 event; sense of direction #25 applied the last line’s <em>If you have it not</em> (people without the gift) to all beginners; Socrates #38 chose avenge, which the passage never says.",
+      "Main idea #10 and inference #11 (fruits and vegetables) were both (D): he read it as a quarrel <b>inside</b> the scientific community, but the real clash is the scientific definition vs the public and the Court. He missed that “An admirably clear definition!” is sarcastic.",
+      "Tone #17: he chose rash, though the line right before says <em>thoughtfully and deliberately</em>.",
+      "Across all reading, <b>detail is now 13</b>, passing main idea (12) as the largest type."],
+  todo:"<b>Next</b> — On detail questions, find the sentence in the passage before looking at the choices and underline markers like <b>may / could / some / had + past participle</b>. All four detail misses here fall to that one habit. Pages 13–14, 18, 20, 22, 25–26, 28 (questions 1–5, 12–13, 18, 21–22, 28–35, 40) were not scanned."}
 ]
 };
 
