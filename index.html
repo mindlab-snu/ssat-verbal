@@ -391,6 +391,8 @@ body{
   .nav button{padding:8px 13px;font-size:14px;min-height:40px;flex:1 0 auto}
   .controls{gap:10px 12px}
   .controls select{flex:1;max-width:none;padding:10px 8px}
+  .controls label{min-width:0;max-width:100%;flex:1 1 auto}
+  .controls select{min-width:0;width:100%}
   .controls .spacer{margin-left:0;width:100%}
   .controls .spacer + .btn,.controls .btn{flex:1}
   .opt{padding:14px;font-size:16px}
@@ -441,6 +443,69 @@ body{
   .snote .todo{background:none}
   .snote .blk li{break-inside:avoid}
 }
+
+/* known toggle on question cards */
+.qz .stem{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 2px}
+.kbtn{
+  margin-left:auto;align-self:center;appearance:none;cursor:pointer;
+  font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:.02em;
+  color:var(--muted);background:var(--paper);border:1px solid var(--rule);border-radius:999px;
+  padding:4px 11px;min-height:30px;white-space:nowrap;
+}
+.kbtn:hover{border-color:var(--green);color:var(--green)}
+.kbtn.on{color:#fff;background:var(--green);border-color:var(--green)}
+.qz.is-known .stem .num{color:var(--green)}
+@media (max-width:720px){.kbtn{min-height:34px;padding:5px 12px}}
+@media print{.kbtn{display:none!important}}
+
+/* flashcard mode switch */
+.fc-mode{display:inline-flex;border:1.5px solid var(--ink);border-radius:999px;padding:3px;gap:3px;margin:4px 0 18px}
+.fc-mode button{
+  appearance:none;border:0;background:none;cursor:pointer;font-family:var(--sans);
+  font-size:14px;font-weight:600;color:var(--ink);padding:8px 16px;border-radius:999px;min-height:38px;
+}
+.fc-mode button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.fc-mode-note{font-size:13px;color:var(--muted);margin:-8px 0 16px}
+
+/* word cards (Quizlet style) */
+.wc-wrap{max-width:560px}
+.wc-tally{display:flex;align-items:center;gap:10px;margin:0 0 10px;font-size:13px;font-weight:600}
+.wc-tally .pill{padding:3px 10px;border-radius:999px;border:1.5px solid}
+.wc-tally .learn{color:var(--red);border-color:var(--red);background:var(--red-soft)}
+.wc-tally .know{color:var(--green);border-color:var(--green);background:var(--green-soft)}
+.wc-tally .left{margin-left:auto;color:var(--muted);font-weight:500}
+.wcard{position:relative;perspective:1600px;cursor:pointer;user-select:none;-webkit-user-select:none;margin-bottom:16px}
+.wcard-in{position:relative;min-height:300px;transition:transform .45s cubic-bezier(.4,.15,.2,1);transform-style:preserve-3d}
+.wcard.flipped .wcard-in{transform:rotateY(180deg)}
+@media (prefers-reduced-motion:reduce){.wcard-in{transition:none}}
+.wface{
+  position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  border:1px solid var(--rule);border-radius:14px;background:var(--paper);
+  box-shadow:0 2px 10px rgba(27,26,23,.07);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px 26px;
+}
+.wface.front{border-top:4px solid var(--ink)}
+.wface.back{transform:rotateY(180deg);border-top:4px solid var(--green)}
+.wface .w{font-family:var(--serif);font-size:38px;font-weight:600;letter-spacing:.03em;line-height:1.15;word-break:break-word}
+.wface .p{font-size:13px;color:var(--muted);margin-top:10px}
+.wface .tap{position:absolute;bottom:12px;font-size:11.5px;color:var(--muted);letter-spacing:.04em}
+.wface .a{font-family:var(--serif);font-size:32px;font-weight:700;color:var(--green);line-height:1.2}
+.wface .d{font-size:16.5px;margin-top:10px;max-width:40ch}
+.wface .tr{font-size:13.5px;color:var(--muted);margin-top:16px;max-width:44ch;line-height:1.55}
+.wface .tr b{color:var(--red);font-weight:600}
+.wface .kn{position:absolute;top:12px;right:16px;font-size:11px;font-weight:700;color:var(--green);letter-spacing:.06em}
+.wc-acts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.wc-acts .btn{min-height:52px;font-size:15.5px;font-weight:600;border-radius:12px}
+.wc-acts .no{color:var(--red);border-color:var(--red);background:var(--paper)}
+.wc-acts .no:hover{background:var(--red-soft)}
+.wc-acts .yes{color:#fff;border-color:var(--green);background:var(--green)}
+.wc-sub{display:flex;justify-content:space-between;align-items:center;margin-top:12px;gap:10px}
+.wc-sub .btn{min-height:40px}
+.wc-done{border:1px solid var(--rule);border-radius:14px;padding:28px 24px;text-align:center}
+.wc-done h3{font-family:var(--serif);font-size:24px;margin:0 0 6px}
+.wc-done p{color:var(--muted);margin:0 0 18px}
+.wc-done .acts{display:flex;flex-direction:column;gap:10px;max-width:320px;margin:0 auto}
+@media (max-width:720px){.wface .w{font-size:32px}.wcard-in{min-height:280px}}
 
 /* ---------- print ---------- */
 @media print{
@@ -508,8 +573,8 @@ body{
       <label>Set <select id="syn-set"></select></label>
       <input type="search" class="find" id="syn-find" placeholder="Search words…" autocomplete="off">
       <label>Questions <select id="syn-size">
-        <option value="10">10</option><option value="20" selected>20</option>
-        <option value="40">40</option><option value="0">All</option></select></label>
+        <option value="10">10</option><option value="20">20</option>
+        <option value="40">40</option><option value="0" selected>All</option></select></label>
       <label><input type="checkbox" id="syn-shuffle" checked> Shuffle</label>
       <span class="spacer"></span>
       <button class="btn primary" id="syn-new">New set</button>
@@ -544,8 +609,8 @@ body{
       <label>Set <select id="ana-set"></select></label>
       <input type="search" class="find" id="ana-find" placeholder="Search words…" autocomplete="off">
       <label>Questions <select id="ana-size">
-        <option value="10">10</option><option value="20" selected>20</option>
-        <option value="40">40</option><option value="0">All</option></select></label>
+        <option value="10">10</option><option value="20">20</option>
+        <option value="40">40</option><option value="0" selected>All</option></select></label>
       <label><input type="checkbox" id="ana-shuffle" checked> Shuffle</label>
       <span class="spacer"></span>
       <button class="btn primary" id="ana-new">New set</button>
@@ -593,6 +658,42 @@ body{
   <!-- ============ FLASHCARDS ============ -->
   <section class="panel" id="sec-cards" role="tabpanel" hidden>
     <h2 class="sec-head">Flashcards</h2>
+    <div class="fc-mode no-print" role="group" aria-label="Card style">
+      <button id="mode-word" aria-pressed="false">Word cards</button>
+      <button id="mode-quiz" aria-pressed="true">Quiz cards</button>
+    </div>
+
+    <!-- ===== word cards: Quizlet-style flip, synonyms only ===== -->
+    <div class="wc-wrap" id="wc" hidden>
+      <p class="fc-mode-note">Synonyms only. Tap the card to flip it, then sort it: still learning or know it.</p>
+      <div class="history no-print" id="wc-history"></div>
+      <div class="controls no-print">
+        <label>Deck <select id="wc-set"></select></label>
+        <span class="spacer"></span>
+        <button class="btn" id="wc-shuffle">Shuffle</button>
+      </div>
+      <div id="wc-play">
+        <div class="wc-tally"><span class="pill learn" id="wc-nl">0</span><span class="pill know" id="wc-nk">0</span><span class="left" id="wc-left"></span></div>
+        <div class="fc-progress"><i id="wc-bar"></i></div>
+        <div class="wcard" id="wcard" tabindex="0" aria-label="Flashcard, tap to flip">
+          <div class="wcard-in">
+            <div class="wface front"><span class="kn" id="wc-kn"></span><div class="w" id="wc-w"></div><div class="p" id="wc-p"></div><span class="tap">tap to flip</span></div>
+            <div class="wface back"><div class="a" id="wc-a"></div><div class="d" id="wc-d"></div><div class="tr" id="wc-t"></div></div>
+          </div>
+        </div>
+        <div class="wc-acts">
+          <button class="btn no" id="wc-no">&#10007; Still learning</button>
+          <button class="btn yes" id="wc-yes">&#10003; Know it</button>
+        </div>
+        <div class="wc-sub">
+          <button class="btn" id="wc-undo">&larr; Undo</button>
+          <span class="fc-hint" style="margin:0">Space flips · &larr; still learning · &rarr; know it</span>
+        </div>
+      </div>
+      <div class="wc-done" id="wc-done" hidden></div>
+    </div>
+
+    <div id="qc">
     <p class="sec-sub">Answer the question on the front, then check it. The back gives the answer, what you picked, and — where the scan recorded it — the choice you made the first time round.</p>
     <div class="history no-print" id="fc-history" hidden></div>
     <div class="controls no-print">
@@ -658,6 +759,7 @@ body{
         <ol id="ql-steps"></ol>
       </div>
     </div>
+    </div><!-- /qc -->
   </section>
 
   <!-- ============ SESSION NOTES ============ -->
@@ -3285,6 +3387,39 @@ function setLabel(sel){
   return o ? o.textContent.replace(/\s+\u2014\s+\d+$/,"").replace(/^[\s\u2003\u21b3]+/,"") : "All";
 }
 
+
+/* shared "history + reset" bar: quiz record and Known marks for one pool */
+function historyBar(hist, pool, prefix, onReset){
+  const seen = pool.filter(d=>st(d).a).length;
+  const kn = pool.filter(d=>isKnown(d)).length;
+  const missed = pool.filter(d=>st(d).w>=1).length;
+  const often  = pool.filter(d=>st(d).w>=2).length;
+  const open   = pool.filter(d=>st(d).lw===1).length;
+  hist.hidden = false;
+  let txt = seen
+    ? `${prefix}<b>${seen}</b> of ${pool.length} answered · <b>${missed}</b> missed at least once` +
+      (often ? ` · <b>${often}</b> missed 2+ times` : "") +
+      (open ? ` · <b>${open}</b> still missing` : " · all fixed on the last try")
+    : `${prefix}nothing answered yet`;
+  if(kn) txt += ` · <b>${kn}</b> marked known`;
+  const empty = !seen && !kn;
+  hist.innerHTML = `<span>${txt}</span><button class="btn rs"${empty?" disabled":""}>Reset history</button>`;
+  const rb = hist.querySelector(".rs");
+  rb.title = "Clears the quiz record and the Known marks for these questions";
+  rb.addEventListener("click",()=>{
+    if(rb.dataset.armed !== "1"){
+      rb.dataset.armed = "1"; rb.textContent = "Tap again to clear"; rb.classList.add("armed");
+      clearTimeout(rb._t);
+      rb._t = setTimeout(()=>{ rb.dataset.armed="0"; rb.textContent="Reset history"; rb.classList.remove("armed"); }, 4000);
+      return;
+    }
+    clearTimeout(rb._t);
+    pool.forEach(d=>{ delete stats[cardId(d)]; known.delete(cardId(d)); });
+    saveStats(); saveKnown();
+    onReset();
+  });
+}
+
 /* =========================================================
    a question board (synonyms / analogies)
    ========================================================= */
@@ -3296,28 +3431,9 @@ function Board(id, pool){
   function refreshMenu(){ setVal = buildSetMenu(setSel, pool, setVal); }
 
   function refreshHistory(){
-    const hist = $("history");
-    const seen = pool.filter(d=>st(d).a).length;
-    if(!seen){ hist.hidden = true; hist.innerHTML = ""; return; }
-    const missed = pool.filter(d=>st(d).w>=1).length;
-    const often  = pool.filter(d=>st(d).w>=2).length;
-    const open   = pool.filter(d=>st(d).lw===1).length;
-    hist.hidden = false;
-    hist.innerHTML = `<span><b>${seen}</b> of ${pool.length} answered so far \u00b7 <b>${missed}</b> missed at least once` +
-      (often ? ` \u00b7 <b>${often}</b> missed 2+ times` : "") +
-      (open ? ` \u00b7 <b>${open}</b> still missing` : " \u00b7 all fixed on the last try") +
-      `</span><button class="btn" id="${id}-reset">Reset history</button>`;
-    const rb = document.getElementById(id + "-reset");
-    rb.addEventListener("click",()=>{
-      if(rb.dataset.armed !== "1"){
-        rb.dataset.armed = "1"; rb.textContent = "Tap again to clear"; rb.classList.add("armed");
-        clearTimeout(rb._t);
-        rb._t = setTimeout(()=>{ rb.dataset.armed="0"; rb.textContent="Reset history"; rb.classList.remove("armed"); },4000);
-        return;
-      }
-      clearTimeout(rb._t);
-      pool.forEach(d=>{ delete stats[cardId(d)]; });
-      saveStats(); refreshAll();
+    historyBar($("history"), pool, "", ()=>{
+      refreshAll(); newRound(); progressLine();
+      if(typeof buildDeckMenu==="function") buildDeckMenu();
     });
   }
 
@@ -3368,8 +3484,8 @@ function Board(id, pool){
       const rep = bookMisses(d)>1 ? `<span class="badge">missed \u00d7${bookMisses(d)} in the books</span>` : "";
       const s = st(d);
       const qb = s.a ? `<span class="badge soft">quiz ${s.w}\u2717 / ${s.a}</span>` : "";
-      return `<div class="qz${an?" an":""}" id="${id}-q${qi}">
-        <div class="stem"><span class="num">${qi+1}.</span>${d.w}${an?"":":"}${rep}${qb}</div>
+      return `<div class="qz${an?" an":""}${isKnown(d)?" is-known":""}" id="${id}-q${qi}">
+        <div class="stem"><span class="num">${qi+1}.</span>${d.w}${an?"":":"}${rep}${qb}<button class="kbtn${isKnown(d)?" on":""}" data-k="${qi}" aria-pressed="${isKnown(d)}" title="Mark as known">${isKnown(d)?"\u2713 Known":"Known?"}</button></div>
         <div class="opts">` +
         d.o.map((t,oi)=>`<button class="opt" data-q="${qi}" data-o="${oi}"><span class="lt">(${LT[oi]})</span>${t}</button>`).join("") +
         `</div><p class="why" hidden></p></div>`;
@@ -3390,6 +3506,18 @@ function Board(id, pool){
   }
 
   board.addEventListener("click", e=>{
+    const kb = e.target.closest(".kbtn");
+    if(kb){
+      const d = round[+kb.dataset.k];
+      if(isKnown(d)) known.delete(cardId(d)); else known.add(cardId(d));
+      saveKnown();
+      const on = isKnown(d);
+      kb.classList.toggle("on", on); kb.setAttribute("aria-pressed", on);
+      kb.textContent = on ? "\u2713 Known" : "Known?";
+      document.getElementById(id + "-q" + kb.dataset.k).classList.toggle("is-known", on);
+      refreshAll(); progressLine();
+      return;
+    }
     const b = e.target.closest(".opt");
     if(!b) return;
     const qi = +b.dataset.q;
@@ -3814,29 +3942,8 @@ function buildDeckMenu(){
 }
 
 function fcHistory(){
-  const hist = document.getElementById("fc-history");
   const pool = deck.length ? deck : DATA;
-  const seen = pool.filter(d=>st(d).a).length;
-  if(!seen){ hist.hidden = true; hist.innerHTML = ""; return; }
-  const missed = pool.filter(d=>st(d).w>=1).length;
-  const often  = pool.filter(d=>st(d).w>=2).length;
-  const open   = pool.filter(d=>st(d).lw===1).length;
-  hist.hidden = false;
-  hist.innerHTML = `<span>In this deck: <b>${seen}</b> of ${pool.length} answered \u00b7 <b>${missed}</b> missed at least once` +
-    (often ? ` \u00b7 <b>${often}</b> missed 2+ times` : "") +
-    (open ? ` \u00b7 <b>${open}</b> still missing` : " \u00b7 all fixed on the last try") +
-    `</span><button class="btn" id="fc-reset">Reset history for this deck</button>`;
-  const rb = document.getElementById("fc-reset");
-  rb.addEventListener("click",()=>{
-    if(rb.dataset.armed !== "1"){
-      rb.dataset.armed = "1"; rb.textContent = "Tap again to clear"; rb.classList.add("armed");
-      clearTimeout(rb._t);
-      rb._t = setTimeout(()=>{ rb.dataset.armed="0"; rb.textContent="Reset history for this deck"; rb.classList.remove("armed"); }, 4000);
-      return;
-    }
-    clearTimeout(rb._t);
-    pool.forEach(d=>{ delete stats[cardId(d)]; });
-    saveStats();
+  historyBar(document.getElementById("fc-history"), pool, "In this deck: ", ()=>{
     buildDeckMenu(); buildDeck(); progressLine();
     synBoard.refresh(); anaBoard.refresh();
   });
@@ -3990,7 +4097,7 @@ document.getElementById("fc-known").addEventListener("click",()=>{
   const kb = document.getElementById("fc-known");
   kb.classList.toggle("on", k);
   kb.textContent = k ? "Known \u2713" : "Known";
-  buildDeckMenu(); progressLine();
+  buildDeckMenu(); progressLine(); fcHistory();
   synBoard.refresh(); anaBoard.refresh();
 });
 
@@ -4008,7 +4115,7 @@ cardEl.addEventListener("touchend",e=>{
 },{passive:true});
 
 document.addEventListener("keydown",e=>{
-  if(document.getElementById("sec-cards").hidden) return;
+  if(document.getElementById("sec-cards").hidden || document.getElementById("qc").hidden) return;
   if(e.key==="ArrowRight"){ e.preventDefault(); if(di<deck.length-1){ di++; paintCard(); } }
   if(e.key==="ArrowLeft"){ e.preventDefault(); if(di>0){ di--; paintCard(); } }
   if(e.key==="Enter"){ e.preventDefault(); document.getElementById("fc-check").click(); }
@@ -4275,6 +4382,124 @@ function renderNotes(){
   renderNotes();
 })();
 
+
+/* =========================================================
+   word cards — Quizlet-style flip deck, synonyms only
+   ========================================================= */
+const WC = (function(){
+  const $ = id => document.getElementById(id);
+  const sel = $("wc-set"), card = $("wcard");
+  let setVal = "all", queue = [], learn = [], know = [], hist = [], cur = null, total = 0;
+
+  function menu(){ setVal = buildSetMenu(sel, SYN, setVal); bar(); }
+  function bar(){
+    historyBar($("wc-history"), applySet(SYN, setVal), "In this deck: ", ()=>{
+      menu(); fresh(false); progressLine(); synBoard.refresh(); anaBoard.refresh();
+    });
+  }
+  function start(list){
+    queue = list.slice(); learn = []; know = []; hist = []; total = queue.length;
+    $("wc-play").hidden = false; $("wc-done").hidden = true;
+    next();
+  }
+  function fresh(shuffle){
+    let list = applySet(SYN, setVal);
+    if(shuffle) for(let i=list.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [list[i],list[j]]=[list[j],list[i]]; }
+    start(list);
+  }
+  function tally(){
+    $("wc-nl").textContent = learn.length + " still learning";
+    $("wc-nk").textContent = know.length + " know";
+    $("wc-left").textContent = queue.length + (cur?1:0) + " left";
+    $("wc-bar").style.width = total ? ((learn.length+know.length)/total*100) + "%" : "0";
+    $("wc-undo").disabled = !hist.length;
+  }
+  function paint(){
+    card.classList.remove("flipped");
+    const d = cur;
+    $("wc-w").textContent = d.w;
+    $("wc-p").textContent = d.pos || "";
+    $("wc-kn").textContent = isKnown(d) ? "✓ KNOWN" : "";
+    $("wc-a").textContent = d.o[d.a];
+    $("wc-d").textContent = d.ko;
+    const trap = d.pick!==undefined && d.pick!==d.a
+      ? `<b>The trap:</b> ${d.o[d.pick]}${d.date ? " · " + (DATES.find(x=>x.key===d.date)||{}).label : ""}` : "";
+    $("wc-t").innerHTML = trap;
+  }
+  function next(){
+    cur = queue.shift() || null;
+    if(!cur){ done(); return; }
+    paint(); tally();
+  }
+  function sortCard(ok){
+    if(!cur) return;
+    (ok ? know : learn).push(cur);
+    hist.push({d:cur, ok});
+    next();
+  }
+  function undo(){
+    const h = hist.pop(); if(!h) return;
+    const arr = h.ok ? know : learn; arr.splice(arr.lastIndexOf(h.d),1);
+    if(cur) queue.unshift(cur);
+    cur = h.d; $("wc-play").hidden = false; $("wc-done").hidden = true;
+    paint(); tally();
+  }
+  function done(){
+    tally();
+    $("wc-play").hidden = true;
+    const box = $("wc-done"); box.hidden = false;
+    const newKnow = know.filter(d=>!isKnown(d)).length;
+    box.innerHTML = `<h3>${know.length} of ${total} known</h3>
+      <p>${learn.length ? learn.length + " still learning — go round again with just those." : "Every card in this deck sorted as known."}</p>
+      <div class="acts">
+        ${learn.length ? `<button class="btn primary" id="wc-again">Keep studying ${learn.length} still learning</button>` : ""}
+        ${newKnow ? `<button class="btn" id="wc-mark">Mark the ${newKnow} I know as Known</button>` : ""}
+        <button class="btn" id="wc-restart">Restart the whole deck</button>
+      </div>`;
+    const again = $("wc-again"); if(again) again.onclick = ()=>start(learn.slice());
+    const mk = $("wc-mark"); if(mk) mk.onclick = ()=>{
+      know.forEach(d=>known.add(cardId(d))); saveKnown();
+      mk.textContent = "Marked ✓"; mk.disabled = true;
+      menu(); progressLine(); synBoard.refresh(); anaBoard.refresh();
+    };
+    $("wc-restart").onclick = ()=>fresh(false);
+  }
+  card.addEventListener("click", ()=>card.classList.toggle("flipped"));
+  $("wc-yes").addEventListener("click", ()=>sortCard(true));
+  $("wc-no").addEventListener("click", ()=>sortCard(false));
+  $("wc-undo").addEventListener("click", undo);
+  $("wc-shuffle").addEventListener("click", ()=>fresh(true));
+  sel.addEventListener("change", ()=>{ setVal = sel.value; bar(); fresh(false); });
+  let sx = null;
+  card.addEventListener("touchstart", e=>{ sx = e.touches[0].clientX; }, {passive:true});
+  card.addEventListener("touchend", e=>{
+    if(sx===null) return; const dx = e.changedTouches[0].clientX - sx; sx = null;
+    if(Math.abs(dx) > 60){ e.preventDefault(); sortCard(dx > 0); }
+  });
+  document.addEventListener("keydown", e=>{
+    if($("sec-cards").hidden || $("wc").hidden) return;
+    if(e.target.tagName==="SELECT" || e.target.tagName==="INPUT" || e.target.tagName==="TEXTAREA") return;
+    if(e.key===" "){ e.preventDefault(); card.classList.toggle("flipped"); }
+    else if(e.key==="ArrowRight"){ e.preventDefault(); sortCard(true); }
+    else if(e.key==="ArrowLeft"){ e.preventDefault(); sortCard(false); }
+  }, true);
+  return { open(){ menu(); if(!cur && !total) fresh(false); else tally(); } };
+})();
+
+let fcMode = "quiz";
+try{ fcMode = localStorage.getItem("ssat-v2-fcmode") || "quiz"; }catch(e){}
+function setFcMode(m){
+  fcMode = m;
+  try{ localStorage.setItem("ssat-v2-fcmode", m); }catch(e){}
+  document.getElementById("mode-word").setAttribute("aria-pressed", m==="word");
+  document.getElementById("mode-quiz").setAttribute("aria-pressed", m==="quiz");
+  document.getElementById("wc").hidden = m!=="word";
+  document.getElementById("qc").hidden = m!=="quiz";
+  if(m==="word") WC.open(); else { buildDeckMenu(); buildDeck(); }
+}
+document.getElementById("mode-word").addEventListener("click", ()=>setFcMode("word"));
+document.getElementById("mode-quiz").addEventListener("click", ()=>setFcMode("quiz"));
+
 /* =========================================================
    section nav + boot
    ========================================================= */
@@ -4285,7 +4510,7 @@ navBtns.forEach(b=>b.addEventListener("click",()=>{
     x.setAttribute("aria-selected", on);
     document.getElementById(x.getAttribute("aria-controls")).hidden = !on;
   });
-  if(b.dataset.sec==="cards"){ buildDeckMenu(); buildDeck(); }
+  if(b.dataset.sec==="cards") setFcMode(fcMode);
   window.scrollTo({top:0,behavior:"instant"});
 }));
 
