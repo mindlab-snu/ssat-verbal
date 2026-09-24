@@ -507,6 +507,38 @@ body{
 .wc-done .acts{display:flex;flex-direction:column;gap:10px;max-width:320px;margin:0 auto}
 @media (max-width:720px){.wface .w{font-size:32px}.wcard-in{min-height:280px}}
 
+/* multi-select deck picker */
+.mp-hidden{display:none!important}
+.mp-field{display:flex;align-items:center;gap:7px;flex:1 1 300px;min-width:0;color:var(--muted);font-size:13.5px}
+@media (max-width:720px){.mp-field{flex:1 1 100%}}
+.mp{position:relative;flex:1 1 260px;max-width:420px;min-width:0}
+.mp-btn{
+  width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  appearance:none;background:var(--paper);border:1px solid var(--rule);border-radius:6px;
+  font-family:var(--sans);font-size:14px;color:var(--ink);padding:10px 12px;min-height:44px;cursor:pointer;text-align:left;
+}
+.mp-btn span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mp-btn i{font-style:normal;color:var(--muted)}
+.mp-btn[aria-expanded="true"]{border-color:var(--ink)}
+.mp-panel{
+  position:absolute;z-index:30;top:calc(100% + 6px);left:0;right:0;min-width:280px;
+  background:var(--paper);border:1px solid var(--ink);border-radius:10px;box-shadow:0 8px 28px rgba(27,26,23,.16);
+}
+.mp-list{max-height:min(60vh,420px);overflow:auto;padding:6px 0}
+.mp-grp{font-size:10.5px;font-weight:700;letter-spacing:.08em;color:var(--muted);padding:12px 14px 4px;text-transform:uppercase}
+.mp-row{
+  display:flex;align-items:center;gap:8px;width:100%;appearance:none;border:0;background:none;text-align:left;
+  padding:9px 14px 9px 10px;font-family:var(--sans);font-size:14px;color:var(--ink);cursor:pointer;min-height:40px;
+}
+.mp-row .mk{flex:0 0 18px;text-align:center;font-weight:700;color:var(--red)}
+.mp-row:hover{background:#FAF8F4}
+.mp-row.on{background:var(--red-soft);font-weight:600}
+.mp-row.excl{border-bottom:1px solid var(--rule-soft)}
+.mp-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid var(--rule);padding:10px 12px}
+.mp-hint{font-size:12px;color:var(--muted)}
+.mp-foot .btn{min-height:40px}
+@media (max-width:720px){.mp{flex:1 1 100%;max-width:none}.mp-panel{min-width:0}}
+
 /* ---------- print ---------- */
 @media print{
   body{background:#fff;font-size:11pt}
@@ -3364,12 +3396,21 @@ function buildSetMenu(sel, pool, current){
   if(o) html += `<optgroup label="\u2500\u2500 OTHER \u2500\u2500">${o}</optgroup>`;
 
   sel.innerHTML = html;
+  keepMulti(sel, current, v=>applySet(pool, v).length);
   sel.value = [...sel.options].some(x=>x.value===current) ? current : "all";
   sel.classList.toggle("hot", sel.value==="open" || sel.value.startsWith("qw:"));
+  sel.dispatchEvent(new Event("mp-sync"));
   return sel.value;
 }
 function applySet(pool, v){
+  if(v.includes("+")){
+    const seen = new Set(), out = [];
+    v.split("+").forEach(p=>applySet(pool, p).forEach(d=>{ if(!seen.has(d)){ seen.add(d); out.push(d); } }));
+    return out;
+  }
   if(v==="all") return pool.slice();
+  if(v==="syn:all") return pool.filter(d=>!isAna(d));
+  if(v==="ana:all") return pool.filter(d=>isAna(d));
   if(v==="open") return pool.filter(d=>st(d).lw===1);
   if(v==="unlearned") return pool.filter(d=>!isKnown(d));
   if(v==="known") return pool.filter(d=>isKnown(d));
@@ -3418,6 +3459,95 @@ function historyBar(hist, pool, prefix, onReset){
     saveStats(); saveKnown();
     onReset();
   });
+}
+
+
+/* ---- multi-select menus: several entries combined into one set ---- */
+const MP_EXCL = ["all","one"];               // entries that stand alone
+function multiLabel(sel, v){
+  return v.split("+").map(p=>{
+    const o = [...sel.options].find(x=>x.value===p && !x.dataset.multi);
+    return o ? o.textContent.replace(/\s+—\s+.*$/,"").replace(/^[\s ↳]+/,"") : p;
+  }).join(" + ");
+}
+function keepMulti(sel, v, count){
+  [...sel.options].filter(x=>x.dataset.multi).forEach(x=>x.remove());
+  if(!v || !v.includes("+")) return;
+  const parts = v.split("+").filter(p=>[...sel.options].some(x=>x.value===p));
+  if(parts.length < 2) return;
+  const val = parts.join("+");
+  const o = document.createElement("option");
+  o.value = val; o.dataset.multi = "1";
+  o.textContent = multiLabel(sel, val) + " — " + count(val);
+  sel.appendChild(o);
+}
+function MultiPick(sel, count){
+  sel._count = count;
+  sel.classList.add("mp-hidden");
+  const wrap = document.createElement("div"); wrap.className = "mp";
+  const btn = document.createElement("button"); btn.type = "button"; btn.className = "mp-btn";
+  btn.setAttribute("aria-haspopup","listbox"); btn.setAttribute("aria-expanded","false");
+  const panel = document.createElement("div"); panel.className = "mp-panel"; panel.hidden = true;
+  panel.setAttribute("role","listbox"); panel.setAttribute("aria-multiselectable","true");
+  // a <label> would forward every click inside the panel to its first control, so swap it for a span
+  const lab = sel.closest("label");
+  if(lab){ const f = document.createElement("span"); f.className = "mp-field"; while(lab.firstChild) f.appendChild(lab.firstChild); lab.replaceWith(f); }
+  sel.after(wrap); wrap.append(btn, panel);
+  let picked = [];
+
+  function current(){ return sel.value ? sel.value.split("+") : []; }
+  function label(){
+    const o = sel.options[sel.selectedIndex];
+    btn.innerHTML = `<span>${o ? o.textContent : ""}</span><i aria-hidden="true">▾</i>`;
+  }
+  function render(){
+    const row = o => {
+      if(o.dataset.multi) return "";
+      const on = picked.includes(o.value);
+      return `<button type="button" role="option" aria-selected="${on}" class="mp-row${on?" on":""}${MP_EXCL.includes(o.value)?" excl":""}" data-v="${o.value}">` +
+        `<b class="mk" aria-hidden="true">${on?"✓":""}</b><span>${o.textContent}</span></button>`;
+    };
+    let html = "";
+    [...sel.children].forEach(ch=>{
+      if(ch.tagName==="OPTGROUP") html += `<div class="mp-grp">${ch.label.replace(/─/g,"").trim()}</div>` + [...ch.children].map(row).join("");
+      else html += row(ch);
+    });
+    const top = panel.querySelector(".mp-list") ? panel.querySelector(".mp-list").scrollTop : 0;
+    panel.innerHTML = `<div class="mp-list">${html}</div>
+      <div class="mp-foot"><span class="mp-hint">Tap more than one to combine them</span><button type="button" class="btn primary mp-done">Done</button></div>`;
+    panel.querySelector(".mp-list").scrollTop = top;
+  }
+  function apply(){
+    let v = picked.filter(x=>!MP_EXCL.includes(x) || picked.length===1);
+    const val = v.length ? v.join("+") : sel.options[0].value;
+    if(val.includes("+")) keepMulti(sel, val, sel._count);
+    sel.value = val;
+    label();
+    sel.dispatchEvent(new Event("change"));
+  }
+  function open(){ picked = current(); render(); panel.hidden = false; btn.setAttribute("aria-expanded","true"); }
+  function close(){ panel.hidden = true; btn.setAttribute("aria-expanded","false"); }
+  panel.addEventListener("click", e=>{
+    if(e.target.closest(".mp-done")){ close(); return; }
+    const r = e.target.closest(".mp-row"); if(!r) return;
+    const v = r.dataset.v;
+    if(MP_EXCL.includes(v)) picked = [v];
+    else {
+      picked = picked.filter(x=>!MP_EXCL.includes(x));
+      picked = picked.includes(v) ? picked.filter(x=>x!==v) : picked.concat(v);
+      if(!picked.length) picked = [sel.options[0].value];
+    }
+    apply(); render();
+    if(MP_EXCL.includes(v)) close();
+  });
+  btn.addEventListener("click", ()=> panel.hidden ? open() : close());
+  document.addEventListener("click", e=>{ if(!panel.hidden && e.target.isConnected && !wrap.contains(e.target)) close(); });
+  document.addEventListener("keydown", e=>{ if(e.key==="Escape" && !panel.hidden){ close(); btn.focus(); } });
+  new MutationObserver(label).observe(sel, {childList:true, subtree:true});
+  sel.addEventListener("change", label);
+  sel.addEventListener("mp-sync", label);
+  label();
+  return { refresh: label };
 }
 
 /* =========================================================
@@ -3735,7 +3865,9 @@ function buildReadView(){
   });
   html += `<option value="all">All passages \u2014 ${PASSAGES.length} passages, ${READQ} questions</option>`;
   sel.innerHTML = html;
-  sel.value = rView;
+  if(sel._count) keepMulti(sel, rView, sel._count);
+  sel.value = [...sel.options].some(x=>x.value===rView) ? rView : "one";
+  sel.dispatchEvent(new Event("mp-sync"));
 }
 function buildReadPick(){
   const sel = document.getElementById("read-pick");
@@ -3746,9 +3878,11 @@ function buildReadPick(){
   sel.value = pi;
 }
 
-function readList(){
-  if(rView === "all") return PASSAGES.slice();
-  if(rView.startsWith("date:")) return PASSAGES.filter(P=>P.date===rView.slice(5));
+function readList(v){
+  v = v || rView;
+  if(v.includes("+")){ const ks = v.split("+").map(x=>x.slice(5)); return PASSAGES.filter(P=>ks.includes(P.date)); }
+  if(v === "all") return PASSAGES.slice();
+  if(v.startsWith("date:")) return PASSAGES.filter(P=>P.date===v.slice(5));
   return PASSAGES.length ? [PASSAGES[pi]] : [];
 }
 
@@ -3936,9 +4070,11 @@ function buildDeckMenu(){
   if(rep) o += opt("repeat","Repeat misses in the books", rep);
   if(o) html += `<optgroup label="\u2500\u2500 OTHER \u2500\u2500">${o}</optgroup>`;
   deckSel.innerHTML = html;
+  keepMulti(deckSel, deckVal, v=>applySet(DATA, v).length);
   deckSel.value = [...deckSel.options].some(x=>x.value===deckVal) ? deckVal : "syn:all";
   deckVal = deckSel.value;
   deckSel.classList.toggle("hot", deckVal==="open" || deckVal.startsWith("qw:"));
+  deckSel.dispatchEvent(new Event("mp-sync"));
 }
 
 function fcHistory(){
@@ -4500,6 +4636,13 @@ function setFcMode(m){
 document.getElementById("mode-word").addEventListener("click", ()=>setFcMode("word"));
 document.getElementById("mode-quiz").addEventListener("click", ()=>setFcMode("quiz"));
 
+MultiPick(document.getElementById("fc-set"), v=>applySet(DATA, v).length);
+MultiPick(document.getElementById("wc-set"), v=>applySet(SYN, v).length);
+MultiPick(document.getElementById("syn-set"), v=>applySet(SYN, v).length);
+MultiPick(document.getElementById("ana-set"), v=>applySet(ANA, v).length);
+MultiPick(document.getElementById("read-view"), v=>{
+  const ps = readList(v); return ps.length + " passages, " + ps.reduce((n,P)=>n+P.qs.length,0) + " questions";
+});
 /* =========================================================
    section nav + boot
    ========================================================= */
