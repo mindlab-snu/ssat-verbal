@@ -540,6 +540,22 @@ body{
 @media (max-width:720px){.mp{flex:1 1 100%;max-width:none}.mp-panel{min-width:0}}
 
 .ql-count{font-size:13px;color:var(--muted);margin:0 0 8px}
+/* ---------- answer key (print only) ---------- */
+.akey{display:none}
+@media print{
+  .akey{display:block;page-break-before:always;break-before:page;font-family:var(--sans)}
+  .ak-head{font-size:12pt;border-bottom:1pt solid #000;padding-bottom:5pt;margin-bottom:10pt}
+  .ak-head b{font-family:var(--serif);font-size:14pt;color:var(--red)}
+  .ak-body{column-gap:22pt;font-size:9.5pt;line-height:1.55}
+  .akey-syn .ak-body{column-count:4}
+  .akey-ana .ak-body{column-count:2}
+  .akey-read .ak-body{column-count:2}
+  .ak-row{break-inside:avoid}
+  .ak-n{display:inline-block;min-width:2.2em;color:#555}
+  .ak-row b{display:inline-block;min-width:1.2em}
+  .ak-group{break-inside:avoid;margin-bottom:8pt}
+  .ak-title{font-weight:600;margin-bottom:2pt}
+}
 /* ---------- print ---------- */
 @media print{
   body{background:#fff;font-size:11pt}
@@ -1514,7 +1530,350 @@ const DATA = [
 {cat:"func", date:"2026-09-24", t:"an", lv:"IG1 Analogies", pg:"p.34 #45", w:"Miner is to ores as", pos:"worker : the raw material he takes from nature", o:["pickaxe is to rocks", "lumberjack is to trees", "farmer is to plow", "merchant is to goods", "cobbler is to shoes"], a:1, pick:3, ko:"A miner digs out ores, as a lumberjack cuts down trees.",
  tip:"He took (D) merchant is to goods. A merchant only sells what someone else made; a miner <strong>takes the raw material from the ground</strong>, as a lumberjack takes trees from the forest. (E) cobbler makes shoes, so it fails too.", pat:5},
 {cat:"trait", date:"2026-09-24", t:"an", lv:"IG1 Analogies", pg:"p.35 #47", w:"Valor is to heroes as", pos:"defining quality : the people known for it", o:["deception is to liars", "revenge is to villains", "lesson is to teachers", "temperance is to gluttons", "apparition is to ghost"], a:0, pick:4, ko:"Heroes are defined by valor, as liars are defined by deception.",
- tip:"He saw that (D) is reversed &mdash; gluttons lack temperance &mdash; but then took (E) apparition is to ghost, which is two names for the same thing. The stem is <strong>the trait that defines a kind of person</strong>: heroes have valor, liars deceive.", pat:5}
+ tip:"He saw that (D) is reversed &mdash; gluttons lack temperance &mdash; but then took (E) apparition is to ghost, which is two names for the same thing. The stem is <strong>the trait that defines a kind of person</strong>: heroes have valor, liars deceive.", pat:5},
+/* ====== 2026-09-24 · Analogy Practice Questions Part 7 (pp.87–96) ====== */
+{cat:"char", date:"2026-09-24", t:"an", lv:"AP7 Warm-up", pg:"p.87 #6", w:"Bluebird is to fly as", pos:"animal : how it moves", o:["human is to stand", "mute is to talk", "lion is to attack", "otter is to swim", "frog is to amphibian"], a:3, pick:4, ko:"A bluebird gets around by flying, as an otter gets around by swimming.",
+ tip:"He took (E) frog is to amphibian, a <strong>kind-of</strong> pair. The stem pairs an animal with <strong>how it moves</strong>.", pat:5},
+{cat:"func", date:"2026-09-24", t:"an", lv:"AP7 Basic", pg:"p.88 #1", w:"Trim is to hair as prune is to", pos:"cut back : what gets cut", o:["plum", "grass", "fruit", "hedge", "shear"], a:3, pick:2, ko:"You trim hair to tidy it, as you prune a hedge.",
+ tip:"He took (C) fruit — prune the dried plum. Here prune is the <strong>verb: to cut back</strong>, and what you prune is a hedge.", pat:5},
+{cat:"func", date:"2026-09-24", t:"an", lv:"AP7 Basic", pg:"p.88 #4", w:"Hunger is to food as", pos:"a need : the thing that meets it", o:["sadness is to fighting", "thirst is to beverage", "clown is to sick", "tired is to bedtime", "dirty is to clean"], a:1, pick:4, ko:"Hunger is a need that food satisfies, as thirst is a need a beverage satisfies.",
+ tip:"He took (E) dirty is to clean. His note (hunger is solved by eating food) is right, but clean is a state, not a <strong>thing you take in</strong>. Only thirst : beverage matches need : thing.", pat:5},
+{cat:"part", date:"2026-09-24", t:"an", lv:"AP7 Basic", pg:"p.88 #6", w:"Palm is to hand as", pos:"the underside : the body part", o:["shoulder is to arm", "ankle is to leg", "neck is to spine", "sole is to foot", "bone is to tendon"], a:3, pick:2, ko:"The palm is the underside of the hand, as the sole is the underside of the foot.",
+ tip:"He took (C) neck is to spine. His note says the palm is the inner part of the hand — the matching part is the <strong>underside of the foot</strong>, the sole.", pat:5},
+{cat:"place", date:"2026-09-24", t:"an", lv:"AP7 Basic", pg:"p.89 #11", w:"Field is to wheat as", pos:"where it grows : the crop", o:["plant is to carrot", "garden is to cultivate", "soil is to potato", "pasture is to cow", "vine is to trellis"], a:2, pick:3, ko:"Wheat grows in a field, as a potato grows in soil.",
+ tip:"He took (D) pasture is to cow. Cows stand and graze in a pasture, but they don’t <strong>grow out of it</strong>. Only a potato grows in the soil the way wheat grows in a field.", pat:5},
+{cat:"char", date:"2026-09-24", t:"an", lv:"AP7 Basic", pg:"p.89 #12", w:"Chef is to apron as", pos:"worker : protective garment for the job", o:["ballerina is to tiara", "painter is to smock", "lawyer is to suit", "gardener is to glove", "fireman is to protect"], a:1, pick:2, ko:"A chef wears an apron to keep clean at work, as a painter wears a smock.",
+ tip:"He took (C) lawyer is to suit. A suit is dress, not <strong>protection from mess</strong>. An apron and a smock are the same kind of cover-up.", pat:5},
+{cat:"type", date:"2026-09-24", t:"an", lv:"AP7 Basic", pg:"p.89 #16", w:"Mitten is to glove as", pos:"two close items of the same kind", o:["spoon is to fork", "scarf is to hat", "snowball is to tennis ball", "boot is to ankle", "soup is to bread"], a:0, pick:1, ko:"Mittens and gloves are both handwear, as spoons and forks are both utensils.",
+ tip:"He took (B) scarf is to hat. His note says a mitten is a type of glove — it isn’t; they are <strong>siblings in one category</strong> (hand coverings). Spoon and fork are siblings in the same way; a scarf and a hat cover different parts.", pat:5},
+{cat:"func", date:"2026-09-24", t:"an", lv:"AP7 Basic", pg:"p.89 #17", w:"Lion is to zebra as", pos:"predator : prey", o:["whale is to frog", "dog is to pet", "owl is to mouse", "squirrel is to hawk", "wolf is to predator"], a:2, pick:0, ko:"A lion hunts zebras, as an owl hunts mice.",
+ tip:"He took (A) whale is to frog — big animal, small animal, but whales don’t hunt frogs. Test the note he wrote (lion hunts zebras): <strong>owl hunts mice</strong>. (D) is reversed.", pat:5},
+{cat:"func", date:"2026-09-24", t:"an", lv:"AP7 Basic", pg:"p.89 #18", w:"Mechanic is to wrench as", pos:"worker : the tool he uses", o:["spatula is to cook", "nurse is to health", "spinster is to wheel", "tailor is to needle", "carpenter is to wood"], a:3, pick:4, ko:"A mechanic works with a wrench, as a tailor works with a needle.",
+ tip:"He took (E) carpenter is to wood. Wood is the carpenter’s <strong>material</strong>, not his tool. (A) has the right pair but in the wrong order.", pat:5},
+{cat:"func", date:"2026-09-24", t:"an", lv:"AP7 Basic", pg:"p.89 #20", w:"Tape measure is to inches as scale is to", pos:"tool : the unit it reads in", o:["stand", "weight", "pounds", "fish", "metal"], a:2, pick:1, ko:"A tape measure reads in inches, as a scale reads in pounds.",
+ tip:"He took (B) weight. Weight is <strong>what</strong> a scale measures; inches is a <strong>unit</strong>, so the match is the unit pounds.", pat:5},
+{cat:"type", date:"2026-09-24", t:"an", lv:"AP7 Medium", pg:"p.91 #1", w:"Rooster is to hen as", pos:"male : female of one animal", o:["bull is to cow", "trout is to bass", "doe is to deer", "ewe is to lamb", "swan is to cygnet"], a:0, pick:2, ko:"A rooster is the male and a hen the female chicken, as a bull and a cow are male and female cattle.",
+ tip:"He took (C) doe is to deer — female : the whole species. The stem is <strong>male : female</strong>, and only bull : cow keeps that order.", pat:5},
+{cat:"func", date:"2026-09-24", t:"an", lv:"AP7 Medium", pg:"p.92 #11", w:"Optometrist is to dentist as", pos:"the specialists’ body parts, side by side", o:["surgeon is to doctor", "healthy is to sick", "hands are to tongue", "vision is to sight", "eyes are to teeth"], a:4, ko:"An optometrist treats eyes and a dentist treats teeth; the pair eyes : teeth lines up with them.",
+ tip:"(A) surgeon is to doctor is the pull, since all four are medical — but the stem sets two specialists side by side, so the answer sets <strong>what each one treats</strong> side by side.", pat:5},
+{cat:"type", date:"2026-09-24", t:"an", lv:"AP7 Medium", pg:"p.92 #14", w:"Magma is to fluid as", pos:"substance : the state it is in", o:["ice is to water", "helium is to gas", "opaque is to solid", "molten is to frozen", "nitrogen is to oxygen"], a:1, pick:0, ko:"Magma is a fluid, as helium is a gas.",
+ tip:"He took (A) ice is to water — a solid and the same stuff as liquid. The stem names a substance and <strong>its state of matter</strong>; helium is a gas.", pat:5},
+{cat:"degree", date:"2026-09-24", t:"an", lv:"AP7 Medium", pg:"p.92 #16", w:"Walk is to run as", pos:"milder : stronger form", o:["converse is to shout", "cry is to sad", "ponder is to think", "look is to observe", "quarrel is to whisper"], a:0, pick:2, ko:"Running is a stronger walk, as shouting is a stronger way of talking.",
+ tip:"His note (weak → strong) was right, but he took (C) ponder is to think, which goes <strong>strong → weak</strong>: pondering is the deeper thinking. Check the direction as well as the relation.", pat:5},
+{cat:"func", date:"2026-09-24", t:"an", lv:"AP7 Medium", pg:"p.92 #17", w:"Dance is to choreograph as", pos:"the work : the act of creating it", o:["art is to explore", "choir is to solo", "author is to plan", "poem is to ponder", "music is to compose"], a:4, pick:1, ko:"A choreographer creates a dance, as a composer creates music.",
+ tip:"He took (B) choir is to solo, from his note that a dance is a collection of steps. Choreograph is <strong>a verb — to create a dance</strong>; compose is the same for music.", pat:5},
+{cat:"func", date:"2026-09-24", t:"an", lv:"AP7 Medium", pg:"p.92 #18", w:"Pastor is to congregation as teacher is to", pos:"leader : the group he leads", o:["student", "district", "class", "city", "education"], a:2, pick:4, ko:"A pastor leads a congregation, as a teacher leads a class.",
+ tip:"He took (E) education, what a teacher gives. The stem pairs a leader with <strong>the group of people</strong> in front of him.", pat:5},
+{cat:"type", date:"2026-09-24", t:"an", lv:"AP7 Medium", pg:"p.93 #19", w:"Lieutenant is to officer as", pos:"a specific kind : the general class", o:["politician is to businessman", "judge is to juror", "soldier is to army", "physicist is to scientist", "bureaucrat is to technician"], a:3, pick:1, ko:"A lieutenant is one kind of officer, as a physicist is one kind of scientist.",
+ tip:"He took (B) judge is to juror, reading it as rank (higher : lower). A lieutenant is <strong>a type of</strong> officer, not someone ranked against one.", pat:5},
+{cat:"func", date:"2026-09-24", t:"an", lv:"AP7 Medium", pg:"p.93 #20", w:"Axe is to chop as scalpel is to", pos:"tool : its action", o:["write", "peel", "incise", "surgery", "draw"], a:2, pick:1, ko:"An axe is for chopping, as a scalpel is for incising — making a precise cut.",
+ tip:"He took (B) peel. A scalpel cuts <strong>into</strong> skin; incise is the word for that cut. Peel is what a peeler does.", pat:5},
+{cat:"func", date:"2026-09-24", t:"an", lv:"AP7 Medium", pg:"p.93 #30", w:"Biologist is to life as anthropologist is to", pos:"expert : what he studies", o:["society", "species", "archaic", "fossil", "science"], a:0, pick:1, ko:"A biologist studies life, as an anthropologist studies human society.",
+ tip:"He took (B) species, which belongs to biology. <strong>Anthro- means human</strong>: the anthropologist studies people and their societies.", pat:5},
+{cat:"type", date:"2026-09-24", t:"an", lv:"AP7 Medium", pg:"p.94 #32", w:"Kangaroo is to joey as", pos:"adult : its young", o:["goat is to kid", "kitten is to cat", "goose is to gander", "bird is to nest", "puppy is to mature"], a:0, pick:2, ko:"A joey is a young kangaroo, as a kid is a young goat.",
+ tip:"He took (C) goose is to gander — female : male. The stem is <strong>parent : baby</strong>; (B) has it backwards.", pat:5},
+{cat:"type", date:"2026-09-24", t:"an", lv:"AP7 Medium", pg:"p.94 #34", w:"Iguana is to lizard as", pos:"member : its group", o:["bear is to wolf", "goose is to swan", "elk is to hyena", "vole is to rodent", "cat is to panther"], a:3, pick:1, ko:"An iguana is a kind of lizard, as a vole is a kind of rodent.",
+ tip:"He took (B) goose is to swan — two similar birds side by side. The stem is <strong>one kind : its group</strong>; a vole is a small rodent.", pat:5},
+{cat:"part", date:"2026-09-24", t:"an", lv:"AP7 Medium", pg:"p.94 #40", w:"Plumage is to feather as", pos:"the whole covering : what it’s made of", o:["tail is to mammal", "coat is to fur", "scale is to skin", "coat is to shed", "whisker is to nose"], a:1, pick:0, ko:"A bird’s plumage is made of feathers, as an animal’s coat is made of fur.",
+ tip:"He took (A) tail is to mammal. Plumage is the bird’s <strong>whole covering</strong>, made of feathers; coat : fur is the same for mammals.", pat:5},
+{cat:"trait", date:"2026-09-24", t:"an", lv:"AP7 Medium", pg:"p.94 #42", w:"Reveal is to secretive as", pos:"action : the person least likely to do it", o:["unravel is to coil", "support is to buttress", "rethink is to diligent", "annoy is to pacifist", "share is to greedy"], a:4, pick:3, ko:"A secretive person won’t reveal things, as a greedy person won’t share.",
+ tip:"He noted antonym and took (D) annoy is to pacifist. A pacifist avoids <strong>fighting</strong>, not annoying. Greedy people are defined by refusing to share.", pat:5},
+{cat:"place", date:"2026-09-24", t:"an", lv:"AP7 Medium", pg:"p.95 #43", w:"Gallery is to stage as", pos:"where the audience sits : what it watches", o:["deep end is to pool", "bleachers are to field", "entrance is to ballroom", "vestibule is to brownstone", "lectern is to auditorium"], a:1, pick:4, ko:"In a theater the gallery is the seating that looks down on the stage, as bleachers look onto a field.",
+ tip:"He took (E) lectern is to auditorium, reading gallery as an art gallery. Here a gallery is <strong>theater seating</strong>, so the match is seats : what you watch.", pat:5},
+{cat:"func", date:"2026-09-24", t:"an", lv:"AP7 Medium", pg:"p.95 #46", w:"Meteorologist is to weather as", pos:"expert : what he studies", o:["cardiologist is to bones", "dermatologist is to lotion", "writer is to treatise", "geologist is to earth", "zoologist is to study"], a:3, pick:0, ko:"A meteorologist studies weather, as a geologist studies the earth.",
+ tip:"He took (A) cardiologist is to bones. <strong>Cardio- means heart</strong>, not bones, so the pair doesn’t hold.", pat:5},
+{cat:"func", date:"2026-09-24", t:"an", lv:"AP7 Medium", pg:"p.95 #50", w:"Cufflink is to wrist as", pos:"fastener : where it is fastened", o:["boot is to foot", "buckle is to belt", "ring is to jewelry", "vest is to body", "chain is to bracelet"], a:1, pick:3, ko:"A cufflink fastens the cuff at the wrist, as a buckle fastens a belt.",
+ tip:"He took (D) vest is to body — a garment worn on the body. A cufflink is a <strong>fastener</strong>, and buckle is the only fastener here.", pat:5},
+{cat:"type", date:"2026-09-24", t:"an", lv:"AP7 Medium", pg:"p.95 #51", w:"Reservoir is to lake as", pos:"man-made : natural version", o:["canal is to river", "ocean is to sea", "island is to peninsula", "house is to apartment", "tree is to forest"], a:0, pick:1, ko:"A reservoir is a man-made lake, as a canal is a man-made river.",
+ tip:"He took (B) ocean is to sea, two natural bodies of water. The key is <strong>built by people vs formed by nature</strong>.", pat:5},
+{cat:"func", date:"2026-09-24", t:"an", lv:"AP7 Medium", pg:"p.95 #52", w:"Coffee is to brew as", pos:"drink : how it is made", o:["water is to boil", "beer is to hop", "soup is to stir", "tea is to steep", "milk is to curdle"], a:3, pick:2, ko:"Coffee is brewed, as tea is steeped.",
+ tip:"He took (C) soup is to stir. Stirring is a step, not <strong>how the drink is made</strong>; tea is made by steeping.", pat:5},
+{cat:"type", date:"2026-09-24", t:"an", lv:"AP7 Medium", pg:"p.95 #53", w:"Frog is to tortoise as", pos:"their classes", o:["toad is to snail", "lizard is to snake", "amphibian is to reptile", "bird is to reptile", "bird is to lizard"], a:2, pick:3, ko:"A frog is an amphibian and a tortoise is a reptile; the answer names the two classes in order.",
+ tip:"He took (D) bird is to reptile, which gets the second class right but not the first. A frog is an <strong>amphibian</strong>.", pat:5},
+{cat:"part", date:"2026-09-24", t:"an", lv:"AP7 Medium", pg:"p.96 #58", w:"Magpie is to flock as dolphin is to", pos:"animal : name for its group", o:["school", "herd", "colony", "pod", "family"], a:3, pick:1, ko:"Magpies gather in a flock, and dolphins swim in a pod.",
+ tip:"He took (B) herd, which is for cattle and elephants. A group of dolphins (or whales) is a <strong>pod</strong>.", pat:5},
+{cat:"same", date:"2026-09-24", t:"an", lv:"AP7 Difficult", pg:"p.96 #4", w:"Persevere is to quit as", pos:"verb : its opposite", o:["subdue is to control", "unite is to sever", "solicit is to request", "surmise is to tamper", "tenacious is to persistent"], a:1, pick:0, ko:"To persevere is the opposite of to quit, as to unite is the opposite of to sever.",
+ tip:"He wrote antonyms and still took (A) subdue is to control — a <strong>synonym</strong> pair. Once the direction is written down, check each choice against it.", pat:5},
+/* ====== 2026-09-24 · Analogy Practice Part 7, continued (pp.97–105) ====== */
+{cat:"char", date:"2026-09-24", t:"an", lv:"AP7 Difficult", pg:"p.97 #9", w:"Contagious is to spread as", pos:"quality : what it makes likely", o:["tenuous is to break", "continuous is to chase", "repulsive is to stink", "pernicious is to envy", "moronic is to fail"], a:0, pick:2, ko:"Something contagious is likely to spread, as something tenuous is likely to break.",
+ tip:"He took (C) repulsive is to stink — but a stink is what <strong>makes</strong> a thing repulsive, the reverse direction. Contagious describes what a thing is <strong>liable to do</strong>; tenuous things are liable to break.", pat:5},
+{cat:"func", date:"2026-09-24", t:"an", lv:"AP7 Difficult", pg:"p.97 #11", w:"Accountant is to finances as", pos:"professional : what he looks after", o:["scientist is to methodology", "podiatrist is to feet", "professor is to university", "musician is to clarinet", "horticulture is to plants"], a:1, pick:0, ko:"An accountant looks after finances, as a podiatrist looks after feet.",
+ tip:"He took (A) scientist is to methodology — a method, not the thing a scientist tends. The stem is <strong>specialist : the area he cares for</strong>.", pat:5},
+{cat:"trait", date:"2026-09-24", t:"an", lv:"AP7 Difficult", pg:"p.97 #16", w:"Feeble is to strength as", pos:"lacking : what is lacked", o:["meager is to amount", "fortunate is to chance", "staunch is to opinion", "weak is to hardy", "lustrous is to light"], a:0, pick:3, ko:"Feeble means having little strength, as meager means having a small amount.",
+ tip:"He wrote antonyms and took (D) weak is to hardy. But strength is a <strong>noun</strong>: feeble describes <strong>a lack of</strong> strength, as meager describes a lack of amount.", pat:5},
+{cat:"degree", date:"2026-09-24", t:"an", lv:"AP7 Difficult", pg:"p.98 #22", w:"Hurt is to debilitated as", pos:"milder : extreme form", o:["hungry is to satiated", "frail is to solemn", "happy is to ecstatic", "exuberant is to despondent", "fatigued is to tired"], a:2, pick:4, ko:"Debilitated is badly hurt, as ecstatic is extremely happy.",
+ tip:"He took (E) fatigued is to tired — the right kind of pair but in the <strong>wrong order</strong> (strong → mild). The stem goes mild → extreme.", pat:5},
+{cat:"same", date:"2026-09-24", t:"an", lv:"AP7 Difficult", pg:"p.98 #27", w:"Phenomenon is to event as", pos:"near synonyms", o:["lessen is to emphasis", "conviction is to belief", "orate is to speaker", "excerpt is to book", "occurrence is to rare"], a:1, pick:3, ko:"A phenomenon is a kind of event, as a conviction is a firmly held belief.",
+ tip:"He wrote syn but took (D) excerpt is to book — a <strong>part : whole</strong> pair. Only conviction and belief mean nearly the same thing.", pat:5},
+{cat:"char", date:"2026-09-24", t:"an", lv:"AP7 Difficult", pg:"p.98 #28", w:"Nickname is to familiar as", pos:"kind of name : its character", o:["tuxedo is to uptight", "hug is to greeting", "nomenclature is to scientific", "pseudonym is to false", "first name is to usual"], a:3, pick:4, ko:"A nickname is a familiar name, as a pseudonym is a false name.",
+ tip:"He took (E) first name is to usual. A nickname is <strong>defined</strong> by being familiar; a pseudonym is defined by being false. A first name isn’t defined by being usual.", pat:5},
+{cat:"type", date:"2026-09-24", t:"an", lv:"AP7 Difficult", pg:"p.99 #31", w:"Rent is to mortgage as", pos:"paying to use : paying to own", o:["house is to home", "city is to state", "license is to purchase", "continual is to immediate", "requirement is to request"], a:2, pick:3, ko:"Rent pays for use; a mortgage pays toward owning — as a license gives use and a purchase gives ownership.",
+ tip:"He took (D) continual is to immediate. His note (a mortgage is paid bit by bit) was on the right track: the contrast is <strong>using vs owning</strong>, as with license vs purchase.", pat:5},
+{cat:"char", date:"2026-09-24", t:"an", lv:"AP7 Difficult", pg:"p.99 #32", w:"Religion is to pious as", pos:"pursuit : the person devoted to it", o:["education is to studious", "nationality is to proud", "society is to secular", "ambition is to successful", "kinship is to empathetic"], a:0, pick:4, ko:"A pious person is devoted to religion, as a studious person is devoted to education.",
+ tip:"He took (E) kinship is to empathetic. Pious means <strong>devoted to</strong> religion; studious means devoted to study.", pat:5},
+{cat:"func", date:"2026-09-24", t:"an", lv:"AP7 Difficult", pg:"p.99 #37", w:"Microscope is to magnify as", pos:"instrument : what it does", o:["gyroscope is to spin", "stethoscope is to doctor", "phenomenon is to observe", "telescope is to extend", "periscope is to reflect"], a:4, pick:0, ko:"A microscope works by magnifying, as a periscope works by reflecting (with mirrors).",
+ tip:"He took (A) gyroscope is to spin — a gyroscope spins itself; a microscope does something <strong>to the light</strong>. A periscope reflects the image.", pat:5},
+{cat:"same", date:"2026-09-24", t:"an", lv:"AP7 Difficult", pg:"p.99 #39", w:"Roster is to directory as", pos:"two kinds of list", o:["list is to guide", "employees are to employer", "names are to dates", "dial is to telephone", "audition is to callback"], a:0, pick:1, ko:"A roster and a directory are both listings, as a list and a guide both set things out for reference.",
+ tip:"He wrote syn and took (B) employees are to employer — people, not lists. The stem pairs <strong>two similar reference lists</strong>.", pat:5},
+{cat:"part", date:"2026-09-24", t:"an", lv:"AP7 Difficult", pg:"p.100 #44", w:"Symphony is to movement as", pos:"whole : its section", o:["street is to city", "book is to chapter", "anthology is to author", "play is to acting", "song is to album"], a:1, pick:4, ko:"A symphony is made of movements, as a book is made of chapters.",
+ tip:"He took (E) song is to album — part : whole, the <strong>reverse order</strong>. The stem is whole : part.", pat:5},
+{cat:"type", date:"2026-09-24", t:"an", lv:"AP7 Difficult", pg:"p.100 #45", w:"Lute is to banjo as trumpet is to", pos:"two instruments of the same family", o:["clarinet", "tuba", "oboe", "bass", "flute"], a:1, pick:4, ko:"A lute and a banjo are both plucked strings, as a trumpet and a tuba are both brass.",
+ tip:"He took (E) flute — a woodwind. The pairs are <strong>same family</strong>: trumpet and tuba are brass.", pat:5},
+{cat:"part", date:"2026-09-24", t:"an", lv:"AP7 Difficult", pg:"p.100 #46", w:"Car is to train as", pos:"one unit : what it makes up", o:["yacht is to boat", "tier is to cake", "karat is to gold", "gear is to watch", "finger is to hand"], a:1, pick:0, ko:"A car is one section of a train, as a tier is one layer of a cake.",
+ tip:"He took (A) yacht is to boat, from his note that a train is a bigger car. Here car means a <strong>railway car</strong> — one section of the train.", pat:5},
+{cat:"same", date:"2026-09-24", t:"an", lv:"AP7 Difficult", pg:"p.100 #48", w:"Itinerary is to schedule as inventory is to", pos:"near synonyms", o:["catalog", "savings", "resources", "manifest", "minutes"], a:0, pick:2, ko:"An itinerary is a travel schedule, as an inventory is a catalog of goods.",
+ tip:"He took (C) resources — what an inventory lists, not what it <strong>is</strong>. An inventory is a list: a catalog.", pat:5},
+{cat:"type", date:"2026-09-24", t:"an", lv:"AP7 Challenge", pg:"p.101 #3", w:"Apology is to redress as", pos:"making amends in words : in deeds", o:["injury is to insult", "speech is to action", "mistake is to reparation", "sorrow is to lamentation", "subsidy is to nationalization"], a:1, pick:3, ko:"An apology makes amends in words; redress makes amends in action — as speech is to action.",
+ tip:"He took (D) sorrow is to lamentation — a feeling and its outward show. The stem contrasts <strong>words vs deeds</strong>.", pat:5},
+{cat:"same", date:"2026-09-24", t:"an", lv:"AP7 Challenge", pg:"p.101 #4", w:"Allegiance is to animosity as", pos:"opposites", o:["fidelity is to respect", "loyalty is to hatred", "admiration is to adoration", "oath is to pledge", "trust is to denial"], a:1, pick:4, ko:"Allegiance and animosity are opposites, as loyalty and hatred are.",
+ tip:"He took (E) trust is to denial — not true opposites. Allegiance ≈ loyalty and animosity ≈ hatred, so B <strong>mirrors the stem word for word</strong>.", pat:5},
+{cat:"same", date:"2026-09-24", t:"an", lv:"AP7 Challenge", pg:"p.101 #5", w:"Chasm is to gulf as", pos:"synonyms", o:["grotto is to cave", "devour is to nourish", "mesa is to plain", "anomaly is to order", "mountain is to valley"], a:0, pick:4, ko:"A chasm and a gulf are both deep openings, as a grotto and a cave are both hollows.",
+ tip:"He took (E) mountain is to valley, an opposite pair. Chasm and gulf are <strong>synonyms</strong>.", pat:5},
+{cat:"same", date:"2026-09-24", t:"an", lv:"AP7 Challenge", pg:"p.101 #8", w:"Fallow is to uncultivated as", pos:"synonyms", o:["build is to homestead", "farm is to irrigation", "mild is to temperate", "innate is to acquired", "flora is to fauna"], a:2, pick:3, ko:"Fallow land is uncultivated, as mild weather is temperate.",
+ tip:"He took (D) innate is to acquired — antonyms. Fallow <strong>means</strong> left uncultivated, so the stem is a synonym pair.", pat:5},
+{cat:"same", date:"2026-09-24", t:"an", lv:"AP7 Challenge", pg:"p.101 #9", w:"Pale is to wan as", pos:"synonyms", o:["temperate is to extreme", "taut is to tight", "first is to final", "superb is to terrible", "fail is to thrive"], a:1, pick:0, ko:"Pale and wan mean the same, as taut and tight do.",
+ tip:"He took (A) temperate is to extreme — opposites. <strong>Wan means pale</strong>; the stem is synonyms.", pat:5},
+{cat:"same", date:"2026-09-24", t:"an", lv:"AP7 Challenge", pg:"p.101 #10", w:"Celestial is to mundane as", pos:"heavenly : earthly", o:["planet is to sun", "respectful is to awestruck", "delicious is to savory", "sky is to earth", "religious is to reverent"], a:3, pick:4, ko:"Celestial means of the heavens and mundane means of the earth, as sky is to earth.",
+ tip:"He noted antonyms but took (E) religious is to reverent, a synonym pair. <strong>Mundane</strong> literally means earthly — sky : earth.", pat:5},
+{cat:"type", date:"2026-09-24", t:"an", lv:"AP7 Challenge", pg:"p.102 #17", w:"Sympathetic is to feeling as", pos:"sharing : what is shared", o:["observing is to following", "voracious is to eating", "choleric is to ranting", "melancholic is to weeping", "symbiotic is to living"], a:4, pick:2, ko:"Sympathetic means sharing feeling; symbiotic means sharing life (sym- = together).",
+ tip:"He took (C) choleric is to ranting. The key is the root <strong>sym- (together)</strong>: sympathetic is feeling-with, symbiotic is living-with.", pat:5},
+{cat:"same", date:"2026-09-24", t:"an", lv:"AP7 Challenge", pg:"p.102 #22", w:"Enduring is to ephemeral as", pos:"opposites", o:["sculpture is to masterpiece", "sumptuous is to scanty", "momentary is to transitory", "frigid is to aesthetic", "prosaic is to ordinary"], a:1, pick:2, ko:"Enduring and ephemeral are opposites, as sumptuous and scanty are.",
+ tip:"He first wrote synonyms and took (C) momentary is to transitory. <strong>Ephemeral means short-lived</strong>, the opposite of enduring.", pat:5},
+{cat:"same", date:"2026-09-24", t:"an", lv:"AP7 Challenge", pg:"p.103 #28", w:"Genuine is to counterfeit as nuanced is to", pos:"opposites", o:["specific", "obvious", "annoyed", "enjoyable", "affable"], a:1, pick:0, ko:"Genuine is the opposite of counterfeit, as nuanced (subtle) is the opposite of obvious.",
+ tip:"He took (A) specific. <strong>Nuanced means subtle</strong>, so its opposite is obvious.", pat:5},
+{cat:"same", date:"2026-09-24", t:"an", lv:"AP7 Challenge", pg:"p.103 #29", w:"Docile is to pliable as stubborn is to", pos:"near synonyms", o:["rigid", "headstrong", "unrelenting", "stoic", "malleable"], a:0, pick:1, ko:"Docile people are pliable (bend easily); stubborn people are rigid (won’t bend).",
+ tip:"He took (B) headstrong — also a synonym, but the stem pairs a <strong>personality with a physical image</strong> (pliable = bendable). Stubborn’s image is rigid.", pat:5},
+{cat:"type", date:"2026-09-24", t:"an", lv:"AP7 Upper Challenge", pg:"p.103 #1", w:"Quotidian is to annual as", pos:"every day : every year", o:["common is to random", "month is to week", "infrequent is to constant", "official is to unannounced", "day is to year"], a:4, pick:1, ko:"Quotidian means daily, as annual means yearly — day is to year.",
+ tip:"He wrote ?? and took (B) month is to week. <strong>Quotidian means daily</strong> (Latin quotidie).", pat:5},
+{cat:"same", date:"2026-09-24", t:"an", lv:"AP7 Upper Challenge", pg:"p.103 #2", w:"Miserly is to magnanimous as", pos:"opposites", o:["avarice is to greed", "drab is to resplendent", "brave is to heroic", "sunlight is to winter", "generous is to praiseworthy"], a:1, ko:"Miserly and magnanimous (very generous) are opposites, as drab and resplendent are.",
+ tip:"Starred as unsure. <strong>Magnanimous means generous</strong>; resplendent means dazzling — the opposite of drab.", pat:5},
+{cat:"same", date:"2026-09-24", t:"an", lv:"AP7 Upper Challenge", pg:"p.103 #3", w:"Pantheist is to monotheist as", pos:"many : one", o:["polyglot is to monolingual", "religious is to secular", "polygon is to triangle", "lens is to monocle", "idol is to deity"], a:0, pick:2, ko:"A pantheist sees god in all things, a monotheist believes in one god; a polyglot speaks many languages, a monolingual one.",
+ tip:"He took (C) polygon is to triangle. The prefixes carry the relation: <strong>pan-/poly- (all, many) vs mono- (one)</strong>.", pat:5},
+{cat:"part", date:"2026-09-24", t:"an", lv:"AP7 Upper Challenge", pg:"p.103 #5", w:"Frame is to canvas as", pos:"what surrounds : the thing shown", o:["lens is to camera", "television is to screen", "proscenium is to stage", "rectangle is to square", "full is to empty"], a:2, pick:0, ko:"A frame surrounds a canvas, as a proscenium arch frames a stage.",
+ tip:"His note (a frame encases a canvas) was right, but he took (A) lens is to camera. A <strong>proscenium</strong> is the arch that frames a stage.", pat:5},
+{cat:"char", date:"2026-09-24", t:"an", lv:"AP7 Upper Challenge", pg:"p.104 #7", w:"Epistolary is to letter-writing as", pos:"adjective : the activity it relates to", o:["horse is to equestrian", "pedestrian is to dull", "ambulatory is to walking", "revisionist is to editing", "careerist is to employment"], a:2, pick:3, ko:"Epistolary means relating to letter-writing, as ambulatory means relating to walking.",
+ tip:"He took (D) revisionist is to editing. Both words in the answer mean <strong>relating to</strong> an activity; revisionist names a person with a view of history.", pat:5},
+{cat:"trait", date:"2026-09-24", t:"an", lv:"AP7 Upper Challenge", pg:"p.104 #8", w:"Stoic is to passion as", pos:"one without : what is absent", o:["serene is to turmoil", "gratitude is to appreciation", "limp is to movement", "ornery is to annoyance", "sullen is to mood"], a:0, pick:4, ko:"A stoic shows no passion, as someone serene shows no turmoil.",
+ tip:"He took (E) sullen is to mood — a sullen person <strong>has</strong> a mood. The stem is <strong>without</strong>.", pat:5},
+{cat:"same", date:"2026-09-24", t:"an", lv:"AP7 Upper Challenge", pg:"p.104 #9", w:"Moribund is to sprightly as", pos:"opposites", o:["morbid is to ghastly", "blighted is to blessed", "namesake is to benediction", "happy is to ecstatic", "burdened is to wealthy"], a:1, pick:3, ko:"Moribund (dying) is the opposite of sprightly (lively), as blighted is the opposite of blessed.",
+ tip:"He took (D) happy is to ecstatic, a degree pair. <strong>Moribund means near death</strong> — the opposite of sprightly.", pat:5},
+{cat:"func", date:"2026-09-24", t:"an", lv:"AP7 Upper Challenge", pg:"p.104 #10", w:"Severance pay is to dismissal as", pos:"payment : what triggers it", o:["retirement is to pension", "bail is to imprisonment", "fee is to contract", "alimony is to divorce", "donation is to gift"], a:3, pick:1, ko:"Severance pay is owed after a dismissal, as alimony is owed after a divorce.",
+ tip:"He took (B) bail is to imprisonment — bail is paid to <strong>avoid</strong> jail. Severance and alimony are paid <strong>because</strong> something ended.", pat:5},
+{cat:"char", date:"2026-09-24", t:"an", lv:"AP7 Upper Challenge", pg:"p.104 #12", w:"Sepulchral is to crypt as", pos:"adjective : the thing it evokes", o:["shadowy is to landscape", "menial is to boredom", "chromatic is to rainbow", "lament is to funeral", "exuberant is to elder"], a:2, ko:"Sepulchral means like a tomb (crypt), as chromatic means full of color, like a rainbow.",
+ tip:"Starred as unsure. <strong>Sepulchral comes from sepulchre (tomb)</strong>; chromatic comes from chroma (color).", pat:5},
+{cat:"same", date:"2026-09-24", t:"an", lv:"AP7 Upper Challenge", pg:"p.104 #13", w:"Rotund is to corpulent as", pos:"synonyms", o:["sweet is to sour", "master is to acolyte", "tall is to dwarfish", "magnificent is to mediocre", "slender is to slim"], a:4, pick:2, ko:"Rotund and corpulent both mean fat, as slender and slim both mean thin.",
+ tip:"He wrote that rotund is the opposite of corpulent and took (C). <strong>Corpulent means fat</strong> — the same as rotund.", pat:5},
+{cat:"same", date:"2026-09-24", t:"an", lv:"AP7 Upper Challenge", pg:"p.104 #14", w:"Derivative is to original as", pos:"opposites", o:["replica is to inferior", "forgery is to genuine", "excellent is to average", "calculate is to solution", "random is to coincidence"], a:1, pick:4, ko:"Derivative is the opposite of original, as a forgery is the opposite of genuine.",
+ tip:"He wrote syn and took (E) random is to coincidence. <strong>Derivative means copied from something else</strong> — the opposite of original.", pat:5},
+{cat:"same", date:"2026-09-24", t:"an", lv:"AP7 Upper Challenge", pg:"p.104 #15", w:"Temerity is to meekness as", pos:"opposites", o:["ruin is to destruction", "sophistication is to elegance", "meander is to wander", "na\u00efve is to infuriated", "excitement is to calmness"], a:4, pick:1, ko:"Temerity (reckless boldness) is the opposite of meekness, as excitement is the opposite of calmness.",
+ tip:"He noted that temerity describes meekness and took (B) sophistication is to elegance. <strong>Temerity is rash boldness</strong> — the opposite.", pat:5},
+{cat:"func", date:"2026-09-24", t:"an", lv:"AP7 Upper Challenge", pg:"p.104 #17", w:"Conjunction is to clause as", pos:"what joins : what is joined", o:["yoke is to ox", "sentence is to paragraph", "relation is to family", "knot is to commitment", "rope is to chain"], a:0, pick:4, ko:"A conjunction joins clauses, as a yoke joins oxen.",
+ tip:"He wrote syn and took (E) rope is to chain. A conjunction is a <strong>joiner</strong>; a yoke joins two oxen together.", pat:5},
+{cat:"same", date:"2026-09-24", t:"an", lv:"AP7 Upper Challenge", pg:"p.104 #18", w:"Mischievous is to innocent as", pos:"opposites", o:["miscreant is to vandal", "na\u00efve is to blissful", "slovenly is to patriotic", "brave is to craven", "cranky is to inconsolable"], a:3, pick:2, ko:"Mischievous is the opposite of innocent, as brave is the opposite of craven (cowardly).",
+ tip:"He took (C) slovenly is to patriotic. <strong>Craven means cowardly</strong> — the opposite of brave.", pat:5},
+{cat:"same", date:"2026-09-24", t:"an", lv:"AP7 Upper Challenge", pg:"p.105 #19", w:"Preclude is to stimulate as", pos:"opposites", o:["accede is to comply", "prohibit is to promote", "malign is to inhibit", "condemn is to tolerate", "rebuke is to endorse"], a:1, ko:"To preclude (prevent) is the opposite of to stimulate, as prohibit is the opposite of promote.",
+ tip:"Starred as unsure. <strong>Preclude means rule out in advance</strong>; the matching pair of opposites is prohibit : promote.", pat:5},
+{cat:"same", date:"2026-09-24", t:"an", lv:"AP7 Upper Challenge", pg:"p.105 #20", w:"Gratuitous is to immoderate as", pos:"near synonyms", o:["frivolous is to inane", "modest is to arrogant", "ruckus is to rigmarole", "mezzanine is to byzantine", "aesthetic is to utility"], a:0, ko:"Gratuitous (uncalled-for) and immoderate (excessive) are close, as frivolous and inane (silly) are.",
+ tip:"Starred as unsure. <strong>Gratuitous means unnecessary, uncalled-for</strong> — close to immoderate.", pat:5},
+{cat:"same", date:"2026-09-24", t:"an", lv:"AP7 Upper Challenge", pg:"p.105 #21", w:"Renegade is to adherent as", pos:"opposites", o:["frenzy is to equanimity", "pulverize is to deconstruct", "rebel is to traitor", "abscond is to runaway", "frugal is to economical"], a:0, ko:"A renegade abandons a cause; an adherent sticks to it — opposites, as frenzy and equanimity (calm) are.",
+ tip:"Starred as unsure. <strong>Renegade = deserter, adherent = follower</strong>: opposites.", pat:5},
+{cat:"trait", date:"2026-09-24", t:"an", lv:"AP7 Upper Challenge", pg:"p.105 #22", w:"Parallel is to intersect as", pos:"never does", o:["continuous is to waver", "celibate is to wed", "inanimate is to die", "allegorical is to story", "wise is to regret"], a:1, pick:0, ko:"Parallel lines never intersect, as a celibate person never weds.",
+ tip:"His note (parallel never intersects) was exact, but he took (A) continuous is to waver. <strong>Celibate means never marrying</strong>.", pat:5},
+{cat:"degree", date:"2026-09-24", t:"an", lv:"AP7 Upper Challenge", pg:"p.105 #23", w:"Exile is to separation as", pos:"severe form : milder form", o:["clear is to obvious", "vacation is to sojourn", "militant is to army", "remit is to removal", "libel is to insult"], a:4, pick:1, ko:"Exile is a harsh, formal separation, as libel is a serious, written insult.",
+ tip:"He took (B) vacation is to sojourn, near synonyms. Exile is an <strong>extreme kind</strong> of separation; libel is an extreme kind of insult.", pat:5},
+{cat:"same", date:"2026-09-24", t:"an", lv:"AP7 Upper Challenge", pg:"p.105 #25", w:"Obfuscate is to clarify as", pos:"opposites", o:["distort is to enumerate", "complicate is to explain", "confiscate is to allow", "defy is to challenge", "break is to purify"], a:1, pick:2, ko:"To obfuscate (make unclear) is the opposite of to clarify, as to complicate is the opposite of to explain.",
+ tip:"He took (C) confiscate is to allow — by sound, obfuscate/confiscate. <strong>Obfuscate means make confusing</strong>.", pat:5},
+/* ====== 2026-09-28 · The Tutorverse, Verbal synonyms pp.116–123 ====== */
+{cat:"affix", date:"2026-09-28", lv:"TV1 Introductory", pg:"p.116 #2", w:"ILLEGITIMATE", pos:"adjective", o:["illogical", "unauthorized", "sickly", "official", "receptive"], a:1, pick:0, ko:"not allowed by law or the rules",
+ tip:"He took (A) illogical because both start with <em>il-</em>. Here il- simply negates legitimate (lawful), so illegitimate means <strong>unauthorized</strong>.", pat:2},
+{cat:"unknown", date:"2026-09-28", lv:"TV1 Introductory", pg:"p.116 #6", w:"TRANSFER", pos:"verb", o:["squabble", "own", "presume", "give", "require"], a:3, pick:0, ko:"to move or hand something from one person or place to another",
+ tip:"He took (A) squabble, which has no link to the word. Trans- (across) + -fer (carry) means to carry across, or <strong>give</strong> over.", pat:6},
+{cat:"look", date:"2026-09-28", lv:"TV1 Introductory", pg:"p.117 #19", w:"PRECLUDE", pos:"verb", o:["connect to", "confirm", "write on", "consist of", "rule out"], a:4, pick:0, ko:"to prevent from happening; to rule out in advance",
+ tip:"He took (A) connect to, reading preclude as <em>include</em>, as his own margin note says. Pre- (before) + -clude (shut) means to shut out beforehand, so <strong>rule out</strong>. He also missed preclude in the Sep 24 analogy set.", pat:1},
+{cat:"look", date:"2026-09-28", lv:"TV1 Introductory", pg:"p.117 #20", w:"SUBJUGATE", pos:"verb", o:["study", "conquer", "narrate", "teach", "define"], a:1, pick:2, ko:"to bring under control by force",
+ tip:"He took (C) narrate, probably from <em>subject</em>, as in the subject of a story. Sub- (under) + jug (yoke) means to put under the yoke, so <strong>conquer</strong>.", pat:1},
+{cat:"opposite", date:"2026-09-28", lv:"TV1 Introductory", pg:"p.117 #38", w:"EFFECT", pos:"noun", o:["end product", "detail", "reason for", "cause", "affect"], a:0, pick:3, ko:"a result; something produced by a cause",
+ tip:"He took (D) cause, the other end of cause and effect. An effect is the <strong>end product</strong>. Also watch (E) affect, the look-alike verb.", pat:7},
+{cat:"effect", date:"2026-09-28", lv:"TV1 Introductory", pg:"p.118 #42", w:"INFLUENCE", pos:"verb", o:["comfort", "shape", "power", "compliment", "talent"], a:1, pick:2, ko:"to have an effect on how someone or something develops",
+ tip:"He took (C) power. Influence is a kind of power as a noun, but the closest match is the verb sense: to <strong>shape</strong> something.", pat:3},
+{cat:"unknown", date:"2026-09-28", lv:"TV1 Intermediate", pg:"p.118 #4", w:"IRRATIONAL", pos:"adjective", o:["invaluable", "sparse", "valid", "audacious", "preposterous"], a:4, pick:1, ko:"not based on reason; absurd",
+ tip:"He took (B) sparse, which has nothing to do with reason, so preposterous was probably the unknown word. Preposterous means <strong>absurd, against reason</strong>.", pat:6},
+{cat:"affix", date:"2026-09-28", lv:"TV1 Intermediate", pg:"p.119 #7", w:"MONOTONY", pos:"noun", o:["single ownership", "excitement", "lack of variety", "melody", "vast expanse"], a:2, pick:0, ko:"tedious sameness; a lack of variety",
+ tip:"He took (A) single ownership, reading mono- (one) as in monopoly. Mono + tone means one tone: a <strong>lack of variety</strong>.", pat:2},
+{cat:"look", date:"2026-09-28", lv:"TV1 Intermediate", pg:"p.119 #13", w:"PICTURESQUE", pos:"adjective", o:["motionless", "delightful", "imperceptible", "capture", "comical"], a:1, pick:0, ko:"pleasing to look at, like a picture",
+ tip:"He took (A) motionless, thinking of a still picture. Picturesque means <strong>charming, delightful to see</strong>.", pat:1},
+{cat:"look", date:"2026-09-28", lv:"TV1 Intermediate", pg:"p.119 #22", w:"PATERNAL", pos:"adjective", o:["protective", "punishing", "demeaning", "gratuitous", "impatient"], a:0, pick:2, ko:"fatherly; like a caring father",
+ tip:"He took (C) demeaning, probably thinking of <em>patronizing</em> (talking down). Pater means father, so paternal means <strong>fatherly, protective</strong>.", pat:1},
+{cat:"unknown", date:"2026-09-28", lv:"TV1 Intermediate", pg:"p.120 #28", w:"RECIPROCAL", pos:"adjective", o:["singular", "robust", "mutual", "inaccessible", "adverse"], a:2, pick:4, ko:"given and received in return; mutual",
+ tip:"He took (E) adverse. Reciprocal means going both ways, so <strong>mutual</strong>.", pat:6},
+{cat:"look", date:"2026-09-28", lv:"TV1 Intermediate", pg:"p.120 #34", w:"CONCEIVE", pos:"verb", o:["convenient to", "double cross", "agree to", "think up", "renovate"], a:3, pick:2, ko:"to form an idea in the mind",
+ tip:"He took (C) agree to. His notes (perceive, receive, deceive) show he was guessing from -ceive, and agree to is <em>concede</em>. To conceive a plan is to <strong>think it up</strong>.", pat:1},
+{cat:"look", date:"2026-09-28", lv:"TV1 Intermediate", pg:"p.120 #35", w:"DEDUCE", pos:"verb", o:["produce", "figure out", "detract from", "deteriorate", "waive"], a:1, pick:2, ko:"to reach a conclusion by reasoning",
+ tip:"He took (C) detract from, mixing up deduce with <em>deduct</em> (take away). To deduce is to <strong>figure out</strong> by reasoning.", pat:1},
+{cat:"unknown", date:"2026-09-28", lv:"TV1 Intermediate", pg:"p.120 #36", w:"SIGNIFICANCE", pos:"noun", o:["radiance", "substance", "presumption", "triviality", "impudence"], a:1, pick:0, ko:"importance; real weight or meaning",
+ tip:"He took (A) radiance, perhaps reading a sign or signal as something bright. Significance means importance, or <strong>substance</strong>. (D) triviality is its opposite.", pat:6},
+{cat:"effect", date:"2026-09-28", lv:"TV1 Intermediate", pg:"p.120 #42", w:"TENACIOUS", pos:"adjective", o:["resolute", "secure", "tender", "wavering", "starving"], a:0, pick:1, ko:"holding on firmly and refusing to give up",
+ tip:"Second miss (Sep 8: notebook). He took (B) secure. Holding tight is close, but tenacious describes a person’s <strong>determination</strong>, so resolute.", pat:3},
+{cat:"look", date:"2026-09-28", lv:"TV1 Intermediate", pg:"p.120 #46", w:"RESPITE", pos:"noun", o:["relief from", "movement toward", "physique", "hatred of", "havoc"], a:0, pick:3, ko:"a short break from something difficult",
+ tip:"He took (D) hatred of because he heard <em>spite</em> inside re-spite, as his margin note shows. A respite is <strong>relief from</strong> something hard.", pat:1},
+{cat:"look", date:"2026-09-28", lv:"TV1 Intermediate", pg:"p.120 #47", w:"HINDER", pos:"verb", o:["sinister", "kindle", "impede", "rigorous", "authorize"], a:2, pick:1, ko:"to get in the way of; to slow down",
+ tip:"He took (B) kindle, which rhymes with hinder. To hinder is to <strong>impede</strong>.", pat:1},
+{cat:"look", date:"2026-09-28", lv:"TV1 Advanced", pg:"p.121 #2", w:"EXORCISE", pos:"verb", o:["apply", "pray for", "scare", "athletic", "drive out"], a:4, pick:0, ko:"to drive out an evil spirit",
+ tip:"He took (A) apply, reading exorcise as <em>exercise</em>, as his notes show (exercise, execute). To exorcise is to <strong>drive out</strong> a spirit.", pat:1},
+{cat:"look", date:"2026-09-28", lv:"TV1 Advanced", pg:"p.121 #11", w:"ENGENDER", pos:"verb", o:["separate by", "split apart", "seal in", "bring about", "classify as"], a:3, pick:0, ko:"to cause or give rise to",
+ tip:"He took (A) separate by, from <em>gender</em> (sorting by sex), as his note shows. To engender is to <strong>bring about</strong>: distrust engenders fear.", pat:1},
+{cat:"affix", date:"2026-09-28", lv:"TV1 Advanced", pg:"p.121 #16", w:"TRANSCRIBE", pos:"verb", o:["abridge", "copy", "condense", "confound", "apply"], a:1, pick:0, ko:"to write out a copy of spoken or written words",
+ tip:"He took (A) abridge; his note says <em>change writing</em>. Trans + scribe means to write across: make a written <strong>copy</strong>, not a shorter one.", pat:2},
+{cat:"affix", date:"2026-09-28", lv:"TV1 Advanced", pg:"p.121 #17", w:"INSCRIPTION", pos:"noun", o:["established law", "solid stone", "fanciful lyrics", "carved message", "simple explanation"], a:3, pick:0, ko:"words carved or written on a surface",
+ tip:"He took (A) established law, thinking of <em>prescription</em>; his note also says description. In + scribe means writing <strong>on</strong> something, so a carved message.", pat:2},
+{cat:"unknown", date:"2026-09-28", lv:"TV1 Advanced", pg:"p.122 #20", w:"QUANDARY", pos:"noun", o:["unpleasant sensation", "unnavigable swamp", "confused idea", "impossible dilemma", "strong moral"], a:3, pick:1, ko:"a state of uncertainty about what to do",
+ tip:"Second miss (Sep 8: notebook). He took (B) unnavigable swamp, a stuck-in-the-mud image. A quandary is a <strong>dilemma</strong>.", pat:6},
+{cat:"look", date:"2026-09-28", lv:"TV1 Advanced", pg:"p.122 #21", w:"VACILLATE", pos:"verb", o:["eliminate from", "vacuum up", "evoke that", "reflect upon", "waver between"], a:4, pick:1, ko:"to keep changing one’s mind; to waver",
+ tip:"He took (B) vacuum up because both words start with vac-. To vacillate is to <strong>waver</strong> between options.", pat:1},
+{cat:"opposite", date:"2026-09-28", lv:"TV1 Advanced", pg:"p.122 #32", w:"HARANGUE", pos:"verb", o:["make an example of", "pay tribute to", "berate", "fine-tune", "hang from"], a:2, pick:1, ko:"to lecture someone at length in an aggressive way",
+ tip:"He took (B) pay tribute to, which has the opposite tone. A harangue is a long, angry lecture, so to <strong>berate</strong>.", pat:7},
+{cat:"opposite", date:"2026-09-28", lv:"TV1 Advanced", pg:"p.122 #33", w:"REPLETE", pos:"adjective", o:["exhausted", "sated", "partial", "incompetent", "disgruntled"], a:1, pick:2, ko:"filled or well supplied; full",
+ tip:"He took (C) partial after weighing <em>deplete</em> against <em>complete</em>, as his notes show. Replete is on the complete side: full, <strong>sated</strong>.", pat:7},
+{cat:"unknown", date:"2026-09-28", lv:"TV1 Advanced", pg:"p.122 #37", w:"TERSE", pos:"adjective", o:["courageous", "spontaneous", "ardent", "stressed", "brusque"], a:4, pick:2, ko:"brief and abrupt in speech",
+ tip:"He took (C) ardent. Terse means using few words, often curtly, so <strong>brusque</strong>. The answer and the trap are both advanced words.", pat:6},
+{cat:"look", date:"2026-09-28", lv:"TV1 Advanced", pg:"p.123 #40", w:"PONDEROUS", pos:"adjective", o:["contemplate", "pervasive", "scholarly", "tedious", "personable"], a:3, pick:0, ko:"slow and heavy; dull and laborious",
+ tip:"He took (A) contemplate, from <em>ponder</em>. But ponderous comes from Latin <em>pondus</em> (weight) and means heavy, slow, <strong>tedious</strong>. Also, (A) is a verb, while the stem is an adjective.", pat:1},
+{cat:"unknown", date:"2026-09-28", lv:"TV1 Advanced", pg:"p.123 #43", w:"RETICENT", pos:"adjective", o:["candid", "incompatible", "elderly", "taciturn", "primitive"], a:3, pick:1, ko:"not revealing one’s thoughts; reserved",
+ tip:"He took (B) incompatible. Reticent means <strong>quiet and reserved</strong>, so taciturn. (A) candid is the opposite.", pat:6},
+{cat:"unknown", date:"2026-09-28", lv:"TV1 Advanced", pg:"p.123 #45", w:"OBSEQUIOUS", pos:"adjective", o:["subservient", "insulting", "extraordinary", "inopportune", "pretentious"], a:0, pick:3, ko:"too eager to please or obey",
+ tip:"He took (D) inopportune. Obsequious describes someone fawning and <strong>subservient</strong>.", pat:6},
+{cat:"affix", date:"2026-09-28", lv:"TV1 Advanced", pg:"p.123 #46", w:"SUPERCILIOUS", pos:"adjective", o:["instantaneous", "arrogant", "secondary", "desultory", "intricate"], a:1, pick:0, ko:"behaving as if one is better than others",
+ tip:"He took (A) instantaneous, perhaps reading super- as super-fast. Supercilious comes from the raised eyebrow and means <strong>arrogant</strong>.", pat:2},
+{cat:"look", date:"2026-09-28", lv:"TV1 Advanced", pg:"p.123 #47", w:"CHICANERY", pos:"noun", o:["deception", "fashionable", "property", "sweetness", "crazy plan"], a:0, pick:1, ko:"trickery used to deceive",
+ tip:"He took (B) fashionable because he heard <em>chic</em>. Chicanery is <strong>deception</strong>. Also, (B) is an adjective, while the stem is a noun.", pat:1},
+/* ====== 2026-09-28 · The Tutorverse, Verbal analogies pp.125–135 ====== */
+{cat:"same", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.125 Antonyms #6", w:"Merciful is to pitiless as merciless is to", pos:"antonyms", o:["forgiving", "judge", "obedient", "harsh", "pathetic"], a:0, pick:4, ko:"Merciful and pitiless are opposites, so the answer is the opposite of merciless: forgiving.",
+ tip:"He first marked (A), scribbled it out, and took (E) pathetic, which only sounds close to pitiless. The stem pair are <strong>opposites</strong>, and the opposite of merciless is forgiving.", pat:5},
+{cat:"same", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.125 Antonyms #9", w:"Verdant is to barren as candid is to", pos:"antonyms", o:["forthright", "fertile", "restrained", "arable", "friendly"], a:2, pick:3, ko:"Verdant (green and growing) is the opposite of barren; the opposite of candid (open, frank) is restrained.",
+ tip:"He took (D) arable, a farmland word that fits the <em>topic</em> of verdant but not the relation. Candid means frank, and its <strong>opposite</strong> is restrained.", pat:5},
+{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.125 Association #1", w:"Open is to sesame as", pos:"set phrase", o:["sardine is to swordfish", "unicycle is to exquisite", "implore is to defer", "pretty is to please", "reptile is to whale"], a:3, pick:0, ko:"“Open sesame” is a set phrase, as “pretty please” is.",
+ tip:"He took (A) sardine is to swordfish. His note (you open a sesame to eat it) treated sesame as food. In the Association set the pairs are <strong>set phrases</strong>: open sesame, pretty please.", pat:5},
+{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.125 Association #2", w:"Null is to void as", pos:"set phrase", o:["forgive is to forget", "mend is to break", "remember is to photograph", "blame is to accuse", "close is to conclude"], a:0, pick:3, ko:"“Null and void” is a set phrase, as “forgive and forget” is.",
+ tip:"He wrote syn and took (D) blame is to accuse. Null and void do mean nearly the same thing, but here the link is the <strong>fixed phrase</strong> null and void, like forgive and forget.", pat:5},
+{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.126 Association #3", w:"Fun is to games as supply is to", pos:"set phrase", o:["amount", "provide", "carnival", "demand", "enjoyment"], a:3, pick:2, ko:"“Fun and games” is a set phrase, as “supply and demand” is.",
+ tip:"He took (C) carnival, which matches the fun theme. The pairs are <strong>phrases</strong>: fun and games, supply and demand.", pat:5},
+{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.126 Association #4", w:"Under is to weather as bite is to", pos:"idiom", o:["fish", "bullet", "chew", "bitten", "mouth"], a:1, pick:2, ko:"“Under the weather” and “bite the bullet” are idioms.",
+ tip:"He took (C) chew, a meaning link to bite. The stem is an <strong>idiom</strong>: under the weather, bite the bullet.", pat:5},
+{cat:"type", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.126 Association #6", w:"Lamb is to mutton as chicken is to", pos:"animal : name of its meat", o:["coop", "dinner", "egg", "nugget", "poultry"], a:4, pick:3, ko:"Mutton is the meat of sheep, as poultry is the meat of chickens and other birds.",
+ tip:"He took (D) nugget, a food made from chicken. Mutton is the general <strong>name for the meat</strong>, and for chicken that word is poultry.", pat:5},
+{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.126 Association #7", w:"Reference is to obscure as", pos:"common pairing", o:["feline is to dog", "fear is to lion", "alien is to human", "beast is to mythical", "cat is to canine"], a:3, pick:2, ko:"“Obscure reference” and “mythical beast” are common noun + adjective pairings.",
+ tip:"He wrote ant and took (C) alien is to human, looking for opposites. The link is a <strong>common pairing</strong>: an obscure reference, a mythical beast.", pat:5},
+{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.126 Association #8", w:"Walking is to shoe as", pos:"compound noun", o:["spot is to tight", "garbage is to can", "paper is to printer", "handle is to door", "bowl is to cereal"], a:1, pick:2, ko:"A walking shoe and a garbage can are compound names.",
+ tip:"He took (C) paper is to printer, a what-it-uses link. The pairs form <strong>compound nouns</strong>: walking shoe, garbage can.", pat:5},
+{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.126 Association #10", w:"Dagger is to cloak as", pos:"set phrase (reversed)", o:["tape is to rip", "cement is to glue", "sheath is to casing", "weapon is to knife", "mortar is to brick"], a:4, pick:2, ko:"“Cloak and dagger” and “brick and mortar” are set phrases, each given in reverse.",
+ tip:"He took (C) sheath is to casing, thinking of a knife’s cover. The link is the <strong>phrase</strong> cloak and dagger, like brick and mortar.", pat:5},
+{cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.126 Cause-and-Effect #3", w:"Nectar is to flower as", pos:"product : producer", o:["lift is to wing", "bees is to pollen", "sugar is to sweetness", "camera is to security", "seed is to petal"], a:0, pick:4, ko:"A flower produces nectar, as a wing produces lift.",
+ tip:"He took (E) seed is to petal, two flower parts. The stem is <strong>product : producer</strong>, and a wing produces lift.", pat:5},
+{cat:"same", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.126 Cause-and-Effect #5", w:"Speed is to cessation as", pos:"opposite states", o:["vivaciousness is to vitality", "swiftness is to alacrity", "humility is to arrogance", "moisture is to humidity", "velocity is to haste"], a:2, pick:1, ko:"Cessation ends speed; the two are opposite states, like humility and arrogance.",
+ tip:"He took (B) swiftness is to alacrity, a synonym pair. His own note says cessation puts an end to speed, which makes them <strong>opposites</strong>.", pat:5},
+{cat:"trait", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.127 Cause-and-Effect #10", w:"Negligence is to precision as hesitation is to", pos:"lacking : what is lacked", o:["confidence", "courage", "outcomes", "defiance", "certainty"], a:0, pick:4, ko:"Negligence shows a lack of precision; hesitation shows a lack of confidence.",
+ tip:"He took (E) certainty, which is close. Hesitation is a lack of <strong>confidence</strong> in acting, while certainty is about knowing.", pat:5},
+{cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.127 Defining #6", w:"Hair is to barber as", pos:"thing : who removes it", o:["barrier is to impassible", "dam is to levee", "writing is to eraser", "homework is to paper", "hypothermia is to lifejacket"], a:2, pick:1, ko:"A barber removes hair, as an eraser removes writing.",
+ tip:"He took (B) dam is to levee, two similar structures. His note (a barber cuts hair) was right: <strong>thing : what removes it</strong>.", pat:5},
+{cat:"place", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.127 Defining #7", w:"Vegetation is to garden as", pos:"what grows : where", o:["soil is to seed", "flower is to petal", "birch is to tree", "moss is to rock", "fungus is to mushroom"], a:3, pick:4, ko:"Vegetation grows in a garden, as moss grows on a rock.",
+ tip:"He took (E) fungus is to mushroom, a kind-of pair. The stem is <strong>what grows : where it grows</strong>.", pat:5},
+{cat:"degree", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.128 Degree #5", w:"Small is to microscopic as", pos:"milder : extreme", o:["elephant is to elephantine", "space is to occluded", "miniscule is to minutia", "finite is to infinite", "big is to capacious"], a:4, pick:3, ko:"Microscopic is extremely small, as capacious is extremely big.",
+ tip:"He wrote low → high but took (D) finite is to infinite, which are <strong>opposites</strong>, not degrees. Big → capacious keeps one direction.", pat:5},
+{cat:"degree", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.128 Degree (lettered F–J)", w:"Dislike is to detest as", pos:"milder : stronger", o:["empathize is to love", "argument is to agreement", "debase is to criminalize", "like is to adore", "conflict is to fight"], a:3, pick:2, ko:"Detest is a stronger dislike, as adore is a stronger like.",
+ tip:"He took (H) debase is to criminalize. The stem is <strong>mild → strong</strong> of the same feeling: like → adore. The book letters these choices F–J.", pat:5},
+{cat:"degree", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.128 Degree #7", w:"Fib is to lie as difficult is to", pos:"milder : stronger", o:["alleged", "arduous", "overt", "maladroit", "ostentatious"], a:1, pick:2, ko:"A fib is a small lie; arduous is a stronger word for difficult.",
+ tip:"He took (C) overt. The stem is <strong>degree</strong>, and arduous means very difficult.", pat:5},
+{cat:"degree", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.128 Degree #9", w:"Plush is to comfortable as indestructible is to", pos:"extreme : milder", o:["paramount", "viscous", "comfortable", "durable", "temporary"], a:3, pick:0, ko:"Plush is extremely comfortable; indestructible is extremely durable.",
+ tip:"He took (A) paramount. Check the order: the stem goes <strong>strong → mild</strong>, so the answer is the milder word, durable.", pat:5},
+{cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.129 Function/Object #7", w:"Control is to regulator as", pos:"what it gives : what gives it", o:["blessing is to benediction", "praise is to revel", "regress is to advance", "radio is to transmit", "therapist is to calm"], a:0, pick:1, ko:"A regulator provides control, as a benediction gives a blessing.",
+ tip:"He took (B) praise is to revel. (D) and (E) have the right idea but in <strong>reverse order</strong> (thing : action). Blessing : benediction keeps the stem order.", pat:5},
+{cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.129 Function/Object #10", w:"Salve is to relieve as incision is to", pos:"thing : what it does", o:["pinpoint", "exact", "sear", "combine", "separate"], a:4, pick:0, ko:"A salve relieves; an incision separates (cuts apart).",
+ tip:"He took (A) pinpoint, thinking of a precise cut. The stem is <strong>thing : what it does</strong>, and an incision separates tissue.", pat:5},
+{cat:"type", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.129 Grammar #2", w:"Walk is to walks as", pos:"plural verb : singular verb", o:["are is to is", "talks is to talk", "is is to are", "be is to being", "skip is to skipping"], a:0, pick:3, ko:"Walk and walks go with plural and singular subjects (they walk, he walks), as are and is do.",
+ tip:"He took (D) be is to being, a base : -ing pair. Walk → walks is <strong>plural → singular</strong> verb, so are → is. (B) and (C) run backward.", pat:5},
+{cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.130 Individual/Object #6", w:"Soldier is to rifle as", pos:"person : tool", o:["purveyor is to vendor", "bible is to pontiff", "reaper is to sickle", "surrogate is to exception", "submarine is to navy"], a:2, pick:0, ko:"A soldier uses a rifle, as a reaper uses a sickle.",
+ tip:"He took (A) purveyor is to vendor, two words for sellers. The stem is <strong>person : tool</strong>.", pat:5},
+{cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.131 Noun/Verb #10", w:"Validate is to hypothesis as weave is to", pos:"action : its object", o:["garment", "experiment", "laboratory", "factory", "wood"], a:0, pick:4, ko:"You validate a hypothesis; you weave a garment.",
+ tip:"He took (E) wood. His note shows he knew validate means confirm. The link is <strong>action : its object</strong>, and what is woven is a garment.", pat:5},
+{cat:"part", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.131 Part/Whole #1", w:"Act is to play as", pos:"part : whole", o:["chalk is to board", "line is to recite", "stanza is to poem", "diary is to secret", "stage is to actor"], a:2, pick:0, ko:"An act is a section of a play, as a stanza is a section of a poem.",
+ tip:"He read act as the verb (you act in a play) and took (A) chalk is to board. Here act is the noun: <strong>a part of a play</strong>, like a stanza of a poem.", pat:5},
+{cat:"part", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.132 Part/Whole #10", w:"Symbol is to cipher as worker is to", pos:"part : whole", o:["task", "staff", "manage", "weekend", "promotion"], a:1, pick:2, ko:"A symbol is one unit of a cipher; a worker is one member of a staff.",
+ tip:"He took (C) manage, a verb. The stem is <strong>part : whole</strong>, so the answer is the group: staff.", pat:5},
+{cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.132 Purpose/Object #2", w:"Matches is to candle as brush is to", pos:"tool : what it is used on", o:["wax", "detangle", "tidy", "beautiful", "fur"], a:4, pick:0, ko:"Matches are used on a candle; a brush is used on fur.",
+ tip:"He took (A) wax, staying with the candle topic. The link is <strong>tool : what it is used on</strong>.", pat:5},
+{cat:"part", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.134 Whole/Part #3", w:"Jacket is to collar as tooth is to", pos:"whole : part", o:["dentist", "fluoride", "decay", "brush", "enamel"], a:4, pick:1, ko:"A collar is part of a jacket; enamel is part of a tooth.",
+ tip:"He took (B) fluoride, something added to teeth. The stem is <strong>whole : part</strong>.", pat:5},
+{cat:"part", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.134 Whole/Part #5", w:"Week is to day as", pos:"whole : part", o:["work is to play", "stag is to antler", "ash is to fireplace", "holiday is to vacation", "Saturday is to weekend"], a:1, pick:3, ko:"A day is part of a week, as an antler is part of a stag.",
+ tip:"He took (D) holiday is to vacation, near synonyms. The stem is <strong>whole : part</strong>. (E) is part : whole, the reverse.", pat:5},
+{cat:"part", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.134 Whole/Part #7", w:"Month is to week as school is to", pos:"whole : part", o:["bus", "grade", "district", "classroom", "curriculum"], a:3, pick:1, ko:"A week is part of a month; a classroom is part of a school.",
+ tip:"He took (B) grade. The answer must be a <strong>part inside</strong> the school, as a week is a unit inside a month.", pat:5},
+{cat:"part", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.134 Whole/Part #8", w:"Cheese is to rind as avocado is to", pos:"whole : part", o:["pit", "plant", "ferment", "vegetable", "seedling"], a:0, pick:2, ko:"A rind is part of cheese; a pit is part of an avocado.",
+ tip:"He took (C) ferment, thinking of how cheese is made. The link is <strong>whole : part</strong>.", pat:5},
+{cat:"same", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.134 Synonym #1", w:"Precede is to lead as", pos:"synonyms", o:["flaunt is to gaunt", "exceed is to limit", "dissolve is to solidify", "deflect is to absorb", "forgo is to decline"], a:4, pick:0, ko:"Precede and lead mean nearly the same, as forgo and decline do.",
+ tip:"He took (A) flaunt is to gaunt, a rhyming pair. The link is <strong>synonyms</strong>.", pat:5},
+{cat:"same", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.135 Synonym #8", w:"Cursory is to perfunctory as infallible is to", pos:"synonyms", o:["flawed", "everlasting", "detailed", "ceaseless", "perfect"], a:4, pick:3, ko:"Cursory and perfunctory are synonyms (quick and careless); infallible means perfect, never wrong.",
+ tip:"He took (D) ceaseless, perhaps from in-fall (never falling). Infallible means <strong>never wrong</strong>: perfect. He also missed perfunctory on Sep 20 and Sep 23.", pat:5},
+{cat:"same", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.135 Synonym #9", w:"Wane is to diminish as", pos:"synonyms", o:["edify is to edifice", "espouse is to marry", "accomplish is to accomplice", "circulate is to conceal", "relate is to understand"], a:1, pick:0, ko:"Wane and diminish are synonyms, as espouse and marry are.",
+ tip:"He took (A) edify is to edifice, a look-alike pair. The link is <strong>synonyms</strong>: espouse means marry.", pat:5},
+{cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.135 Mixed 1 #4", w:"Set is to placemat as", pos:"action : what it is done to", o:["dish is to wash", "feast is to banquet", "agenda is to plan", "surprise is to celebration", "schedule is to meeting"], a:4, pick:3, ko:"You set down a placemat, as you schedule a meeting (action : its object).",
+ tip:"He took (D) surprise is to celebration. His note (you set an item on a placemat) is close; the link is <strong>action : what it is done to</strong>, as in schedule : meeting.", pat:5},
+/* ====== 2026-09-28 · The Tutorverse, analogies Mixed 1–10 pp.136–145 ====== */
+{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.136 Mixed 1 #7", w:"Theoretical is to physics as", pos:"set phrase", o:["green is to color", "mad is to scientist", "hypothesis is to belief", "helmet is to visor", "experiment is to research"], a:1, pick:2, ko:"“Theoretical physics” and “mad scientist” are fixed adjective + noun phrases.",
+ tip:"He took (C) hypothesis is to belief, staying with the science topic. The link is a <strong>fixed phrase</strong>: theoretical physics, mad scientist.", pat:5},
+{cat:"same", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.136 Mixed 1 #13", w:"Exemplary is to admirable as immutable is to", pos:"synonyms", o:["booming", "fluctuating", "permanent", "marvelous", "flawless"], a:2, pick:0, ko:"Exemplary and admirable are near synonyms; immutable (unchangeable) means permanent.",
+ tip:"He wrote syn but took (A) booming, which suggests he did not know immutable. Im- (not) + mutable (changeable) = <strong>permanent</strong>.", pat:5},
+{cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.136 Mixed 2 #1", w:"Broom is to sweep as dynamite is to", pos:"tool : what it does", o:["create", "explode", "stick", "danger", "fuse"], a:1, pick:4, ko:"A broom is used to sweep; dynamite is used to explode (blast).",
+ tip:"He wrote <em>broom is used to sweep</em> but took (E) fuse, a part of dynamite. The stem needs <strong>what it does</strong>: explode.", pat:5},
+{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.137 Mixed 2 #10", w:"Havoc is to wreak as amok is to", pos:"set phrase (reversed)", o:["run", "place", "sow", "terror", "rampage"], a:0, pick:4, ko:"“Wreak havoc” and “run amok” are fixed verb + noun phrases.",
+ tip:"He took (E) rampage, which means the same as running amok. But the stem is a <strong>set phrase</strong>: you wreak havoc and run amok.", pat:5},
+{cat:"type", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.137 Mixed 2 #13", w:"Sworn is to swore as taken is to", pos:"past participle : past tense", o:["take", "takes", "took", "taking", "swearing"], a:2, pick:0, ko:"Sworn is the past participle and swore the past tense; taken → took.",
+ tip:"He wrote <em>past → present</em> and took (A) take. Both stem words are past forms: <strong>past participle → simple past</strong>, so taken → took.", pat:5},
+{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.137 Mixed 3 #2", w:"Bottomless is to abyss as", pos:"set phrase (reversed)", o:["aluminum is to foil", "endless is to limited", "cavern is to explore", "plastic is to recycle", "fragrant is to foul"], a:0, pick:4, ko:"“Bottomless abyss” and “aluminum foil” are fixed adjective + noun phrases.",
+ tip:"He took (E) fragrant is to foul, an opposite pair, though bottomless and abyss are <strong>not opposites</strong>. The link is the phrase bottomless abyss, like aluminum foil.", pat:5},
+{cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.138 Mixed 3 #6", w:"Synopsis is to summarize as blanket is to", pos:"thing : what it does", o:["rug", "abridge", "recreate", "weave", "warm"], a:4, pick:2, ko:"A synopsis summarizes; a blanket warms.",
+ tip:"He took (C) recreate. His note (a synopsis summarizes a longer story) is right; apply the same test: <strong>what does a blanket do?</strong> It warms.", pat:5},
+{cat:"same", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.138 Mixed 3 #11", w:"Toxin is to poison as pinnacle is to", pos:"synonyms", o:["pedestal", "venom", "slope", "side", "summit"], a:4, pick:1, ko:"Toxin and poison are synonyms; pinnacle and summit are synonyms.",
+ tip:"He took (B) venom, which matches toxin and poison in <strong>topic</strong>. The stem is a synonym pair, and pinnacle means summit.", pat:5},
+{cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.138 Mixed 3 #14", w:"Collect is to memento as peruse is to", pos:"action : its object", o:["organize", "reuse", "recycle", "report", "underline"], a:3, pick:4, ko:"You collect a memento; you peruse (read) a report.",
+ tip:"He took (E) underline, a verb. The answer must be <strong>the thing acted on</strong>, a noun: you peruse a report. He has missed PERUSE twice before (Sep 5, Sep 8).", pat:5},
+{cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.139 Mixed 4 #7", w:"Fence is to separate as plunger is to", pos:"tool : what it does", o:["soak", "free", "equipment", "plumber", "bathroom"], a:1, pick:0, ko:"A fence separates; a plunger frees (unclogs) a drain.",
+ tip:"He took (A) soak, which is about water, not what a plunger <strong>does</strong>. A plunger frees a blocked drain.", pat:5},
+{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.139 Mixed 4 #10", w:"Prim is to proper as", pos:"set phrase", o:["front is to center", "reprehensible is to shameful", "pamper is to pander", "etiquette is to propriety", "manners is to behavior"], a:0, pick:2, ko:"“Prim and proper” and “front and center” are fixed paired phrases.",
+ tip:"He took (C) pamper is to pander, a look-alike pair. Say the stem aloud: <strong>prim and proper</strong>, like front and center.", pat:5},
+{cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.139 Mixed 4 #12", w:"Appellation is to identify as", pos:"thing : its purpose", o:["classification is to dispose", "cessation is to continue", "intermission is to interval", "communication is to transmission", "respite is to recover"], a:4, pick:1, ko:"An appellation (a name) serves to identify; a respite (a rest) serves to recover.",
+ tip:"He took (B) cessation is to continue, an opposite pair. An appellation is <strong>used to</strong> identify, as a respite is used to recover.", pat:5},
+{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.140 Mixed 5 #14", w:"Beck is to call as bread is to", pos:"set phrase", o:["spoon", "butter", "smile", "shake", "pepper"], a:1, pick:3, ko:"“Beck and call” and “bread and butter” are fixed paired phrases.",
+ tip:"He took (D) shake. It is a <strong>set phrase</strong>: beck and call, bread and butter.", pat:5},
+{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.140 Mixed 6 #2", w:"Rank is to file as cut is to", pos:"set phrase", o:["snip", "glue", "scissor", "paste", "cabinet"], a:3, pick:4, ko:"“Rank and file” and “cut and paste” are fixed paired phrases.",
+ tip:"He took (E) cabinet, reading file as a filing cabinet. It is a <strong>phrase</strong>: rank and file, cut and paste.", pat:5},
+{cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.140 Mixed 6 #3", w:"Flame is to wax as heat is to", pos:"cause : what it melts", o:["beach", "desert", "arctic", "freezer", "chocolate"], a:4, pick:1, ko:"A flame melts wax; heat melts chocolate.",
+ tip:"He wrote <em>wax causes flame</em>, the reverse. A flame acts <strong>on</strong> wax and melts it, as heat melts chocolate. (B) desert is just a hot place.", pat:5},
+{cat:"part", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.141 Mixed 6 #10", w:"Menu is to entrée as pie is to", pos:"whole : part", o:["flaky", "baked", "dessert", "crust", "oven"], a:3, pick:2, ko:"An entrée is part of a menu; a crust is part of a pie.",
+ tip:"He took (C) dessert, what a pie <strong>is</strong>. The stem is whole : part, so the answer is a part of a pie.", pat:5},
+{cat:"same", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.141 Mixed 6 #11", w:"Deviate is to veer as transpire is to", pos:"synonyms", o:["sweat", "point", "transfer", "happen", "transport"], a:3, pick:2, ko:"Deviate and veer are synonyms; transpire means happen.",
+ tip:"He wrote syn but took (C) transfer, pulled by trans-. Transpire means <strong>happen</strong>.", pat:5},
+{cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.141 Mixed 6 #12", w:"Exercise is to frailty as", pos:"remedy : what it overcomes", o:["blanket is to mattress", "workout is to physique", "sleep is to fatigue", "dream is to nightmare", "weakness is to feebleness"], a:2, pick:3, ko:"Exercise overcomes frailty, as sleep overcomes fatigue.",
+ tip:"He took (D) dream is to nightmare. His note (frailty is not the goal of exercise) is right: exercise <strong>cures</strong> frailty, as sleep cures fatigue.", pat:5},
+{cat:"degree", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.141 Mixed 6 #14", w:"Think is to ruminate as", pos:"milder : more intense", o:["confirm is to demystify", "ponder is to decide", "fire is to conflagration", "wonder is to debunk", "question is to believe"], a:2, pick:1, ko:"To ruminate is to think deeply; a conflagration is a huge fire.",
+ tip:"He wrote <em>→ intense</em> but took (B) ponder is to decide, a sequence. Only fire → conflagration is <strong>the same thing, more intense</strong>.", pat:5},
+{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.141 Mixed 7 #2", w:"Hearty is to hale as salad is to", pos:"set phrase (reversed)", o:["meal", "soup", "appetizer", "cucumber", "vegetable"], a:1, pick:4, ko:"“Hale and hearty” and “soup and salad” are fixed paired phrases.",
+ tip:"He took (E) vegetable, what a salad is made of. It is a <strong>phrase</strong>: hale and hearty, soup and salad.", pat:5},
+{cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.141 Mixed 7 #4", w:"Excuse is to mistake as lie is to", pos:"covers up : what is covered", o:["fib", "liar", "plea", "truth", "explain"], a:3, pick:2, ko:"An excuse covers a mistake; a lie covers the truth.",
+ tip:"He took (C) plea, similar to an excuse. The stem is <strong>what hides : what is hidden</strong>; a lie hides the truth.", pat:5},
+{cat:"same", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.142 Mixed 7 #13", w:"Confide is to reveal as perceive is to", pos:"synonyms", o:["receive", "deceive", "offer", "detect", "confess"], a:3, pick:0, ko:"Confide and reveal are near synonyms; perceive means detect.",
+ tip:"He wrote syn but took (A) receive, a <em>-ceive</em> look-alike. Perceive means to <strong>detect</strong>. The same -ceive trap caught CONCEIVE on Sep 28.", pat:5},
+{cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.142 Mixed 8 #4", w:"Instructor is to curriculum as baker is to", pos:"worker : what he works from", o:["pie", "dessert", "flour", "contest", "chef"], a:2, pick:1, ko:"An instructor works from a curriculum; a baker works from flour.",
+ tip:"He took (B) dessert, what a baker <strong>produces</strong>. A curriculum is what an instructor works with, so the match is the baker’s material.", pat:5},
+{cat:"same", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.143 Mixed 8 #13", w:"Bizarre is to strange as steadfast is to", pos:"synonyms", o:["irresolute", "strenuous", "aberrant", "protective", "dependable"], a:4, pick:1, ko:"Bizarre and strange are synonyms; steadfast means dependable.",
+ tip:"He wrote syn but took (B) strenuous, perhaps from <em>stead-</em> sounding sturdy. Steadfast means firm and <strong>dependable</strong>.", pat:5},
+{cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.143 Mixed 9 #3", w:"Curator is to art as composer is to", pos:"person : what he works with", o:["harmonize", "notes", "atmosphere", "sing", "orchestral"], a:1, pick:4, ko:"A curator works with art; a composer works with notes.",
+ tip:"He took (E) orchestral, an adjective. The answer must be <strong>a noun</strong> for what a composer works with: notes.", pat:5},
+{cat:"same", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.144 Mixed 9 #14", w:"Specific is to vague as", pos:"antonyms", o:["transitory is to provisional", "nebulous is to indefinite", "indelible is to erasable", "ineffaceable is to enduring", "precise is to unambiguous"], a:2, pick:0, ko:"Specific and vague are opposites, as indelible and erasable are.",
+ tip:"He took (A) transitory is to provisional, which are near synonyms. The stem pair are <strong>opposites</strong>: indelible (cannot be erased) vs erasable.", pat:5},
+{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.144 Mixed 10 #1", w:"Immemorial is to time as wrought is to", pos:"set phrase (reversed)", o:["decorated", "iron", "road", "rope", "intended"], a:1, pick:2, ko:"“Time immemorial” and “wrought iron” are fixed phrases.",
+ tip:"He took (C) road. It is a <strong>set phrase</strong>: time immemorial, wrought iron.", pat:5},
+{cat:"type", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.145 Mixed 10 #10", w:"Facsimile is to manuscript as clone is to", pos:"copy : original", o:["replica", "person", "duplicate", "imitation", "twin"], a:1, pick:0, ko:"A facsimile is an exact copy of a manuscript; a clone is an exact copy of a person (or organism).",
+ tip:"He took (A) replica, another word for a copy. The stem is <strong>copy : what it copies</strong>, so the answer is the original: person.", pat:5}
 ];
 /* Each passage: lines are the book's own lines, so the line numbers in the
    questions point at the right place. A blank string starts a new paragraph. */
@@ -3303,7 +3662,8 @@ const DATES = [
   {key:"2026-09-19", label:"Sep 19, 2026", note:"Practice Test 1"},
   {key:"2026-09-20", label:"Sep 20, 2026", note:"Upper Level Practice Test 1"},
   {key:"2026-09-23", label:"Sep 23, 2026", note:"Practice Test 2 + Upper Level PT1"},
-  {key:"2026-09-24", label:"Sep 24, 2026", note:"Ivy Global Upper Level Test 1"}
+  {key:"2026-09-24", label:"Sep 24, 2026", note:"Ivy Global UL Test 1 + Analogy practice"},
+  {key:"2026-09-28", label:"Sep 28, 2026", note:"The Tutorverse"}
 ];
 const LEVELS = [
   {key:"Basic", ko:"Basic"},
@@ -3320,8 +3680,18 @@ const LEVELS = [
   {key:"ULT1 Analogies", ko:"Upper Level Practice Test 1"},
   {key:"IG1 Synonyms", ko:"Ivy Global Upper Level Test 1"},
   {key:"IG1 Analogies", ko:"Ivy Global Upper Level Test 1"},
+  {key:"AP7 Warm-up", ko:"Analogy Practice · Warm-up"},
+  {key:"AP7 Basic", ko:"Analogy Practice · Basic"},
+  {key:"AP7 Medium", ko:"Analogy Practice · Medium"},
+  {key:"AP7 Difficult", ko:"Analogy Practice · Difficult"},
+  {key:"AP7 Challenge", ko:"Analogy Practice · Challenge"},
+  {key:"AP7 Upper Challenge", ko:"Analogy Practice · Upper-Level Challenge"},
   {key:"PT2 Synonyms", ko:"Practice Test 2"},
-  {key:"PT2 Analogies", ko:"Practice Test 2"}
+  {key:"PT2 Analogies", ko:"Practice Test 2"},
+  {key:"TV1 Introductory", ko:"The Tutorverse · Introductory"},
+  {key:"TV1 Intermediate", ko:"The Tutorverse · Intermediate"},
+  {key:"TV1 Advanced", ko:"The Tutorverse · Advanced"},
+  {key:"TV1 Analogies", ko:"The Tutorverse · Analogies"}
 ];
 const isAna = d => d.t === "an";
 const SYN = DATA.filter(d=>!isAna(d));
@@ -3366,7 +3736,14 @@ function buildSetMenu(sel, pool, current){
   let byDate = "";
   DATES.forEach(D=>{
     const n = pool.filter(d=>d.date===D.key).length;
-    if(n) byDate += opt("date:"+D.key, D.label + " \u00b7 " + D.note, n);
+    if(!n) return;
+    const srcs = sessionSrcs(pool, D.key);
+    // name the session by what is actually in this pool (e.g. no "Analogy practice" in the Synonyms menu)
+    const note = sessionSrcs(DATA, D.key).length > srcs.length ? srcs.map(srcName).join(" + ") : D.note;
+    byDate += opt("date:"+D.key, D.label + " \u00b7 " + note, n);
+    if(srcs.length > 1) srcs.forEach(k=>{
+      byDate += opt("date:"+D.key+"@"+k, "\u2003\u21b3 " + srcName(k), pool.filter(d=>d.date===D.key && srcOf(d)===k).length);
+    });
   });
   if(byDate) html += `<optgroup label="\u2500\u2500 BY SESSION \u2500\u2500">${byDate}</optgroup>`;
 
@@ -3404,6 +3781,17 @@ function buildSetMenu(sel, pool, current){
   sel.dispatchEvent(new Event("mp-sync"));
   return sel.value;
 }
+
+/* ---- sources within one session (two tests on the same day) ---- */
+function srcOf(d){ const k = (d.lv||"").split(" ")[0]; return /^[A-Z]+\d+$/.test(k) ? k : "book"; }
+function srcName(k){
+  const L = LEVELS.find(x=>x.key.split(" ")[0]===k);
+  return L ? L.ko.split(" · ")[0] : k;
+}
+function sessionSrcs(pool, key){ return [...new Set(pool.filter(d=>d.date===key).map(srcOf))]; }
+function pSrc(P){ return P.id.split("-")[0]; }
+function pSrcName(P){ return P.src.split(" · ")[0].replace(/^한세희의 SSAT /,"Han Sehee "); }
+
 function applySet(pool, v){
   if(v.includes("+")){
     const seen = new Set(), out = [];
@@ -3419,8 +3807,9 @@ function applySet(pool, v){
   if(v==="repeat") return pool.filter(d=>bookMisses(d)>1);
   if(v.startsWith("qw:")){ const n=+v.slice(3); return pool.filter(d=>st(d).w>=n); }
   if(v.startsWith("date:")){
-    const [k,t] = v.slice(5).split("|");
-    return pool.filter(d=>d.date===k && (!t || (t==="ana") === isAna(d)));
+    const [ks,t] = v.slice(5).split("|");
+    const [k,src] = ks.split("@");
+    return pool.filter(d=>d.date===k && (!src || srcOf(d)===src) && (!t || (t==="ana") === isAna(d)));
   }
   if(v.startsWith("lv:")) return pool.filter(d=>d.lv===v.slice(3));
   return pool.slice();
@@ -3616,7 +4005,7 @@ function Board(id, pool){
       const rep = bookMisses(d)>1 ? `<span class="badge">missed \u00d7${bookMisses(d)} in the books</span>` : "";
       const s = st(d);
       const qb = s.a ? `<span class="badge soft">quiz ${s.w}\u2717 / ${s.a}</span>` : "";
-      return `<div class="qz${an?" an":""}${isKnown(d)?" is-known":""}" id="${id}-q${qi}">
+      return `<div class="qz${an?" an":""}${isKnown(d)?" is-known":""}" id="${id}-q${qi}" data-a="${d.a}">
         <div class="stem"><span class="num">${qi+1}.</span>${d.w}${an?"":":"}${rep}${qb}<button class="kbtn${isKnown(d)?" on":""}" data-k="${qi}" aria-pressed="${isKnown(d)}" title="Mark as known">${isKnown(d)?"\u2713 Known":"Known?"}</button></div>
         <div class="opts">` +
         d.o.map((t,oi)=>`<button class="opt" data-q="${qi}" data-o="${oi}"><span class="lt">(${LT[oi]})</span>${t}</button>`).join("") +
@@ -3779,8 +4168,40 @@ function setPrintHead(sec, withAnswers, extra){
     `printed ${fmtDate(new Date())}</div>` +
     (sec==="syn"||sec==="ana"||sec==="read" ? `<div class="ph-score">Name ________________ &nbsp; Score ______ / ${n || "__"}</div>` : "");
 }
+function buildAnswerKey(sec){
+  const panel = document.getElementById("sec-" + sec);
+  if(!panel) return null;
+  const esc = t => t.replace(/<[^>]*>/g,"");
+  const row = q => {
+    const a = +q.dataset.a;
+    const num = q.querySelector(".num").textContent;
+    const opt = q.querySelectorAll(".opt")[a];
+    const txt = opt ? esc(opt.innerHTML.replace(/<span class="lt">.*?<\/span>/,"")) : "";
+    return `<div class="ak-row"><span class="ak-n">${num}</span><b>${LT[a]}</b> ${txt}</div>`;
+  };
+  let body = "";
+  if(sec==="read"){
+    body = [...panel.querySelectorAll(".psec")].map(ps=>{
+      const qs = [...ps.querySelectorAll(".qz[data-a]")];
+      if(!qs.length) return "";
+      return `<div class="ak-group"><div class="ak-title">${ps.querySelector("h3").textContent}</div>${qs.map(row).join("")}</div>`;
+    }).join("");
+  } else {
+    const qs = [...panel.querySelectorAll(".board .qz[data-a]")];
+    body = qs.map(row).join("");
+  }
+  if(!body) return null;
+  const kind = sec==="read" ? setLabel(document.getElementById("read-view")) : setLabel(document.getElementById(sec + "-set"));
+  const el = document.createElement("div");
+  el.className = "akey akey-" + sec;
+  el.innerHTML = `<div class="ak-head"><b>Answer key</b> \u00b7 ${SECNAME[sec]} \u00b7 ${kind}</div><div class="ak-body">${body}</div>`;
+  panel.appendChild(el);
+  return el;
+}
 function printSection(sec, withAnswers, extra){
   setPrintHead(sec, withAnswers, extra);
+  document.querySelectorAll(".akey").forEach(x=>x.remove());
+  const key = (!withAnswers && (sec==="syn"||sec==="ana"||sec==="read")) ? buildAnswerKey(sec) : null;
   document.body.dataset.print = sec;
   if(withAnswers) document.body.dataset.printAnswers = "1";
   else delete document.body.dataset.printAnswers;
@@ -3788,6 +4209,7 @@ function printSection(sec, withAnswers, extra){
   setTimeout(()=>{
     delete document.body.dataset.print;
     delete document.body.dataset.printAnswers;
+    if(key) key.remove();
   }, 600);
 }
 
@@ -3864,6 +4286,11 @@ function buildReadView(){
     const ps = PASSAGES.filter(P=>P.date===D.key);
     const qn = ps.reduce((n,P)=>n+P.qs.length,0);
     html += `<option value="date:${D.key}">${D.label} \u2014 ${ps.length} passages, ${qn} questions</option>`;
+    const srcs = [...new Set(ps.map(pSrc))];
+    if(srcs.length > 1) srcs.forEach(k=>{
+      const g = ps.filter(P=>pSrc(P)===k);
+      html += `<option value="date:${D.key}@${k}">\u2003\u21b3 ${pSrcName(g[0])} \u2014 ${g.length} passages, ${g.reduce((n,P)=>n+P.qs.length,0)} questions</option>`;
+    });
   });
   html += `<option value="all">All passages \u2014 ${PASSAGES.length} passages, ${READQ} questions</option>`;
   sel.innerHTML = html;
@@ -3882,9 +4309,9 @@ function buildReadPick(){
 
 function readList(v){
   v = v || rView;
-  if(v.includes("+")){ const ks = v.split("+").map(x=>x.slice(5)); return PASSAGES.filter(P=>ks.includes(P.date)); }
+  if(v.includes("+")){ const seen = new Set(); return v.split("+").flatMap(p=>readList(p)).filter(P=>!seen.has(P) && seen.add(P)); }
   if(v === "all") return PASSAGES.slice();
-  if(v.startsWith("date:")) return PASSAGES.filter(P=>P.date===v.slice(5));
+  if(v.startsWith("date:")){ const [k,src] = v.slice(5).split("@"); return PASSAGES.filter(P=>P.date===k && (!src || pSrc(P)===src)); }
   return PASSAGES.length ? [PASSAGES[pi]] : [];
 }
 
@@ -3930,7 +4357,7 @@ function renderReading(){
       rFlat.push({P,q});
       const v = rSt(P,q);
       const tag = v.a ? `<span class="badge soft">tried ${v.w}\u2717 / ${v.a}</span>` : "";
-      return `<div class="qz" id="read-q${i}">
+      return `<div class="qz" id="read-q${i}" data-a="${q.a}">
         <div class="stem"><span class="num">${q.n}.</span>${q.q}${tag}</div>
         <div class="opts">` +
         q.o.map((t,oi)=>`<button class="opt" data-q="${i}" data-o="${oi}"><span class="lt">(${LT[oi]})</span>${t}</button>`).join("") +
@@ -4048,7 +4475,16 @@ function buildDeckMenu(){
     if(!all.length) return;
     const ns = all.filter(d=>!isAna(d)).length, na = all.length - ns;
     byDate += opt("date:"+D.key, D.label, all.length);
-    if(ns && na){
+    const srcs = sessionSrcs(DATA, D.key);
+    if(srcs.length > 1){
+      srcs.forEach(k=>{
+        const g = all.filter(d=>srcOf(d)===k), gs = g.filter(d=>!isAna(d)).length, ga = g.length - gs;
+        if(gs && ga){
+          byDate += opt("date:"+D.key+"@"+k+"|syn", "\u2003\u21b3 " + srcName(k) + " \u00b7 Synonyms", gs);
+          byDate += opt("date:"+D.key+"@"+k+"|ana", "\u2003\u21b3 " + srcName(k) + " \u00b7 Analogies", ga);
+        } else byDate += opt("date:"+D.key+"@"+k, "\u2003\u21b3 " + srcName(k) + " \u00b7 " + (gs?"Synonyms":"Analogies"), g.length);
+      });
+    } else if(ns && na){
       byDate += opt("date:"+D.key+"|syn", "\u2003\u21b3 " + D.label + " \u00b7 Synonyms", ns);
       byDate += opt("date:"+D.key+"|ana", "\u2003\u21b3 " + D.label + " \u00b7 Analogies", na);
     }
@@ -4473,6 +4909,20 @@ const SESSION_NOTES = {
   todo:"<b>Next</b> — Synonym words aren’t being learned after a miss, so they come back wrong almost unchanged. Before the next test, run the <b>Sep 20 · Synonyms</b> and <b>Repeat misses</b> decks in Flashcards. For analogies, write down first whether the stem pair points the same way or opposite ways."}
 ],
 "2026-09-24": [
+ {h:"Analogy Practice Questions, Part 7 (pp.87–96) · 31 misses",
+  li:["Workbook practice sets: Warm-up (1 wrong of 10), Basic 1–35 (9 wrong), Medium 1–58 (20 wrong), Difficult 1–6 (1 wrong).",
+      "<b>By type</b> — tool/function/study 13, kind-of/class 8, part 3, place 2, characteristic 2, degree 1, trait 1, same-or-opposite direction 1.",
+      "<b>The margin notes were usually right; the pick wasn’t tested against them.</b> Lion hunts zebras → whale:frog; a mechanic uses a wrench → carpenter:wood; weak → strong → ponder:think (strong → weak); wrote antonyms → subdue:control (synonyms).",
+      "<b>Word knowledge behind several misses</b>: prune (the verb, not the fruit), gallery (theater seating), anthropo- (human), cardio- (heart), pod (dolphins), reservoir (man-made lake).",
+      "<b>Kind-of relations were the second-biggest group</b>: he confused a type with a sibling (mitten:glove), rank (lieutenant:officer), male/female vs species (rooster:hen → doe:deer), and adult/young vs male/female (kangaroo:joey → goose:gander)."],
+  todo:"<b>Next</b> — After writing the relation sentence, plug in all five choices <b>word for word</b> (“A ___ hunts a ___”) before choosing, and check the <b>order</b> of the pair. Scoring was not written on these pages; all 31 slash-marked numbers were counted as misses. To confirm: Basic #2 and #3 and Medium #21 carry red marks, but his circled answers look correct, so they were left out."}, {h:"Analogy Practice Part 7, continued (pp.97–105) · 44 misses",
+  li:["Difficult 7–49 (14 wrong), Challenge 1–30 (10 wrong), Upper-Level Challenge 1–25 (20 wrong).",
+      "<b>Same-or-opposite direction is back as the biggest problem</b>: 23 of 44. Several times he wrote the right label and still chose the other direction — wrote syn → picked a part:whole or antonym pair (Phenomenon:event, Derivative:original); wrote antonyms → picked a synonym pair (Celestial:mundane, Enduring:ephemeral).",
+      "<b>Vocabulary decides most of the Upper-Level Challenge</b>: quotidian, magnanimous, sepulchral, moribund, corpulent, temerity, craven, preclude, gratuitous, renegade, obfuscate. Five were starred as unsure with no answer circled.",
+      "<b>Order reversed</b>: Hurt:debilitated → fatigued:tired; Symphony:movement → song:album.",
+      "Margin notes were right again but not used: frame encases canvas → lens:camera; parallel never intersects → continuous:waver."],
+  todo:"<b>Next</b> — For synonym/antonym stems, write <b>=</b> or <b>≠</b> next to the stem, then cross out every choice with the other sign before reading further. The Upper-Level Challenge words above should go into the synonym flashcards. To confirm: #9 (Contagious) and #39 (Roster) had no clear red answer mark; #11 (Accountant) had red on (C) professor:university, but (B) podiatrist:feet fits better — set to B; Challenge #6 (Dilute) has a crossed red circle but his (E) abbreviate:lengthen looks right, so it was left out; Upper #15 (Temerity) had no mark on the number but a red circle on (E), so it was counted as a miss."},
+
  {h:"Ivy Global Upper Level Test 1 · Section 3 · 47/60 (syn 8 / ana 5)",
   li:["Cover score 47/60 matches the 13 misses found. The pages not scanned (pp.32–33, 36; questions 27–36, 57–60) were therefore all correct.",
       "<b>By type</b> — Synonyms: look-alike 2, prefix/suffix 2, answer word unknown 2, opposite 1, effect for meaning 1. Analogies: place/home 2, function 1, edge/part 1, trait 1.",
@@ -4487,6 +4937,29 @@ const SESSION_NOTES = {
       "Tone #17: he chose rash, though the line right before says <em>thoughtfully and deliberately</em>.",
       "Across all reading, <b>detail is now 13</b>, passing main idea (12) as the largest type."],
   todo:"<b>Next</b> — On detail questions, find the sentence in the passage before looking at the choices and underline markers like <b>may / could / some / had + past participle</b>. All four detail misses here fall to that one habit. Pages 13–14, 18, 20, 22, 25–26, 28 (questions 1–5, 12–13, 18, 21–22, 28–35, 40) were not scanned."}
+],
+"2026-09-28": [
+ {h:"The Tutorverse synonyms pp.116–123 (Introductory / Intermediate / Advanced) · 31 misses",
+  li:["Misses by section: Introductory 6 of 47, Intermediate 11 of 47, Advanced 14 of 47 (no score written, so the count could not be checked).",
+      "By type: <b>look-alike 13</b>, not knowing the answer word 8, affix 5, opposite 3, effect 2. Look-alike is the biggest group this time, and <b>his own margin notes show it</b>: preclude→include, exorcise→exercise, engender→gender, respite→spite, conceive→perceive/receive/deceive, ponderous→ponder, chicanery→chic, vacillate→vacuum, deduce→deduct, hinder→kindle.",
+      "Twice he chose a <b>verb for an adjective stem</b> (ponderous→contemplate) or an <b>adjective for a noun stem</b> (chicanery→fashionable). Checking part of speech alone would have removed these.",
+      "Repeat misses: <b>TENACIOUS</b> and <b>QUANDARY</b> (both from the Sep 8 notebook). Preclude also appeared in the Sep 24 analogy set.",
+      "Good news: <b>AFFABLE</b> and <b>CONCISE</b>, each missed twice before, were right this time."],
+  todo:"<b>Next</b> — When a stem looks like a familiar word, write the look-alike next to it, then cross out every choice that fits the look-alike. The notes he already writes (include, exercise, gender, spite) show he spots the resemblance but then follows it. Also check that the part of speech of each choice matches the stem."},
+ {h:"The Tutorverse analogies pp.125–135 (Guided Practice by relation type + Mixed 1) · 35 misses",
+  li:["The book groups analogies by relation type, which shows exactly where he breaks down. <b>Association: 7 of 10 wrong</b>, the worst section. These are set phrases and idioms (open sesame / pretty please, null and void / forgive and forget, fun and games / supply and demand, under the weather / bite the bullet, cloak and dagger / brick and mortar). Every time he looked for a meaning link instead of the phrase.",
+      "Whole/Part 4 of 10 and Degree 4 of 10 wrong. In Degree he wrote <em>low → high</em> himself and still chose an opposite pair (finite : infinite) or forgot to check the direction (plush : comfortable goes strong → mild).",
+      "By type: function 8, set phrase / pairing 7, synonym–antonym direction 6, part–whole 6, degree 4, grammar 2, lacking 1, place 1.",
+      "His margin notes are often right (a barber cuts hair, validate means confirm, cessation ends speed) but the choice he circles ignores the note. Twice he read a stem word as the wrong part of speech (act as a verb, set as put).",
+      "Grammar #7 (fungus → fungi) was left out: choices (D) and (E) are both printed as “fungi”, a book misprint."],
+  todo:"<b>Next</b> — Before looking at the choices, say the two stem words together out loud as a phrase (open sesame, null and void). If it sounds like a set phrase, look for another set phrase. For every other stem, turn his margin note into a sentence and test each choice in that same sentence."},
+ {h:"The Tutorverse analogies, Mixed 1–10 (pp.136–145) · 28 misses",
+  li:["28 of about 136 questions wrong (Mixed 4 #13 left out: the book’s answer does not hold up). By type: function / purpose 10, set phrase 8, synonym–antonym direction 6, grammar 2, part–whole 1, degree 1.",
+      "<b>Set phrases again: 8 misses</b>, right after 7 of 10 in the Association section: wreak havoc / run amok, prim and proper / front and center, beck and call / bread and butter, rank and file / cut and paste, hale and hearty / soup and salad, time immemorial / wrought iron, bottomless abyss / aluminum foil, theoretical physics / mad scientist.",
+      "In <b>5 of 6 synonym misses he wrote “syn” and still chose a wrong word</b>: immutable, transpire, perceive, steadfast. Here the problem is vocabulary, not direction. Perceive → receive repeats the <em>-ceive</em> trap from the Sep 28 synonyms (CONCEIVE).",
+      "Several times the answer needed a noun and he chose a verb or adjective (peruse → underline, composer → orchestral), or he chose what the second word <b>is</b> instead of its part (pie → dessert).",
+      "PERUSE shows up again (missed Sep 5 and Sep 8 as a synonym)."],
+  todo:"<b>Next</b> — A set-phrase deck: 30 common pairs (beck and call, rank and file, prim and proper, null and void, hale and hearty, time immemorial…). Many SSAT analogies that look impossible are just these phrases."}
 ]
 };
 
