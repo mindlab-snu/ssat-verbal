@@ -540,6 +540,26 @@ body{
 @media (max-width:720px){.mp{flex:1 1 100%;max-width:none}.mp-panel{min-width:0}}
 
 .ql-count{font-size:13px;color:var(--muted);margin:0 0 8px}
+/* ---------- word card printouts (print only) ---------- */
+#wc-print{display:none}
+@media print{
+  body[data-print="wc"] #sec-cards{display:block!important}
+  body[data-print="wc"] #sec-cards > *:not(#wc-print){display:none!important}
+  body[data-print="wc"] #wc-print{display:block}
+  .wp-list{column-count:2;column-gap:28pt}
+  .wp-row{break-inside:avoid;display:flex;gap:6pt;margin:0 0 9pt;font-size:10.5pt;line-height:1.4}
+  .wp-row b{font-family:var(--serif);font-size:12pt}
+  .wp-n{min-width:2em;color:#555}
+  .wp-pos{font-size:9pt;color:#555;font-style:italic}
+  .wp-def{margin-top:1pt}
+  .wp-ex{font-style:italic;color:#333;font-size:9.5pt;margin-top:1pt}
+  .wp-src{font-size:8.5pt;color:#777;margin-top:1pt}
+  .wp-test{column-count:2;column-gap:28pt}
+  .wp-test .wp-row{align-items:baseline;margin-bottom:16pt}
+  .wp-line{flex:1;border-bottom:.75pt solid #000;margin-left:6pt;min-width:60pt}
+  .wp-key{column-count:2}
+  .wp-keypage{page-break-before:always;break-before:page;font-family:var(--sans)}
+}
 /* ---------- answer key (print only) ---------- */
 .akey{display:none}
 @media print{
@@ -714,12 +734,14 @@ body{
 
     <!-- ===== word cards: Quizlet-style flip, synonyms only ===== -->
     <div class="wc-wrap" id="wc" hidden>
-      <p class="fc-mode-note">Synonyms only. Tap the card to flip it, then sort it: still learning or know it.</p>
+      <p class="fc-mode-note">Synonyms, plus the words he marked as unknown (bottom of the Deck menu). Tap the card to flip it, then sort it: still learning or know it.</p>
       <div class="history no-print" id="wc-history"></div>
       <div class="controls no-print">
         <label>Deck <select id="wc-set"></select></label>
         <span class="spacer"></span>
         <button class="btn" id="wc-shuffle">Shuffle</button>
+        <button class="btn" id="wc-print-l">Print list</button>
+        <button class="btn" id="wc-print-t">Print test</button>
       </div>
       <div id="wc-play">
         <div class="wc-tally"><span class="pill learn" id="wc-nl">0</span><span class="pill know" id="wc-nk">0</span><span class="left" id="wc-left"></span></div>
@@ -741,6 +763,7 @@ body{
       </div>
       <div class="wc-done" id="wc-done" hidden></div>
     </div>
+    <div id="wc-print"></div>
 
     <div id="qc">
     <p class="sec-sub">Answer the question on the front, then check it. The back gives the answer, what you picked, and — where the scan recorded it — the choice you made the first time round.</p>
@@ -1873,7 +1896,81 @@ const DATA = [
 {cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.144 Mixed 10 #1", w:"Immemorial is to time as wrought is to", pos:"set phrase (reversed)", o:["decorated", "iron", "road", "rope", "intended"], a:1, pick:2, ko:"“Time immemorial” and “wrought iron” are fixed phrases.",
  tip:"He took (C) road. It is a <strong>set phrase</strong>: time immemorial, wrought iron.", pat:5},
 {cat:"type", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.145 Mixed 10 #10", w:"Facsimile is to manuscript as clone is to", pos:"copy : original", o:["replica", "person", "duplicate", "imitation", "twin"], a:1, pick:0, ko:"A facsimile is an exact copy of a manuscript; a clone is an exact copy of a person (or organism).",
- tip:"He took (A) replica, another word for a copy. The stem is <strong>copy : what it copies</strong>, so the answer is the original: person.", pat:5}
+ tip:"He took (A) replica, another word for a copy. The stem is <strong>copy : what it copies</strong>, so the answer is the original: person.", pat:5},
+/* ====== 2026-10-04 · Upper Level SSAT Practice Test 2, Section 3 (pp.74–79, 35/60) ====== */
+{cat:"unknown", date:"2026-10-04", lv:"ULT2 Synonyms", pg:"p.75 #10", w:"GARRISON", pos:"noun", o:["admiral", "armada", "unification", "partition", "stronghold"], a:4, pick:1, ko:"a fortified place where troops are stationed",
+ tip:"He took (B) armada, another military word. An armada is a fleet of ships; a garrison is troops in a fort, so a <strong>stronghold</strong>.", pat:6},
+{cat:"unknown", date:"2026-10-04", lv:"ULT2 Synonyms", pg:"p.75 #11", w:"INARTICULATE", pos:"adjective", o:["illegible", "uncreative", "inspirational", "incoherent", "confident"], a:3, pick:1, ko:"unable to express ideas clearly in speech",
+ tip:"He took (B) uncreative. In- (not) + articulate (speaking clearly): inarticulate speech is <strong>incoherent</strong>. (A) illegible is for writing, not speech.", pat:6},
+{cat:"look", date:"2026-10-04", lv:"ULT2 Synonyms", pg:"p.75 #13", w:"RAIMENT", pos:"noun", o:["sustenance", "apparel", "beverage", "lightning", "aroma"], a:1, pick:4, ko:"clothing, especially fine clothing",
+ tip:"He took (E) aroma; his notes (pigment, scent?) show he was guessing from the sound. Raiment is old-fashioned for <strong>clothing</strong>, so apparel.", pat:1},
+{cat:"look", date:"2026-10-04", lv:"ULT2 Synonyms", pg:"p.75 #16", w:"POIGNANT", pos:"adjective", o:["moving", "thorough", "irresistible", "repulsive", "uncertain"], a:0, pick:3, ko:"causing a strong feeling of sadness or pity",
+ tip:"He took (D) repulsive, probably hearing <em>pungent</em> (a sharp, unpleasant smell). Poignant means emotionally <strong>moving</strong>.", pat:1},
+{cat:"look", date:"2026-10-04", lv:"ULT2 Synonyms", pg:"p.75 #17", w:"PROGNOSTICATE", pos:"verb", o:["diagnose", "prescribe", "assert", "prophesy", "examine"], a:3, pick:2, ko:"to predict or foretell a future event",
+ tip:"He took (C) assert; his note says <em>procrastinate</em>, the look-alike. Pro- (before) + gnost (know): to know beforehand, so <strong>prophesy</strong>. (A) diagnose shares -gnos- but is about the present.", pat:1},
+{cat:"effect", date:"2026-10-04", lv:"ULT2 Synonyms", pg:"p.75 #18", w:"AVARICE", pos:"noun", o:["greed", "egotism", "wrath", "boredom", "ambition"], a:0, pick:4, ko:"extreme greed for wealth",
+ tip:"He took (E) ambition, a related drive but not the same thing. Avarice is <strong>greed</strong> for money.", pat:3},
+{cat:"effect", date:"2026-10-04", lv:"ULT2 Synonyms", pg:"p.76 #23", w:"HIATUS", pos:"noun", o:["surface", "vacuum", "break", "tribe", "bribe"], a:2, pick:1, ko:"a pause or gap in a series or activity",
+ tip:"He took (B) vacuum, an empty space. A hiatus is a gap in <strong>time</strong>, a pause, so a break.", pat:3},
+{cat:"opposite", date:"2026-10-04", lv:"ULT2 Synonyms", pg:"p.76 #26", w:"TERSE", pos:"adjective", o:["polite", "rude", "curt", "nonsensical", "wordy"], a:2, pick:4, ko:"brief and abrupt in speech",
+ tip:"Second miss (Sep 28: took ardent; answer brusque). This time he took (E) wordy, the <strong>opposite</strong>. Terse means using few words: curt.", pat:7},
+{cat:"affix", date:"2026-10-04", lv:"ULT2 Synonyms", pg:"p.76 #27", w:"WAYLAY", pos:"verb", o:["pave", "road", "cobblestone", "ambush", "announce"], a:3, pick:0, ko:"to stop someone to attack or rob them",
+ tip:"He took (A) pave, splitting the word into <em>way + lay</em> (laying a road); his note says wayward. To waylay is to <strong>ambush</strong>.", pat:2},
+{cat:"opposite", date:"2026-10-04", lv:"ULT2 Synonyms", pg:"p.76 #28", w:"JINGOISTIC", pos:"adjective", o:["bellicose", "traitorous", "jingly", "narcissistic", "pacifistic"], a:0, pick:4, ko:"aggressively patriotic and eager for war",
+ tip:"He took (E) pacifistic, the <strong>opposite</strong>; his note guessed egoistic. Jingoistic means warlike nationalism, so bellicose.", pat:7},
+{cat:"type", date:"2026-10-04", t:"an", lv:"ULT2 Analogies", pg:"p.77 #31", w:"Hide is to leather as", pos:"raw material : processed product", o:["run is to whip", "grape is to raisin", "prune is to dried", "mineral is to quartz", "seek is to chain"], a:1, pick:3, ko:"Hide is processed into leather, as a grape is dried into a raisin.",
+ tip:"He took (D) mineral is to quartz, a category : example pair. His note (hide produces leather) was right: <strong>raw form → processed form</strong>.", pat:5},
+{cat:"place", date:"2026-10-04", t:"an", lv:"ULT2 Analogies", pg:"p.77 #32", w:"Terrarium is to iguana as aviary is to", pos:"enclosure : specific animal", o:["bird", "chimpanzee", "parakeet", "lizard", "wasp"], a:2, pick:0, ko:"A terrarium houses an iguana (a specific animal); an aviary houses a parakeet.",
+ tip:"He took (A) bird, a whole category. Iguana is a <strong>specific</strong> animal, so the match is a specific bird: parakeet.", pat:5},
+{cat:"part", date:"2026-10-04", t:"an", lv:"ULT2 Analogies", pg:"p.77 #35", w:"Thorax is to abdomen as", pos:"upper part : lower part", o:["trunk is to root", "head is to arm", "antenna is to mandible", "vertebrate is to spine", "magician is to wand"], a:0, pick:3, ko:"The thorax sits above the abdomen in a body, as a trunk sits above the root in a tree.",
+ tip:"He took (D) vertebrate is to spine, a has-a pair. The stem is <strong>two adjacent parts, upper : lower</strong>.", pat:5},
+{cat:"type", date:"2026-10-04", t:"an", lv:"ULT2 Analogies", pg:"p.77 #38", w:"Mouse is to rodent as", pos:"example : category", o:["spider is to insect", "poultry is to bird", "centipede is to arachnid", "gorilla is to primate", "panda is to bear"], a:3, pick:4, ko:"A mouse is a kind of rodent, as a gorilla is a kind of primate.",
+ tip:"He took (E) panda is to bear. Pandas are bears, but the book wants (D); the red panda is not, so the pair is less clean. (A) and (C) are false: spiders are not insects.", pat:5},
+{cat:"same", date:"2026-10-04", t:"an", lv:"ULT2 Analogies", pg:"p.78 #42", w:"Diplomat is to emissary as", pos:"synonyms", o:["monarch is to constituency", "delegate is to company", "officer is to institution", "country is to alliance", "proxy is to agent"], a:4, pick:2, ko:"A diplomat and an emissary are both representatives, as a proxy and an agent are.",
+ tip:"He took (C) officer is to institution, a member : group pair. The stem words <strong>mean the same</strong>: proxy and agent.", pat:5},
+{cat:"trait", date:"2026-10-04", t:"an", lv:"ULT2 Analogies", pg:"p.78 #44", w:"Zeal is to phlegmatic as", pos:"quality : lacking it", o:["punishment is to draconian", "vagrant is to itinerant", "gusto is to windy", "opacity is to transparent", "forethought is to considerate"], a:3, pick:0, ko:"A phlegmatic person lacks zeal; something transparent lacks opacity.",
+ tip:"He wrote syn and took (A) punishment is to draconian. But phlegmatic (calm, unemotional) means <strong>without</strong> zeal: opacity is to transparent.", pat:5},
+{cat:"func", date:"2026-10-04", t:"an", lv:"ULT2 Analogies", pg:"p.78 #45", w:"Treatment is to remission as", pos:"action : intended result", o:["analysis is to prescription", "penalty is to penitentiary", "sojourn is to domicile", "supposition is to experimentation", "therapy is to rehabilitation"], a:4, pick:2, ko:"Treatment aims at remission, as therapy aims at rehabilitation.",
+ tip:"He wrote ant and took (C) sojourn is to domicile. Remission is the <strong>good result</strong> of treatment, not its opposite.", pat:5},
+{cat:"same", date:"2026-10-04", t:"an", lv:"ULT2 Analogies", pg:"p.78 #49", w:"Scapegoat is to hero as hedonist is to", pos:"antonyms", o:["glutton", "egoist", "barbarian", "puritan", "master"], a:3, pick:4, ko:"A scapegoat is blamed and a hero is praised; a hedonist seeks pleasure and a puritan rejects it.",
+ tip:"He took (E) master. The stem pair are <strong>opposites</strong>, and the opposite of a pleasure-seeker is a puritan.", pat:5},
+{cat:"func", date:"2026-10-04", t:"an", lv:"ULT2 Analogies", pg:"p.78 #50", w:"Intercept is to interference as", pos:"action : what it amounts to", o:["divulge is to revelation", "inspire is to motivate", "accept is to defeat", "endeavor is to commitment", "dethrone is to coronation"], a:0, pick:4, ko:"To intercept is an act of interference, as to divulge is an act of revelation.",
+ tip:"He took (E) dethrone is to coronation, an opposite pair. The stem is <strong>verb : the noun it amounts to</strong>: divulging is revealing.", pat:5},
+{cat:"part", date:"2026-10-04", t:"an", lv:"ULT2 Analogies", pg:"p.79 #51", w:"Shingle is to roof as", pos:"covering unit : what it covers", o:["wall is to floor", "epidermis is to skin", "stomach is to digestion", "nut is to wrench", "ceiling is to room"], a:1, pick:4, ko:"Shingles form the outer layer of a roof, as the epidermis is the outer layer of skin.",
+ tip:"He took (E) ceiling is to room. A shingle is the <strong>outer layer</strong> of the roof itself, like the epidermis of the skin.", pat:5},
+{cat:"func", date:"2026-10-04", t:"an", lv:"ULT2 Analogies", pg:"p.79 #53", w:"Zookeeper is to animal as", pos:"keeper : those in his charge", o:["librarian is to book", "nurse is to physician", "ward is to charge", "jailor is to prisoner", "hunter is to victim"], a:3, pick:0, ko:"A zookeeper keeps animals confined and cared for, as a jailor keeps prisoners.",
+ tip:"He took (A) librarian is to book. His note (takes care of) fits, but the zookeeper's charges are <strong>living and kept in</strong>, like a jailor's prisoners.", pat:5},
+{cat:"same", date:"2026-10-04", t:"an", lv:"ULT2 Analogies", pg:"p.79 #55", w:"Unorthodox is to traditional as", pos:"antonyms", o:["conscientious is to deliberate", "apposite is to opposite", "illustrious is to mundane", "cautionary is to excessive", "rotund is to bulbous"], a:2, pick:1, ko:"Unorthodox and traditional are opposites, as illustrious and mundane are.",
+ tip:"He took (B) apposite is to opposite, a look-alike pair. The stem pair are <strong>opposites</strong>: illustrious (famous) vs mundane (ordinary).", pat:5},
+{cat:"char", date:"2026-10-04", t:"an", lv:"ULT2 Analogies", pg:"p.79 #56", w:"Speech is to extemporaneous as", pos:"thing : unplanned version", o:["denouement is to anticlimactic", "result is to unexpected", "decision is to whimsical", "memoir is to unpublished", "mystique is to clandestine"], a:2, pick:4, ko:"An extemporaneous speech is given without preparation, as a whimsical decision is made on impulse.",
+ tip:"He took (E) mystique is to clandestine. Extemporaneous means <strong>unplanned, on the spot</strong>; a whimsical decision is the same idea.", pat:5},
+{cat:"char", date:"2026-10-04", t:"an", lv:"ULT2 Analogies", pg:"p.79 #59", w:"Filial is to daughter as", pos:"adjective : family member it describes", o:["equine is to offspring", "fraternal is to cousin", "avuncular is to aunt", "parental is to father", "childish is to nephew"], a:3, pick:0, ko:"Filial describes a son or daughter, as parental describes a father or mother.",
+ tip:"He took (A) equine (horse-like). Filial means <strong>of a son or daughter</strong>; parental fits father. Fraternal is brother, avuncular is uncle.", pat:5},
+{cat:"place", date:"2026-10-04", t:"an", lv:"ULT2 Analogies", pg:"p.79 #60", w:"Quarry is to stone as", pos:"source : what is taken from it", o:["marina is to boat", "orchard is to fruit", "shelter is to protection", "cemetery is to grave", "lumberyard is to wood"], a:1, pick:4, ko:"Stone is taken out of a quarry, as fruit is picked from an orchard.",
+ tip:"He took (E) lumberyard is to wood. A lumberyard <strong>sells</strong> wood; a quarry is where stone is <strong>produced</strong>, like fruit in an orchard.", pat:5},
+/* ====== 2026-10-04 · 한세희 SSAT Practice Test 3, Section 3 (pp.158–165) ====== */
+{cat:"unknown", date:"2026-10-04", lv:"PT3 Synonyms", pg:"p.159 #6", w:"CHIDE", pos:"verb", o:["rebuke", "barter", "mingle", "stifle", "amalgamate"], a:0, pick:1, ko:"to scold mildly",
+ tip:"He took (B) barter, which has no link to chide. To chide is to scold, so <strong>rebuke</strong>.", pat:6},
+{cat:"unknown", date:"2026-10-04", lv:"PT3 Synonyms", pg:"p.160 #15", w:"MOTIF", pos:"noun", o:["surf", "boredom", "sequel", "bigot", "theme"], a:4, pick:2, ko:"a recurring idea or pattern in a work",
+ tip:"He took (C) sequel, maybe from <em>motive</em> or a movie series. A motif is a repeated <strong>theme</strong>.", pat:6},
+{cat:"look", date:"2026-10-04", lv:"PT3 Synonyms", pg:"p.160 #16", w:"PREPOSTEROUS", pos:"adjective", o:["unassuming", "perilous", "hazardous", "noisome", "ridiculous"], a:4, pick:0, ko:"completely unreasonable; absurd",
+ tip:"He took (A) unassuming; his notes (imposter, prevalent) show he was guessing from the sound. Pre-post-erous means front-to-back, so absurd: <strong>ridiculous</strong>.", pat:1},
+{cat:"unknown", date:"2026-10-04", lv:"PT3 Synonyms", pg:"p.160 #23", w:"LETHARGIC", pos:"adjective", o:["laudable", "dense", "terrified", "singed", "languid"], a:4, pick:3, ko:"sluggish and lacking energy",
+ tip:"He took (D) singed. He got LETHARGIC right on the Upper Level PT2 the same day (sluggish); here the answer word <strong>languid</strong> was the unknown.", pat:6},
+{cat:"effect", date:"2026-10-04", lv:"PT3 Synonyms", pg:"p.161 #25", w:"PERPETUATE", pos:"verb", o:["onslaught", "elude", "maintain", "instigate", "mar"], a:2, pick:1, ko:"to make something continue indefinitely",
+ tip:"He took (B) elude; his note says <em>perpetual</em>, which was the right clue. Perpetual means lasting forever, so to perpetuate is to <strong>maintain</strong>.", pat:3},
+{cat:"char", date:"2026-10-04", t:"an", lv:"PT3 Analogies", pg:"p.162 #31", w:"Pungent is to odor as", pos:"sharp quality : what it describes", o:["amble is to ramble", "sleek is to texture", "poignant is to emotion", "lanky is to volume", "disrespectful is to etiquette"], a:2, pick:1, ko:"A pungent odor is sharp and strong, as a poignant emotion is sharp and strong.",
+ tip:"He took (B) sleek is to texture. His note (pungent is having a strong odor) is right; sleek is smooth, not <strong>intense</strong>. Poignant (keenly felt) matches pungent. He missed POIGNANT as a synonym on the same day.", pat:5},
+{cat:"part", date:"2026-10-04", t:"an", lv:"PT3 Analogies", pg:"p.162 #32", w:"Armada is to ships as", pos:"group : its members", o:["church is to congregation", "shoe is to laces", "catalyst is to flasks", "apparel is to robes", "regiment is to soldiers"], a:4, pick:0, ko:"An armada is a group of warships, as a regiment is a group of soldiers.",
+ tip:"He took (A) church is to congregation. A church holds a congregation, but it is not made of them. An armada is a <strong>military group of ships</strong>, so a regiment of soldiers.", pat:5},
+{cat:"same", date:"2026-10-04", t:"an", lv:"PT3 Analogies", pg:"p.162 #36", w:"Trivial is to trifling as", pos:"synonyms", o:["dogged is to amenable", "coach is to referee", "unwilling is to reluctant", "frugal is to prodigal", "irrevocable is to optional"], a:2, pick:4, ko:"Trivial and trifling mean the same, as unwilling and reluctant do.",
+ tip:"He wrote ant and took (E) irrevocable is to optional. But trivial and trifling are <strong>synonyms</strong> (both mean unimportant).", pat:5},
+{cat:"same", date:"2026-10-04", t:"an", lv:"PT3 Analogies", pg:"p.163 #37", w:"Innate is to acquired as", pos:"antonyms", o:["nebulous is to opaque", "substantial is to material", "knotty is to facile", "legible is to literate", "solemn is to sublime"], a:2, pick:0, ko:"Innate (inborn) is the opposite of acquired, as knotty (difficult) is the opposite of facile (easy).",
+ tip:"His note says <em>innate means it is already acquired</em>, the reverse. Innate means <strong>inborn, not acquired</strong>, so the pair are opposites: knotty vs facile.", pat:5},
+{cat:"type", date:"2026-10-04", t:"an", lv:"PT3 Analogies", pg:"p.163 #38", w:"Grape is to pulp as", pos:"source of one product : source of another", o:["basalt is to salt", "carrot is to onion", "wine is to paper", "drawstring is to pants", "pony is to colt"], a:2, pick:0, ko:"Wine is made from grapes and paper from pulp, so grape : pulp matches wine : paper (each product to its source, in the same order).",
+ tip:"His note (pulp is inside a grape) reads it as part : whole, which none of the choices fit. The book's link is <strong>raw material → product</strong>: grape → wine, pulp → paper.", pat:5},
+{cat:"part", date:"2026-10-04", t:"an", lv:"PT3 Analogies", pg:"p.165 #57", w:"Apogee is to orbit as", pos:"highest point : what it is the top of", o:["trench is to mountain", "surmount is to fresco", "crest is to wave", "mountain is to peak", "star is to constellation"], a:2, pick:4, ko:"The apogee is the highest (farthest) point of an orbit, as the crest is the highest point of a wave.",
+ tip:"He took (E) star is to constellation, a part : whole pair. Apogee means the <strong>top point</strong>, like a crest. (D) mountain : peak is in the reverse order.", pat:5}
 ];
 /* Each passage: lines are the book's own lines, so the line numbers in the
    questions point at the right place. A blank string starts a new paragraph. */
@@ -3649,6 +3746,279 @@ const PASSAGES = [
    "why": "He took (A) avenge, the dramatic reading. The text says only two things about them: there will be <strong>more</strong> of them (line 6), and being younger they will be <strong>more inconsiderate</strong> (line 7) &mdash; numerous and less polite."
   }
  ]
+},
+{
+ "id": "hsh3-p1",
+ "date": "2026-10-04",
+ "src": "한세희의 SSAT Practice Test 3 · Section 2 · pp.141–142",
+ "title": "Passage 1 — Magnetism",
+ "by": "",
+ "verse": false,
+ "lines": [
+  "Magnetism is undoubtedly one of the most desirable possessions of the successful",
+  "pianist. Only some psychologists attempt to fully undercover what magnetism is and",
+  "how it is derived. We all have our theories, just why one pianist who often blunders as",
+  "readily as a Rubinstein, who displays his many shortcomings at every concert, can",
+  "invariably draw larger audiences and arouse more applause than his confrere with",
+  "weaker vital forces. However, he is admittedly a better technician, a more highly",
+  "educated gentleman and perhaps a more sensitive musician.",
+  "Charles Frohman, the keenest of theatrical producers, attributed the actor’s success",
+  "to “vitality.” In doing this, he merely chose one of the weaker synonyms of magnetism.",
+  "Vitality, in this sense, does not imply great bodily strength. It is rather soul-strength,",
+  "mind-strength, and life-strength. Professor John D. Quackenbos, A.M., M.D., formerly",
+  "of Columbia University, explores the following definition of magnetism in his excellent",
+  "Hypnotic Therapeutics:",
+  "“Magnetism is nothing more than earnestness and sincerity, coupled with insight,",
+  "sympathy, patience, and tact. These essentials cannot be bought and cannot be taught.",
+  "They are ‘born by nature,’ they are dyed with ‘the red ripe of the heart.’”",
+  "Dr. Quackenbos is a physician and a philosopher. Had he been a lexicographer, he",
+  "would have found magnetism far more inclusive. He would at least have admitted the",
+  "phenomenon we witness so often when one possessed with volcanic vitality",
+  "overwhelms a great audience."
+ ],
+ "qs": [
+  {
+   "n": 3,
+   "q": "The author mentioned an example of “Rubinstein” because he wanted",
+   "o": [
+    "to introduce a skilled pianist",
+    "to debunk a great musician’s hypocrisy",
+    "to elaborate on the meaning of magnetism",
+    "to report on the concert scene",
+    "to discuss the greatness of pianists of the century"
+   ],
+   "a": 2,
+   "pick": 0,
+   "why": "He took (A). Rubinstein is not introduced for his skill; the point is that he <strong>blunders and still draws bigger crowds</strong>, which shows what magnetism is (lines 3–5).",
+   "cat": "device"
+  },
+  {
+   "n": 4,
+   "q": "Which of the following is NOT true about John D. Quackenbos?",
+   "o": [
+    "He was a hypnotist.",
+    "He was a professor.",
+    "He was a doctor.",
+    "He was a philosopher.",
+    "He was a lexicographer."
+   ],
+   "a": 4,
+   "pick": 3,
+   "why": "He took (D), but line 17 says he <strong>is</strong> a philosopher. The same line says “Had he been a lexicographer” — a condition contrary to fact, so he was not one.",
+   "cat": "detail"
+  },
+  {
+   "n": 6,
+   "q": "According to the passage, magnetism",
+   "o": [
+    "is one of the usual attributes of successful pianists",
+    "draws larger audiences and arouses more applause",
+    "is more than insincerity and hubris",
+    "could be explained by social phenomena",
+    "is soul-strength, mind-strength, and bodily strength"
+   ],
+   "a": 1,
+   "pick": 4,
+   "why": "He took (E). Line 10 says vitality is soul-strength and mind-strength but <strong>does not imply great bodily strength</strong>. One word in a list can make a choice false.",
+   "cat": "detail"
+  }
+ ]
+},
+{
+ "id": "hsh3-p2",
+ "date": "2026-10-04",
+ "src": "한세희의 SSAT Practice Test 3 · Section 2 · pp.145–147",
+ "title": "Passage — Romeo and Juliet (balcony scene)",
+ "by": "",
+ "verse": true,
+ "lines": [
+  "JULIET:",
+  "O Romeo, Romeo! Wherefore art thou Romeo?",
+  "Deny thy father and refuse thy name!",
+  "Or, if thou wilt not, be but sworn my love,",
+  "And I’ll no longer be a Capulet.",
+  "&nbsp;",
+  "ROMEO: Aside.",
+  "Shall I hear more, or shall I speak at this?",
+  "&nbsp;",
+  "JULIET:",
+  "’Tis but thy name that is my enemy.",
+  "Thou art thyself, though not a Montague.",
+  "What’s Montague? It is nor hand, nor foot,",
+  "Nor arm, nor face, nor any other part",
+  "Belonging to a man. O, be some other name!",
+  "What’s in a name? That which we call a rose",
+  "By any other name would smell as sweet.",
+  "So Romeo would, were he not Romeo call’d,",
+  "Retain that dear perfection which he owes",
+  "Without that title. Romeo, doff thy name;",
+  "And for that name, which is no part of thee,",
+  "Take all myself.",
+  "&nbsp;",
+  "ROMEO:",
+  "I take thee at thy word.",
+  "Call me but love, and I’ll be new baptiz’d;",
+  "Henceforth I never will be Romeo.",
+  "&nbsp;",
+  "JULIET:",
+  "What man art thou that, thus bescreen’d in night,",
+  "So stumblest on my counsel?",
+  "&nbsp;",
+  "ROMEO:",
+  "By a name",
+  "I know not how to tell thee who I am.",
+  "My name, dear saint, is hateful to myself,",
+  "Because it is an enemy to thee.",
+  "Had I it written, I would tear the word.",
+  "&nbsp;",
+  "&nbsp;",
+  "JULIET:",
+  "My ears have yet not drunk a hundred words",
+  "Of that tongue’s utterance, yet I know the sound.",
+  "Art thou not Romeo, and a Montague?",
+  "&nbsp;",
+  "ROMEO:",
+  "Neither, fair maid, if either thee dislike."
+ ],
+ "qs": [
+  {
+   "n": 15,
+   "q": "What does Juliet offer to do if Romeo swears his love for her?",
+   "o": [
+    "Marry him.",
+    "Deny her family name.",
+    "Give him a rose.",
+    "Become his enemy.",
+    "Send him out into the night."
+   ],
+   "a": 1,
+   "pick": 0,
+   "why": "He took (A), the natural next step in the story but not in the text. Lines 4–5: “be but sworn my love, / And I’ll <strong>no longer be a Capulet</strong>.”",
+   "cat": "detail"
+  },
+  {
+   "n": 17,
+   "q": "What can readers infer about the relationship between Romeo and Juliet?",
+   "o": [
+    "They have been in love for a long time.",
+    "They are an old, married couple.",
+    "They have not known each other long.",
+    "They have hated each other for a long time.",
+    "They see each other for the first time in this scene."
+   ],
+   "a": 2,
+   "pick": 0,
+   "why": "He took (A). Lines 42–43: her ears have “not drunk a <strong>hundred words</strong>” of his voice, yet she knows it. They have only just met.",
+   "cat": "infer"
+  },
+  {
+   "n": 18,
+   "q": "What can readers infer about Romeo?",
+   "o": [
+    "His love for Juliet is more important to him than his name is.",
+    "Juliet is just one of several women he is interested in.",
+    "He often hides behind trees at night to spy on women.",
+    "He has always hated his name.",
+    "He is very attached to his name."
+   ],
+   "a": 0,
+   "pick": 3,
+   "why": "He took (D). Line 36 says his name is hateful to him <strong>“because it is an enemy to thee”</strong> — only now, because of Juliet. He gives up the name for love.",
+   "cat": "infer"
+  },
+  {
+   "n": 19,
+   "q": "What is Juliet’s mood when she thinks she is alone?",
+   "o": [
+    "melancholy",
+    "contemplative",
+    "angry",
+    "worried",
+    "frustrated"
+   ],
+   "a": 1,
+   "pick": 4,
+   "why": "He took (E). She is not fighting anything; she is <strong>thinking aloud</strong> about what a name means (“What’s in a name?”). That is contemplative.",
+   "cat": "tone"
+  }
+ ]
+},
+{
+ "id": "hsh3-p3",
+ "date": "2026-10-04",
+ "src": "한세희의 SSAT Practice Test 3 · Section 2 · pp.152–153",
+ "title": "Passage — New York City",
+ "by": "",
+ "verse": false,
+ "lines": [
+  "It’s nothing short of a marvel that New York City manages to function. The entire",
+  "scenario seems improbable. Each time the city’s residents go about their daily routine,",
+  "like brushing their teeth, it requires the extraction of millions of gallons of water from",
+  "the Catskill Mountains and Westchester hills. When a young man in Manhattan decides",
+  "to pen a letter to his sweetheart in Brooklyn, the romantic message is swiftly transported",
+  "to her through a pneumatic tube—just like that. The underground network of telephone",
+  "cables, power lines, steam pipes, gas mains, and sewer pipes is enough to make one",
+  "contemplate abandoning the island to the whims of fate and the ever-persistent",
+  "challenges. Whenever the pavement undergoes the slightest incision, it reveals a",
+  "complex network of connections that are intricately tangled. By all accounts, New York",
+  "should have faced its demise ages ago, whether from panic, fires, vital supply line",
+  "failures in its circulatory system, or some convoluted short circuit. The city should have",
+  "encountered insurmountable traffic chaos at impossible bottlenecks long ago. It should",
+  "have succumbed to hunger during days when food supplies faltered. The relentless sea",
+  "surrounding it should have overwhelmed it from every side. The multitude of workers in",
+  "its various cells should have given in to nerves due to the pervasive pall of smoke-fog,",
+  "shrouding everything in darkness by noon and leaving higher-ups in a state of",
+  "suspension. The August heat should have taken its toll on the city’s sanity, pushing it off",
+  "its equilibrium."
+ ],
+ "qs": [
+  {
+   "n": 32,
+   "q": "According to the passage, what is one of the potential reasons for New York City’s demise mentioned by the author?",
+   "o": [
+    "overpopulation",
+    "lack of cultural opportunities",
+    "traffic snarls",
+    "failure of food supply lines",
+    "excessive rainfall"
+   ],
+   "a": 3,
+   "pick": 2,
+   "why": "He took (C). Line 13 does mention traffic chaos at bottlenecks, so this one is arguable. The book’s answer is (D): food supplies faltering (line 14) and <strong>vital supply line failures</strong> (lines 11–12) are named as causes of demise. Check the answer key.",
+   "cat": "detail"
+  }
+ ]
+},
+{
+ "id": "hsh3-p4",
+ "date": "2026-10-04",
+ "src": "한세희의 SSAT Practice Test 3 · Section 2 · pp.154–155",
+ "title": "Passage — Mr. Antolini (novel excerpt)",
+ "by": "",
+ "verse": false,
+ "lines": [
+  "[Passage text not reproduced here — it is a copyrighted novel excerpt. See the book, p.154, lines 1–25.]",
+  "Summary: the narrator says he hates some boys only for a little while and then misses them.",
+  "Mr. Antolini listens, thinks, and then warns him about a “special kind of fall,”",
+  "a fall for men who looked for something their environment couldn’t supply, and gave up."
+ ],
+ "qs": [
+  {
+   "n": 37,
+   "q": "It can be inferred that the speaker views Mr. Antolini with",
+   "o": [
+    "deep-seated malice",
+    "relative superiority",
+    "chronic conflict",
+    "sincere respect",
+    "genuine empathy"
+   ],
+   "a": 3,
+   "pick": 4,
+   "why": "He took (E). Empathy would mean sharing Mr. Antolini’s feelings; the narrator does not. He listens to the older man’s advice and wants to hear it — <strong>respect</strong>, even while wishing the talk could wait until morning.",
+   "cat": "tone"
+  }
+ ]
 }
 ];
 /* =========================================================
@@ -3663,7 +4033,8 @@ const DATES = [
   {key:"2026-09-20", label:"Sep 20, 2026", note:"Upper Level Practice Test 1"},
   {key:"2026-09-23", label:"Sep 23, 2026", note:"Practice Test 2 + Upper Level PT1"},
   {key:"2026-09-24", label:"Sep 24, 2026", note:"Ivy Global UL Test 1 + Analogy practice"},
-  {key:"2026-09-28", label:"Sep 28, 2026", note:"The Tutorverse"}
+  {key:"2026-09-28", label:"Sep 28, 2026", note:"The Tutorverse"},
+  {key:"2026-10-04", label:"Oct 4, 2026", note:"Upper Level PT2 + Practice Test 3"}
 ];
 const LEVELS = [
   {key:"Basic", ko:"Basic"},
@@ -3678,6 +4049,8 @@ const LEVELS = [
   {key:"PT1 Analogies", ko:"Practice Test 1"},
   {key:"ULT1 Synonyms", ko:"Upper Level Practice Test 1"},
   {key:"ULT1 Analogies", ko:"Upper Level Practice Test 1"},
+  {key:"ULT2 Synonyms", ko:"Upper Level Practice Test 2"},
+  {key:"ULT2 Analogies", ko:"Upper Level Practice Test 2"},
   {key:"IG1 Synonyms", ko:"Ivy Global Upper Level Test 1"},
   {key:"IG1 Analogies", ko:"Ivy Global Upper Level Test 1"},
   {key:"AP7 Warm-up", ko:"Analogy Practice · Warm-up"},
@@ -3688,6 +4061,8 @@ const LEVELS = [
   {key:"AP7 Upper Challenge", ko:"Analogy Practice · Upper-Level Challenge"},
   {key:"PT2 Synonyms", ko:"Practice Test 2"},
   {key:"PT2 Analogies", ko:"Practice Test 2"},
+  {key:"PT3 Synonyms", ko:"Practice Test 3"},
+  {key:"PT3 Analogies", ko:"Practice Test 3"},
   {key:"TV1 Introductory", ko:"The Tutorverse · Introductory"},
   {key:"TV1 Intermediate", ko:"The Tutorverse · Intermediate"},
   {key:"TV1 Advanced", ko:"The Tutorverse · Advanced"},
@@ -3695,9 +4070,172 @@ const LEVELS = [
 ];
 const isAna = d => d.t === "an";
 const SYN = DATA.filter(d=>!isAna(d));
+/* Words he circled as unknown (not misses). Shown only in Word cards, never in quizzes or error stats.
+   {date, lv:"PT3 Reading", w, pos, ko:"definition", ex:"sentence where he met it", ref:"Reading p.152 line 10"} */
+const VOCAB = [
+/* 2026-10-04 · 신경향 Vocabulary 22000, Units 3–4 (pp.83–112), circled words. Example sentences are our own. */
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"divulge", pos:"verb", ko:"to make known something private or secret", ex:"She refused to divulge the name of her source.", ref:"Vocabulary 22000 · p.83"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"famish", pos:"verb", ko:"to make or become extremely hungry (often “famished”)", ex:"After the six-hour hike we were famished.", ref:"Vocabulary 22000 · p.83"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"incense", pos:"verb", ko:"to make very angry (stress on the second syllable)", ex:"The unfair call incensed the home crowd.", ref:"Vocabulary 22000 · p.84"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"puncture", pos:"verb", ko:"to make a small hole with a sharp point", ex:"A piece of glass punctured the bike tire.", ref:"Vocabulary 22000 · p.84"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"subsequently", pos:"adverb", ko:"afterward; later", ex:"He missed the bus and subsequently arrived late to class.", ref:"Vocabulary 22000 · p.85"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"traverse", pos:"verb", ko:"to travel across or through", ex:"The explorers traversed the desert on camels.", ref:"Vocabulary 22000 · p.85"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"velocity", pos:"noun", ko:"speed, especially speed in a given direction", ex:"The ball left the bat at a high velocity.", ref:"Vocabulary 22000 · p.85"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"cleave", pos:"verb", ko:"to stick closely to; to stay loyal to (it can also mean to split)", ex:"Even after moving abroad, she cleaved to her family’s traditions.", ref:"Vocabulary 22000 · p.96"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"facetious", pos:"adjective", ko:"joking when one should be serious; not meant seriously", ex:"Don’t be facetious — this is a serious question.", ref:"Vocabulary 22000 · p.97"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"pilfer", pos:"verb", ko:"to steal small things, a little at a time", ex:"Someone has been pilfering pens from the supply closet.", ref:"Vocabulary 22000 · p.98"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"surmount", pos:"verb", ko:"to overcome a difficulty or obstacle", ex:"She surmounted her fear of heights to climb the tower.", ref:"Vocabulary 22000 · p.99"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"vocation", pos:"noun", ko:"a person’s job, especially one they feel called to", ex:"Teaching was not just a job for him; it was his vocation.", ref:"Vocabulary 22000 · p.99"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"accord", pos:"noun", ko:"agreement (“of one’s own accord” = willingly)", ex:"The two countries signed a peace accord.", ref:"Vocabulary 22000 · p.110"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"craven", pos:"adjective", ko:"cowardly", ex:"His craven retreat left his teammates to face the bully alone.", ref:"Vocabulary 22000 · p.111"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"deter", pos:"verb", ko:"to discourage someone from doing something", ex:"The tall fence deters deer from entering the garden.", ref:"Vocabulary 22000 · p.111"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"fictitious", pos:"adjective", ko:"invented; not real or true", ex:"He gave the police a fictitious name.", ref:"Vocabulary 22000 · p.112"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"quintet", pos:"noun", ko:"a group of five, especially five musicians", ex:"The jazz quintet played until midnight.", ref:"Vocabulary 22000 · p.112"},
+/* batch 2: Unit 4 (p.113–127) + Unit 1 Skill/Poverty/Wealth/Fear/Courage (pp.139–147) */
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"volition", pos:"noun", ko:"the power of choosing or deciding for oneself; free will", ex:"Nobody forced him to quit; he left of his own volition.", ref:"Vocabulary 22000 · p.113"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"diminutive", pos:"adjective", ko:"very small", ex:"The diminutive puppy fit inside a shoebox.", ref:"Vocabulary 22000 · p.125"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"dispel", pos:"verb", ko:"to drive away a feeling, belief, or crowd", ex:"The teacher’s calm voice dispelled our fears about the exam.", ref:"Vocabulary 22000 · p.125"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"imperil", pos:"verb", ko:"to put in danger", ex:"Texting while driving imperils everyone on the road.", ref:"Vocabulary 22000 · p.125"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"lineage", pos:"noun", ko:"the line of ancestors a person is descended from", ex:"She can trace her lineage back to a Scottish sea captain.", ref:"Vocabulary 22000 · p.126"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"prodigious", pos:"adjective", ko:"remarkably great in size, amount, or degree", ex:"He has a prodigious memory for baseball statistics.", ref:"Vocabulary 22000 · p.127"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"adroit", pos:"adjective", ko:"clever and skillful, with the hands or the mind", ex:"An adroit debater, she turned every question to her advantage.", ref:"Vocabulary 22000 · p.139"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"ambidextrous", pos:"adjective", ko:"able to use both hands equally well", ex:"Being ambidextrous, the pitcher could throw with either arm.", ref:"Vocabulary 22000 · p.139"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"economize", pos:"verb", ko:"to spend less; to save money or resources", ex:"We economized by packing lunch instead of eating out.", ref:"Vocabulary 22000 · p.141"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"indigence", pos:"noun", ko:"extreme poverty", ex:"The charity helps families living in indigence.", ref:"Vocabulary 22000 · p.141"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"affluent", pos:"adjective", ko:"wealthy; having plenty of money", ex:"The school is in an affluent neighborhood with large houses.", ref:"Vocabulary 22000 · p.142"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"avarice", pos:"noun", ko:"extreme greed for money or possessions", ex:"His avarice led him to cheat his own partners.", ref:"Vocabulary 22000 · p.142"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"avaricious", pos:"adjective", ko:"extremely greedy for wealth", ex:"The avaricious landlord raised the rent every year.", ref:"Vocabulary 22000 · p.142"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"covet", pos:"verb", ko:"to strongly want something that belongs to someone else", ex:"He coveted his friend’s new bike.", ref:"Vocabulary 22000 · p.142"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"dowry", pos:"noun", ko:"money or property a bride’s family gives at her marriage", ex:"In the story, the princess’s dowry included three castles.", ref:"Vocabulary 22000 · p.142"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"means", pos:"noun", ko:"money or resources (“a person of means” = a wealthy person)", ex:"Only a person of means could afford a private jet.", ref:"Vocabulary 22000 · p.144"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"opulence", pos:"noun", ko:"great wealth or luxury", ex:"The palace’s opulence — gold walls, crystal chandeliers — amazed the tourists.", ref:"Vocabulary 22000 · p.144"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"sumptuous", pos:"adjective", ko:"splendid and expensive-looking", ex:"The wedding guests enjoyed a sumptuous feast.", ref:"Vocabulary 22000 · p.144"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"dastardly", pos:"adjective", ko:"wicked and cowardly", ex:"It was a dastardly trick to steal from a sleeping friend.", ref:"Vocabulary 22000 · p.145"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"poltroon", pos:"noun", ko:"a complete coward", ex:"Only a poltroon would abandon his team at the first sign of trouble.", ref:"Vocabulary 22000 · p.145"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"trepidation", pos:"noun", ko:"fear or nervousness about what may happen", ex:"She opened her report card with trepidation.", ref:"Vocabulary 22000 · p.146"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"dauntless", pos:"adjective", ko:"fearless and determined", ex:"The dauntless firefighter ran back into the burning house.", ref:"Vocabulary 22000 · p.147"},
+/* batch 3 */
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"maladroit", pos:"adjective", ko:"clumsy; lacking skill (the opposite of adroit)", ex:"The maladroit waiter spilled soup on three guests in one night.", ref:"Vocabulary 22000 · p.140"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"exploit", pos:"noun", ko:"a bold or daring act (as a verb it means to use unfairly)", ex:"The pilot’s exploits made her famous around the world.", ref:"Vocabulary 22000 · p.147"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"indomitable", pos:"adjective", ko:"impossible to defeat or discourage", ex:"Her indomitable spirit kept her running after she fell.", ref:"Vocabulary 22000 · p.147"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"plucky", pos:"adjective", ko:"brave and determined, especially when facing difficulty", ex:"The plucky little team kept fighting even when they were far behind.", ref:"Vocabulary 22000 · p.147"},
+/* batch 4: Units 2–3 (pp.157–176) */
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"latent", pos:"adjective", ko:"present but hidden and not yet developed", ex:"Coaching brought out her latent talent for leadership.", ref:"Vocabulary 22000 · p.157"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"apprise", pos:"verb", ko:"to inform someone of something", ex:"Please apprise me of any changes to the schedule.", ref:"Vocabulary 22000 · p.158"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"avowal", pos:"noun", ko:"an open statement or admission of something", ex:"His avowal of guilt surprised the whole courtroom.", ref:"Vocabulary 22000 · p.159"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"elicit", pos:"verb", ko:"to draw out a response, fact, or feeling", ex:"The teacher’s joke elicited laughter from the class.", ref:"Vocabulary 22000 · p.159"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"accede", pos:"verb", ko:"to agree to a request or demand (usually “accede to”)", ex:"After much pleading, the coach acceded to our request for a break.", ref:"Vocabulary 22000 · p.160"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"dovetail", pos:"verb", ko:"to fit together neatly and harmoniously", ex:"Her plans dovetailed perfectly with ours.", ref:"Vocabulary 22000 · p.162"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"altercation", pos:"noun", ko:"a noisy, angry argument", ex:"The referee stopped the altercation between the two players.", ref:"Vocabulary 22000 · p.162"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"cleavage", pos:"noun", ko:"a split or division between groups", ex:"The debate created a cleavage within the club.", ref:"Vocabulary 22000 · p.163"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"discord", pos:"noun", ko:"disagreement and conflict", ex:"Arguments over money caused discord in the band.", ref:"Vocabulary 22000 · p.163"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"discrepancy", pos:"noun", ko:"a difference between things that should match", ex:"There was a discrepancy between the receipt and the price tag.", ref:"Vocabulary 22000 · p.163"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"dissent", pos:"verb", ko:"to disagree with an official or majority view", ex:"Two judges dissented from the court’s decision.", ref:"Vocabulary 22000 · p.163"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"embroil", pos:"verb", ko:"to drag someone into a conflict", ex:"He didn’t want to be embroiled in his friends’ quarrel.", ref:"Vocabulary 22000 · p.163"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"estrange", pos:"verb", ko:"to make someone unfriendly or distant (often “estranged”)", ex:"A long feud estranged the two cousins.", ref:"Vocabulary 22000 · p.164"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"irreconcilable", pos:"adjective", ko:"impossible to settle or bring into agreement", ex:"Their views on the issue were irreconcilable.", ref:"Vocabulary 22000 · p.164"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"litigation", pos:"noun", ko:"the process of taking a dispute to court", ex:"The companies avoided litigation by reaching a deal.", ref:"Vocabulary 22000 · p.164"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"at variance", pos:"phrase", ko:"in disagreement; not matching", ex:"His story was at variance with the evidence.", ref:"Vocabulary 22000 · p.164"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"wrangle", pos:"verb", ko:"to argue noisily and for a long time", ex:"The kids wrangled over who got the front seat.", ref:"Vocabulary 22000 · p.164"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"condiment", pos:"noun", ko:"a sauce or seasoning added to food", ex:"Ketchup is his favorite condiment.", ref:"Vocabulary 22000 · p.165"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"glutton", pos:"noun", ko:"a person who eats too much (“a glutton for punishment” = someone who seems to enjoy hardship)", ex:"The glutton finished the whole pizza by himself.", ref:"Vocabulary 22000 · p.166"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"luscious", pos:"adjective", ko:"delicious, rich, and sweet", ex:"We ate luscious peaches straight from the tree.", ref:"Vocabulary 22000 · p.166"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"palatable", pos:"adjective", ko:"pleasant to taste; acceptable", ex:"A little salt made the soup more palatable.", ref:"Vocabulary 22000 · p.166"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"slake", pos:"verb", ko:"to satisfy thirst", ex:"After the race, he slaked his thirst with cold water.", ref:"Vocabulary 22000 · p.166"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"succulent", pos:"adjective", ko:"juicy and tasty", ex:"The grilled chicken was tender and succulent.", ref:"Vocabulary 22000 · p.167"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"voracious", pos:"adjective", ko:"having a huge appetite; very eager (“a voracious reader”)", ex:"She is a voracious reader who finishes a book a day.", ref:"Vocabulary 22000 · p.167"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"commodious", pos:"adjective", ko:"roomy and comfortable", ex:"The new dorm rooms are commodious, with space for two desks.", ref:"Vocabulary 22000 · p.175"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"gamut", pos:"noun", ko:"the complete range of something", ex:"The movie runs the gamut from comedy to tragedy.", ref:"Vocabulary 22000 · p.175"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"infinitesimal", pos:"adjective", ko:"extremely small", ex:"The chance of winning the lottery is infinitesimal.", ref:"Vocabulary 22000 · p.175"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"inordinate", pos:"adjective", ko:"far more than is reasonable", ex:"He spends an inordinate amount of time on video games.", ref:"Vocabulary 22000 · p.176"},
+/* batch 5: Units 3–4 (pp.176–205) */
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"iota", pos:"noun", ko:"a very small amount", ex:"There isn’t one iota of truth in that rumor.", ref:"Vocabulary 22000 · p.176"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"picayune", pos:"adjective", ko:"small and unimportant; petty", ex:"Don’t argue over such picayune details.", ref:"Vocabulary 22000 · p.176"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"pittance", pos:"noun", ko:"a very small amount of money", ex:"He worked all summer for a pittance.", ref:"Vocabulary 22000 · p.176"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"superabundance", pos:"noun", ko:"a much larger amount than is needed", ex:"The garden produced a superabundance of zucchini.", ref:"Vocabulary 22000 · p.177"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"debilitate", pos:"verb", ko:"to make very weak", ex:"The long illness debilitated her for months.", ref:"Vocabulary 22000 · p.178"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"decrepit", pos:"adjective", ko:"worn out or weakened by age or use", ex:"The decrepit old bus broke down again.", ref:"Vocabulary 22000 · p.178"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"incapacitate", pos:"verb", ko:"to make unable to act or work normally", ex:"A broken wrist incapacitated the goalie for the season.", ref:"Vocabulary 22000 · p.179"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"infirmity", pos:"noun", ko:"physical or mental weakness", ex:"Despite his infirmity, he walked to the park every day.", ref:"Vocabulary 22000 · p.179"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"bulwark", pos:"noun", ko:"a defensive wall; something that protects", ex:"A strong library is a bulwark against ignorance.", ref:"Vocabulary 22000 · p.180"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"citadel", pos:"noun", ko:"a fortress protecting a city", ex:"The soldiers retreated to the citadel on the hill.", ref:"Vocabulary 22000 · p.180"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"cogent", pos:"adjective", ko:"clear, logical, and convincing", ex:"She gave a cogent argument for a longer lunch break.", ref:"Vocabulary 22000 · p.180"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"formidable", pos:"adjective", ko:"inspiring fear or respect because it is powerful or difficult", ex:"The champion was a formidable opponent.", ref:"Vocabulary 22000 · p.180"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"forte", pos:"noun", ko:"a person’s strong point", ex:"Math is not my forte, but I love writing.", ref:"Vocabulary 22000 · p.181"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"impregnable", pos:"adjective", ko:"impossible to capture or break into", ex:"The castle walls were thought to be impregnable.", ref:"Vocabulary 22000 · p.181"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"invigorate", pos:"verb", ko:"to give energy and strength to", ex:"A cold shower invigorated him after the run.", ref:"Vocabulary 22000 · p.181"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"tenacious", pos:"adjective", ko:"holding on firmly; refusing to give up", ex:"The tenacious puppy wouldn’t let go of the rope.", ref:"Vocabulary 22000 · p.181"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"vehement", pos:"adjective", ko:"showing strong, forceful feeling", ex:"She was vehement in her refusal to quit the team.", ref:"Vocabulary 22000 · p.181"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"heedless", pos:"adjective", ko:"not paying attention; careless", ex:"Heedless of the warning signs, they swam past the buoys.", ref:"Vocabulary 22000 · p.183"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"sloven", pos:"noun", ko:"a person who is habitually messy or careless (adj. slovenly)", ex:"Only a sloven would leave dishes in the sink for a week.", ref:"Vocabulary 22000 · p.184"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"heed", pos:"verb", ko:"to pay careful attention to (advice or a warning)", ex:"He should have heeded his coach’s advice.", ref:"Vocabulary 22000 · p.184"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"solicitude", pos:"noun", ko:"anxious care or concern for someone", ex:"The nurse treated every patient with solicitude.", ref:"Vocabulary 22000 · p.185"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"vigilance", pos:"noun", ko:"watchfulness for possible danger", ex:"Constant vigilance kept the campers safe from bears.", ref:"Vocabulary 22000 · p.185"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"commute", pos:"verb", ko:"to travel regularly between home and work or school", ex:"She commutes to school by train every day.", ref:"Vocabulary 22000 · p.195"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"denizen", pos:"noun", ko:"an inhabitant or regular occupant of a place", ex:"Owls are denizens of the forest at night.", ref:"Vocabulary 22000 · p.195"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"domicile", pos:"noun", ko:"a person’s home or place of residence", ex:"The family’s domicile was a small apartment downtown.", ref:"Vocabulary 22000 · p.195"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"infraction", pos:"noun", ko:"a breaking of a rule or law", ex:"Talking during the exam is a serious infraction.", ref:"Vocabulary 22000 · p.197"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"insubordinate", pos:"adjective", ko:"refusing to obey authority", ex:"The insubordinate player was benched by the coach.", ref:"Vocabulary 22000 · p.198"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"insurgent", pos:"noun", ko:"a person who rebels against authority", ex:"The insurgents took control of the radio station.", ref:"Vocabulary 22000 · p.198"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"malcontent", pos:"noun", ko:"a person who is always dissatisfied and complains", ex:"A few malcontents grumbled about every new rule.", ref:"Vocabulary 22000 · p.198"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"perverse", pos:"adjective", ko:"deliberately doing the opposite of what is right or expected", ex:"He took a perverse pleasure in spoiling movie endings.", ref:"Vocabulary 22000 · p.198"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"sedition", pos:"noun", ko:"words or actions urging rebellion against the government", ex:"The writer was jailed for sedition.", ref:"Vocabulary 22000 · p.198"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"transgress", pos:"verb", ko:"to break a rule or go beyond a limit", ex:"Students who transgress the honor code face suspension.", ref:"Vocabulary 22000 · p.198"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"acquiesce", pos:"verb", ko:"to accept or agree quietly without protest", ex:"She acquiesced to her brother’s choice of movie.", ref:"Vocabulary 22000 · p.199"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"defer", pos:"verb", ko:"to give way to someone else’s opinion out of respect (“defer to”); also, to postpone", ex:"I deferred to my teacher’s judgment.", ref:"Vocabulary 22000 · p.199"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"docile", pos:"adjective", ko:"quiet and easy to control", ex:"The docile horse let the children ride it.", ref:"Vocabulary 22000 · p.200"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"concurrent", pos:"adjective", ko:"happening at the same time", ex:"The two meetings were concurrent, so I could attend only one.", ref:"Vocabulary 22000 · p.201"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"dawdle", pos:"verb", ko:"to waste time; to move slowly", ex:"Don’t dawdle, or we’ll miss the bus.", ref:"Vocabulary 22000 · p.202"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"imminent", pos:"adjective", ko:"about to happen very soon", ex:"Dark clouds warned of an imminent storm.", ref:"Vocabulary 22000 · p.202"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"incipient", pos:"adjective", ko:"just beginning to appear or develop", ex:"Doctors caught the disease in its incipient stage.", ref:"Vocabulary 22000 · p.202"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"perennial", pos:"adjective", ko:"lasting a long time or recurring again and again", ex:"Traffic is a perennial problem in this city.", ref:"Vocabulary 22000 · p.202"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"sporadic", pos:"adjective", ko:"happening occasionally, not regularly", ex:"There was only sporadic rain during the trip.", ref:"Vocabulary 22000 · p.203"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"entail", pos:"verb", ko:"to involve as a necessary part or result", ex:"Joining the team entails practice every morning.", ref:"Vocabulary 22000 · p.204"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"incumbent", pos:"adjective", ko:"necessary as a duty (“incumbent on/upon someone”)", ex:"It is incumbent on the captain to set an example.", ref:"Vocabulary 22000 · p.205"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"necessitate", pos:"verb", ko:"to make necessary", ex:"The heavy snow necessitated closing the schools.", ref:"Vocabulary 22000 · p.205"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"obviate", pos:"verb", ko:"to remove the need for; to prevent", ex:"A good map obviates the need to ask for directions.", ref:"Vocabulary 22000 · p.205"},
+/* batch 6: Units 1–3 Groups 1–5 (pp.26–82) */
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"concur", pos:"verb", ko:"to agree; to have the same opinion", ex:"I concur with the coach’s decision to rest our best player.", ref:"Vocabulary 22000 · p.26"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"galore", pos:"adjective", ko:"in large numbers (always placed after the noun it describes)", ex:"At the fair there were rides and snacks galore.", ref:"Vocabulary 22000 · p.27"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"inter", pos:"verb", ko:"to bury a dead body (n. interment)", ex:"The old king was interred in the royal chapel.", ref:"Vocabulary 22000 · p.27"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"adjourn", pos:"verb", ko:"to end or pause a meeting until a later time", ex:"The meeting was adjourned until Monday.", ref:"Vocabulary 22000 · p.40"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"censure", pos:"noun", ko:"strong official disapproval or criticism", ex:"The senator faced censure for lying to the committee.", ref:"Vocabulary 22000 · p.40"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"discharge", pos:"verb", ko:"to unload; also, to dismiss from a job or duty", ex:"The ship discharged its cargo at the dock.", ref:"Vocabulary 22000 · p.40"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"equitable", pos:"adjective", ko:"fair and equal to everyone", ex:"We split the prize money in an equitable way.", ref:"Vocabulary 22000 · p.41"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"exonerate", pos:"verb", ko:"to clear someone of blame", ex:"New evidence exonerated the accused man.", ref:"Vocabulary 22000 · p.41"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"extricate", pos:"verb", ko:"to free from a difficult situation or tangle", ex:"It took an hour to extricate the cat from the fence.", ref:"Vocabulary 22000 · p.41"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"lucrative", pos:"adjective", ko:"producing a lot of money; profitable", ex:"Selling lemonade on the hottest day was surprisingly lucrative.", ref:"Vocabulary 22000 · p.42"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"cache", pos:"noun", ko:"a hidden store of things", ex:"The squirrel had a cache of acorns under the porch.", ref:"Vocabulary 22000 · p.54"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"commend", pos:"verb", ko:"to praise formally", ex:"The principal commended the students for their hard work.", ref:"Vocabulary 22000 · p.54"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"cur", pos:"noun", ko:"a worthless or mean dog (also used as an insult)", ex:"A snarling cur chased the mail carrier down the street.", ref:"Vocabulary 22000 · p.54"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"despotic", pos:"adjective", ko:"ruling with total, cruel power; tyrannical (n. despot)", ex:"The despotic ruler jailed anyone who criticized him.", ref:"Vocabulary 22000 · p.54"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"edifice", pos:"noun", ko:"a large, impressive building", ex:"The museum is a grand stone edifice in the city center.", ref:"Vocabulary 22000 · p.55"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"Jolly Roger", pos:"noun", ko:"a pirate flag with a white skull and crossbones", ex:"The sailors panicked when they saw the Jolly Roger.", ref:"Vocabulary 22000 · p.55"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"multitude", pos:"noun", ko:"a very large number of people or things", ex:"A multitude of fans waited outside the stadium.", ref:"Vocabulary 22000 · p.55"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"retract", pos:"verb", ko:"to take back something said; to pull back", ex:"The newspaper retracted its false story.", ref:"Vocabulary 22000 · p.56"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"aggressor", pos:"noun", ko:"a person or country that attacks first", ex:"In the fight, the bigger boy was clearly the aggressor.", ref:"Vocabulary 22000 · p.67"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"convene", pos:"verb", ko:"to come together for a meeting", ex:"The council will convene next Tuesday.", ref:"Vocabulary 22000 · p.68"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"cordiality", pos:"noun", ko:"warm friendliness (adj. cordial)", ex:"Our hosts greeted us with great cordiality.", ref:"Vocabulary 22000 · p.68"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"crony", pos:"noun", ko:"a close friend or companion (often used negatively)", ex:"The boss gave all the good jobs to his cronies.", ref:"Vocabulary 22000 · p.68"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"capsize", pos:"verb", ko:"to turn over in the water", ex:"A sudden wave capsized the small boat.", ref:"Vocabulary 22000 · p.82"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"contend", pos:"verb", ko:"to compete or struggle; also, to argue that something is true", ex:"Five teams will contend for the title.", ref:"Vocabulary 22000 · p.82"},
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"decease", pos:"noun", ko:"death (formal; adj. deceased)", ex:"After her decease, the house went to her nephew.", ref:"Vocabulary 22000 · p.82"}
+];
+VOCAB.forEach(v=>{ v.uv = true; v.o = [v.ko]; v.a = 0; });
+/* page-range sets so the deck can be studied / printed 20–26 words at a time */
+const UV_SECS = [
+  {k:"a", from:1,   to:79,  label:"pp.26–68 · Groups 1–4"},
+  {k:"b", from:80,  to:130, label:"pp.82–127 · Group 5 on"},
+  {k:"c", from:131, to:150, label:"pp.139–147 · Skill, Wealth, Fear, Courage"},
+  {k:"d", from:151, to:170, label:"pp.157–167 · Concealment, Agreement, Eating"},
+  {k:"e", from:171, to:190, label:"pp.175–185 · Size, Weakness, Strength, Care"},
+  {k:"f", from:191, to:999, label:"pp.195–205 · Residence, Obedience, Time, Necessity"}
+];
+const uvPage = d => { const m = /p\.(\d+)/.exec(d.ref||""); return m ? +m[1] : 0; };
+const uvSec = d => (UV_SECS.find(S=>uvPage(d)>=S.from && uvPage(d)<=S.to)||{}).k;
 const ANA = DATA.filter(isAna);
 
-function cardId(d){ return (d.date||"undated") + "|" + d.w; }
+function cardId(d){ return (d.uv ? "uv:" : "") + (d.date||"undated") + "|" + d.w; }
 function lvLabel(d){
   const L = LEVELS.find(x=>x.key===d.lv);
   return (L ? L.ko : d.lv) + (d.pg ? " \u00b7 " + d.pg : "");
@@ -3729,7 +4267,7 @@ function bump(d, ok){
 /* =========================================================
    set (filter) menus, shared by both question sections
    ========================================================= */
-function buildSetMenu(sel, pool, current){
+function buildSetMenu(sel, pool, current, extra, count){
   const opt = (v,t,n)=>`<option value="${v}">${t} \u2014 ${n}</option>`;
   let html = opt("all","All", pool.length);
 
@@ -3774,8 +4312,9 @@ function buildSetMenu(sel, pool, current){
   if(rep) o += opt("repeat","Repeat misses in the books", rep);
   if(o) html += `<optgroup label="\u2500\u2500 OTHER \u2500\u2500">${o}</optgroup>`;
 
+  if(extra) html += extra;
   sel.innerHTML = html;
-  keepMulti(sel, current, v=>applySet(pool, v).length);
+  keepMulti(sel, current, count || (v=>applySet(pool, v).length));
   sel.value = [...sel.options].some(x=>x.value===current) ? current : "all";
   sel.classList.toggle("hot", sel.value==="open" || sel.value.startsWith("qw:"));
   sel.dispatchEvent(new Event("mp-sync"));
@@ -4139,11 +4678,18 @@ function Board(id, pool){
 /* =========================================================
    printing
    ========================================================= */
-const SECNAME = {syn:"Verbal \u2014 Synonyms", ana:"Verbal \u2014 Analogies", read:"Reading", notes:"Session notes"};
+const SECNAME = {syn:"Verbal \u2014 Synonyms", ana:"Verbal \u2014 Analogies", read:"Reading", notes:"Session notes", wc:"Word cards"};
 function fmtDate(d){ return d.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}); }
 function setPrintHead(sec, withAnswers, extra){
   const h = document.getElementById("print-head");
   let what = "", n = 0, kind = "";
+  if(sec==="wc"){
+    const n = document.querySelectorAll("#wc-print .wp-row").length;
+    h.innerHTML = `<div class="ph-main"><b>Word cards</b> \u00b7 ${setLabel(document.getElementById("wc-set"))}</div>` +
+      `<div class="ph-sub">${n} word${n===1?"":"s"} \u00b7 ${extra==="test" ? "write the meaning; answer key on the last page" : "word list with meanings"} \u00b7 printed ${fmtDate(new Date())}</div>` +
+      (extra==="test" ? `<div class="ph-score">Name ________________ &nbsp; Score ______ / ${n}</div>` : "");
+    return;
+  }
   if(sec==="tips"){
     const s = document.body.dataset.printSec;
     what = SECNAME[s] || s; kind = "Error patterns and tips";
@@ -4960,6 +5506,21 @@ const SESSION_NOTES = {
       "Several times the answer needed a noun and he chose a verb or adjective (peruse → underline, composer → orchestral), or he chose what the second word <b>is</b> instead of its part (pie → dessert).",
       "PERUSE shows up again (missed Sep 5 and Sep 8 as a synonym)."],
   todo:"<b>Next</b> — A set-phrase deck: 30 common pairs (beck and call, rank and file, prim and proper, null and void, hale and hearty, time immemorial…). Many SSAT analogies that look impossible are just these phrases."}
+],
+"2026-10-04": [
+ {h:"Upper Level Practice Test 2, Section 3 (pp.74–79) · 35/60 · 25 misses",
+  li:["Score 35/60 matches the 25 misses found (synonyms 10, analogies 15). Down from 39/60 on the Upper Level PT1 retake.",
+      "Synonyms by type: look-alike 3 (raiment, poignant → pungent, prognosticate → procrastinate), opposite 2 (terse → wordy, jingoistic → pacifistic), not knowing the word 2 (garrison, inarticulate), effect 2 (avarice → ambition, hiatus → vacuum), affix 1 (waylay → way + lay).",
+      "<b>TERSE is a repeat miss</b> (Sep 28: ardent). This time he chose the opposite, wordy.",
+      "Analogies by type: synonym–antonym direction 3, function 3, part 2, type 2, place 2, defining trait 2, lacking 1. Twice he wrote the direction and it was wrong: “syn” for zeal : phlegmatic (really lacking) and “ant” for treatment : remission (really cause : result).",
+      "Specific vs general: terrarium : iguana needs a specific bird (parakeet), not “bird”. He chose the category word again."],
+  todo:"<b>Next</b> — Analogies cost 15 of 25 points here. Before marking syn or ant, ask: “Is one word what the other <em>does, lacks, or becomes</em>?” Only if the answer is no, decide syn or ant."},
+ {h:"한세희 Practice Test 3 · Reading 31/40 (9 misses) + Section 3 (12 misses found)",
+  li:["Reading by type: detail 4, infer 2, tone 2, device 1. <b>Two detail misses come from one word in a choice</b>: “bodily strength” (#6) and the counterfactual “Had he been a lexicographer” (#4). The Romeo and Juliet passage cost 4 of 9 (#15, 17, 18, 19).",
+      "Synonyms (6): chide, motif, preposterous, lethargic, perpetuate. His note on PERPETUATE said “perpetual”, the right clue, but he chose elude. HUMILITY (missed Sep 23) and TERSE (missed this morning on PT2) were right here.",
+      "Analogies (6): synonym–antonym direction 2 (trivial : trifling marked ant; innate : acquired read as “already acquired”), part 2, char 1, type 1. Pungent : odor ↔ poignant : emotion links to POIGNANT, also missed in today’s PT2.",
+      "Reading #32 is arguable: traffic chaos is also named in the passage."],
+  todo:"<b>Not scanned:</b> Section 3 p.158 (#1–4), p.163 (#39–41, 44–49), most of p.164 (#50, 52–55). #55 shows a red slash but the stem was cut off. Section 3 score was not visible. Reading questions 7–11 and 20–28 (pp.143–144, 148–151) and 38–40 were not in the screenshots."}
 ]
 };
 
@@ -5025,9 +5586,29 @@ const WC = (function(){
   const sel = $("wc-set"), card = $("wcard");
   let setVal = "all", queue = [], learn = [], know = [], hist = [], cur = null, total = 0;
 
-  function menu(){ setVal = buildSetMenu(sel, SYN, setVal); bar(); }
+  function list(v){
+    if(v.includes("+")){ const seen=new Set(), out=[]; v.split("+").forEach(p=>list(p).forEach(d=>{ if(!seen.has(d)){ seen.add(d); out.push(d); } })); return out; }
+    if(v==="uv:all") return VOCAB.slice();
+    if(v.startsWith("uv:date:")) return VOCAB.filter(d=>d.date===v.slice(8));
+    if(v.startsWith("uv:sec:")) return VOCAB.filter(d=>uvSec(d)===v.slice(7));
+    return applySet(SYN, v);
+  }
+  function uvMenu(){
+    if(!VOCAB.length) return "";
+    const opt = (v,t,n)=>`<option value="${v}">${t} \u2014 ${n}</option>`;
+    let h = opt("uv:all","All marked words", VOCAB.length);
+    const dated = DATES.filter(D=>VOCAB.some(d=>d.date===D.key));
+    dated.forEach(D=>{ h += opt("uv:date:"+D.key, "\u2003\u21b3 " + D.label, VOCAB.filter(d=>d.date===D.key).length); });
+    UV_SECS.forEach(S=>{
+      const ws = VOCAB.filter(d=>uvSec(d)===S.k); if(!ws.length) return;
+      const ds = [...new Set(ws.map(d=>d.date))].map(k=>(DATES.find(x=>x.key===k)||{label:k}).label);
+      h += opt("uv:sec:"+S.k, "\u2003\u21b3 " + ds.join(", ") + " \u00b7 " + S.label, ws.length);
+    });
+    return `<optgroup label="\u2500\u2500 WORDS I DIDN\u2019T KNOW \u2500\u2500">${h}</optgroup>`;
+  }
+  function menu(){ setVal = buildSetMenu(sel, SYN, setVal, uvMenu(), v=>list(v).length); if(!list(setVal).length && setVal!=="all"){ setVal="all"; } bar(); }
   function bar(){
-    historyBar($("wc-history"), applySet(SYN, setVal), "In this deck: ", ()=>{
+    historyBar($("wc-history"), list(setVal), "In this deck: ", ()=>{
       menu(); fresh(false); progressLine(); synBoard.refresh(); anaBoard.refresh();
     });
   }
@@ -5037,9 +5618,9 @@ const WC = (function(){
     next();
   }
   function fresh(shuffle){
-    let list = applySet(SYN, setVal);
-    if(shuffle) for(let i=list.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [list[i],list[j]]=[list[j],list[i]]; }
-    start(list);
+    let l = list(setVal);
+    if(shuffle) for(let i=l.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [l[i],l[j]]=[l[j],l[i]]; }
+    start(l);
   }
   function tally(){
     $("wc-nl").textContent = learn.length + " still learning";
@@ -5054,10 +5635,17 @@ const WC = (function(){
     $("wc-w").textContent = d.w;
     $("wc-p").textContent = d.pos || "";
     $("wc-kn").textContent = isKnown(d) ? "✓ KNOWN" : "";
+    const dl = d.date ? (DATES.find(x=>x.key===d.date)||{}).label : "";
+    if(d.uv){
+      $("wc-a").textContent = d.ko;
+      $("wc-d").innerHTML = d.ex ? `<i>${d.ex}</i>` : "";
+      $("wc-t").innerHTML = `<b>Marked as unknown</b>${d.ref ? " · " + d.ref : ""}${dl ? " · " + dl : ""}`;
+      return;
+    }
     $("wc-a").textContent = d.o[d.a];
     $("wc-d").textContent = d.ko;
     const trap = d.pick!==undefined && d.pick!==d.a
-      ? `<b>The trap:</b> ${d.o[d.pick]}${d.date ? " · " + (DATES.find(x=>x.key===d.date)||{}).label : ""}` : "";
+      ? `<b>The trap:</b> ${d.o[d.pick]}${dl ? " · " + dl : ""}` : "";
     $("wc-t").innerHTML = trap;
   }
   function next(){
@@ -5103,6 +5691,22 @@ const WC = (function(){
   $("wc-no").addEventListener("click", ()=>sortCard(false));
   $("wc-undo").addEventListener("click", undo);
   $("wc-shuffle").addEventListener("click", ()=>fresh(true));
+  function printWords(test){
+    const l = list(setVal); if(!l.length) return;
+    const box = $("wc-print");
+    const ans = d => d.uv ? d.ko : `${d.o[d.a]} \u2014 ${d.ko}`;
+    const src = d => [d.ref || (d.pg ? lvLabel(d) : ""), d.date ? (DATES.find(x=>x.key===d.date)||{}).label : ""].filter(Boolean).join(" \u00b7 ");
+    if(test){
+      box.innerHTML = `<div class="wp-test">` + l.map((d,i)=>`<div class="wp-row"><span class="wp-n">${i+1}.</span><b>${d.w}</b> <span class="wp-pos">${d.pos||""}</span><span class="wp-line"></span></div>`).join("") + `</div>` +
+        `<div class="wp-keypage"><div class="ak-head"><b>Answer key</b> \u00b7 Word cards \u00b7 ${setLabel(sel)}</div><div class="ak-body wp-key">` +
+        l.map((d,i)=>`<div class="ak-row"><span class="ak-n">${i+1}.</span><b>${d.w}</b> ${ans(d)}</div>`).join("") + `</div></div>`;
+    } else {
+      box.innerHTML = `<div class="wp-list">` + l.map((d,i)=>`<div class="wp-row"><span class="wp-n">${i+1}.</span><div><b>${d.w}</b> <span class="wp-pos">${d.pos||""}</span><div class="wp-def">${ans(d)}</div>${d.uv && d.ex ? `<div class="wp-ex">${d.ex}</div>` : ""}<div class="wp-src">${src(d)}</div></div></div>`).join("") + `</div>`;
+    }
+    printSection("wc", false, test ? "test" : "list");
+  }
+  $("wc-print-l").addEventListener("click", ()=>printWords(false));
+  $("wc-print-t").addEventListener("click", ()=>printWords(true));
   sel.addEventListener("change", ()=>{ setVal = sel.value; bar(); fresh(false); });
   let sx = null;
   card.addEventListener("touchstart", e=>{ sx = e.touches[0].clientX; }, {passive:true});
