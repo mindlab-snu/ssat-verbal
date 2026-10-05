@@ -459,13 +459,14 @@ body{
 @media print{.kbtn{display:none!important}}
 
 /* flashcard mode switch */
-.fc-mode{display:inline-flex;border:1.5px solid var(--ink);border-radius:999px;padding:3px;gap:3px;margin:4px 0 18px}
+.fc-mode{display:inline-flex;flex-wrap:wrap;border:1.5px solid var(--ink);border-radius:999px;padding:3px;gap:3px;margin:4px 0 18px}
 .fc-mode button{
   appearance:none;border:0;background:none;cursor:pointer;font-family:var(--sans);
   font-size:14px;font-weight:600;color:var(--ink);padding:8px 16px;border-radius:999px;min-height:38px;
 }
 .fc-mode button[aria-pressed="true"]{background:var(--ink);color:#fff}
 .fc-mode-note{font-size:13px;color:var(--muted);margin:-8px 0 16px}
+@media (max-width:720px){.fc-mode{display:grid;grid-template-columns:repeat(3,1fr);width:100%;border-radius:16px}.fc-mode button{font-size:13px;padding:8px 4px;border-radius:12px;line-height:1.2;min-height:44px}}
 
 /* word cards (Quizlet style) */
 .wc-wrap{max-width:560px}
@@ -728,16 +729,18 @@ body{
   <section class="panel" id="sec-cards" role="tabpanel" hidden>
     <h2 class="sec-head">Flashcards</h2>
     <div class="fc-mode no-print" role="group" aria-label="Card style">
-      <button id="mode-word" aria-pressed="false">Word cards</button>
-      <button id="mode-quiz" aria-pressed="true">Quiz cards</button>
+      <button id="mode-uv" aria-pressed="false">Words · unknown</button>
+      <button id="mode-word" aria-pressed="false">Words · synonyms</button>
+      <button id="mode-quiz" aria-pressed="true">Quiz · synonyms</button>
     </div>
 
     <!-- ===== word cards: Quizlet-style flip, synonyms only ===== -->
     <div class="wc-wrap" id="wc" hidden>
-      <p class="fc-mode-note">Synonyms, plus the words he marked as unknown (bottom of the Deck menu). Tap the card to flip it, then sort it: still learning or know it.</p>
+      <p class="fc-mode-note" id="wc-note"></p>
       <div class="history no-print" id="wc-history"></div>
       <div class="controls no-print">
         <label>Deck <select id="wc-set"></select></label>
+        <input type="search" class="find" id="wc-find" placeholder="Search words…" autocomplete="off">
         <span class="spacer"></span>
         <button class="btn" id="wc-shuffle">Shuffle</button>
         <button class="btn" id="wc-print-l">Print list</button>
@@ -762,6 +765,25 @@ body{
         </div>
       </div>
       <div class="wc-done" id="wc-done" hidden></div>
+
+      <div class="export">
+        <h4>Export to Quizlet</h4>
+        <p>The current Word cards deck in Quizlet's import format &mdash; word, a tab, then the meaning, one card per line. Repeated words are merged.</p>
+        <p class="ql-count" id="wql-count"></p>
+        <textarea id="wql-text" readonly spellcheck="false"></textarea>
+        <div class="acts">
+          <button class="btn primary" id="wql-copy">Copy all</button>
+          <button class="btn" id="wql-download">Download .txt</button>
+          <label style="font-size:13.5px;color:var(--muted);display:flex;align-items:center;gap:7px">
+            <input type="checkbox" id="wql-ex"> include the example sentence
+          </label>
+        </div>
+        <ol>
+          <li>In Quizlet, open <code>콘텐츠 생성하기 → 낱말카드 세트</code>, then <code>Import</code>.</li>
+          <li>Paste this text in.</li>
+          <li>Between term and definition: <code>Tab</code>. Between cards: <code>New line</code>.</li>
+        </ol>
+      </div>
     </div>
     <div id="wc-print"></div>
 
@@ -770,6 +792,7 @@ body{
     <div class="history no-print" id="fc-history" hidden></div>
     <div class="controls no-print">
       <label>Deck <select id="fc-set"></select></label>
+      <input type="search" class="find" id="fc-find" placeholder="Search cards…" autocomplete="off">
       <span class="spacer"></span>
       <button class="btn" id="fc-shuffle">Shuffle</button>
     </div>
@@ -4034,6 +4057,7 @@ const DATES = [
   {key:"2026-09-23", label:"Sep 23, 2026", note:"Practice Test 2 + Upper Level PT1"},
   {key:"2026-09-24", label:"Sep 24, 2026", note:"Ivy Global UL Test 1 + Analogy practice"},
   {key:"2026-09-28", label:"Sep 28, 2026", note:"The Tutorverse"},
+  {key:"2026-10-03", label:"Oct 3, 2026", note:"vocabulary words marked"},
   {key:"2026-10-04", label:"Oct 4, 2026", note:"Upper Level PT2 + Practice Test 3"}
 ];
 const LEVELS = [
@@ -4219,7 +4243,269 @@ const VOCAB = [
 {date:"2026-10-04", lv:"Vocabulary 22000", w:"crony", pos:"noun", ko:"a close friend or companion (often used negatively)", ex:"The boss gave all the good jobs to his cronies.", ref:"Vocabulary 22000 · p.68"},
 {date:"2026-10-04", lv:"Vocabulary 22000", w:"capsize", pos:"verb", ko:"to turn over in the water", ex:"A sudden wave capsized the small boat.", ref:"Vocabulary 22000 · p.82"},
 {date:"2026-10-04", lv:"Vocabulary 22000", w:"contend", pos:"verb", ko:"to compete or struggle; also, to argue that something is true", ex:"Five teams will contend for the title.", ref:"Vocabulary 22000 · p.82"},
-{date:"2026-10-04", lv:"Vocabulary 22000", w:"decease", pos:"noun", ko:"death (formal; adj. deceased)", ex:"After her decease, the house went to her nephew.", ref:"Vocabulary 22000 · p.82"}
+{date:"2026-10-04", lv:"Vocabulary 22000", w:"decease", pos:"noun", ko:"death (formal; adj. deceased)", ex:"After her decease, the house went to her nephew.", ref:"Vocabulary 22000 · p.82"},
+/* 2026-10-03 · 한세희 SSAT HIT Vocabulary, Upper Level Lesson 1-1 (pp.180–181), yellow-highlighted words */
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"abstain", pos:"verb", ko:"to choose not to do or have something (“abstain from”)", ex:"He abstained from sweets for the whole month.", ref:"HIT Vocabulary · p.180"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"accentuate", pos:"verb", ko:"to make more noticeable; to emphasize", ex:"Her bright scarf accentuated the color of her eyes.", ref:"HIT Vocabulary · p.180"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"acclaim", pos:"verb", ko:"to praise publicly and with enthusiasm (n. acclaim)", ex:"Critics acclaimed the young pianist’s first concert.", ref:"HIT Vocabulary · p.180"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"accost", pos:"verb", ko:"to approach and speak to someone boldly or aggressively", ex:"A stranger accosted him in the parking lot and asked for money.", ref:"HIT Vocabulary · p.181"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"acquiesce", pos:"verb", ko:"to accept or agree quietly without protest", ex:"She acquiesced to her brother’s choice of movie.", ref:"HIT Vocabulary · p.181"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"acquit", pos:"verb", ko:"to declare someone not guilty of a crime", ex:"The jury acquitted her of all charges.", ref:"HIT Vocabulary · p.181"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"adamant", pos:"adjective", ko:"refusing to change one’s mind; firmly determined", ex:"He was adamant that he would not quit the team.", ref:"HIT Vocabulary · p.181"},
+/* batch 2: Lessons 1-2 to 3-2 (pp.182–215), yellow-highlighted */
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"affinity", pos:"noun", ko:"a natural liking for, or attraction to, someone or something", ex:"She has a strong affinity for animals and wants to be a vet.", ref:"HIT Vocabulary · p.183"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"allege", pos:"verb", ko:"to claim something is true without giving proof", ex:"The report alleges that the coach broke the rules.", ref:"HIT Vocabulary · p.184"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"allot", pos:"verb", ko:"to give out a share or portion of something", ex:"Each student was allotted ten minutes to speak.", ref:"HIT Vocabulary · p.184"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"akin", pos:"adjective", ko:"similar or related (“akin to”)", ex:"Learning to ski is akin to learning to ride a bike.", ref:"HIT Vocabulary · p.184"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"altercation", pos:"noun", ko:"a noisy, angry argument", ex:"Two fans got into an altercation over a parking spot.", ref:"HIT Vocabulary · p.184"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"amorphous", pos:"adjective", ko:"without a clear shape or structure", ex:"The plan was still an amorphous idea with no details.", ref:"HIT Vocabulary · p.185"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"annihilate", pos:"verb", ko:"to destroy completely", ex:"The storm annihilated the small village.", ref:"HIT Vocabulary · p.186"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"antithesis", pos:"noun", ko:"the direct opposite of something", ex:"Laziness is the antithesis of what the coach expects.", ref:"HIT Vocabulary · p.187"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"apathy", pos:"noun", ko:"lack of interest, feeling, or concern", ex:"Voter apathy kept turnout low.", ref:"HIT Vocabulary · p.187"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"aplomb", pos:"noun", ko:"calm self-confidence in a difficult situation", ex:"She answered the tough questions with aplomb.", ref:"HIT Vocabulary · p.187"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"ardent", pos:"adjective", ko:"very enthusiastic and passionate", ex:"He is an ardent fan who never misses a game.", ref:"HIT Vocabulary · p.188"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"assiduous", pos:"adjective", ko:"working very carefully and steadily", ex:"Her assiduous practice made her the best pianist in school.", ref:"HIT Vocabulary · p.189"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"assimilate", pos:"verb", ko:"to absorb and fit in; to take in information fully", ex:"New students quickly assimilated into the school community.", ref:"HIT Vocabulary · p.189"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"atone", pos:"verb", ko:"to make up for a wrong (“atone for”)", ex:"He washed his sister’s car to atone for breaking her phone.", ref:"HIT Vocabulary · p.189"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"auspicious", pos:"adjective", ko:"showing signs of future success; favorable", ex:"A sunny morning was an auspicious start to the trip.", ref:"HIT Vocabulary · p.196"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"austere", pos:"adjective", ko:"plain and without comfort or decoration; strict", ex:"The monk lived in an austere room with only a bed.", ref:"HIT Vocabulary · p.196"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"avert", pos:"verb", ko:"to prevent something bad; to turn away (eyes)", ex:"Quick thinking averted a disaster in the kitchen.", ref:"HIT Vocabulary · p.196"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"badger", pos:"verb", ko:"to keep asking or pestering someone", ex:"The kids badgered their dad for a puppy.", ref:"HIT Vocabulary · p.196"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"banal", pos:"adjective", ko:"boring because it is so ordinary or overused", ex:"The movie’s ending was banal and predictable.", ref:"HIT Vocabulary · p.196"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"benediction", pos:"noun", ko:"a blessing or prayer for good things", ex:"The ceremony ended with a benediction.", ref:"HIT Vocabulary · p.197"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"berate", pos:"verb", ko:"to scold angrily", ex:"The coach berated the team after the loss.", ref:"HIT Vocabulary · p.198"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"bondage", pos:"noun", ko:"the state of being a slave or being held captive", ex:"The story tells of a family escaping from bondage.", ref:"HIT Vocabulary · p.198"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"bulwark", pos:"noun", ko:"a protective wall; something that defends", ex:"The old walls were a bulwark against invaders.", ref:"HIT Vocabulary · p.199"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"caliber", pos:"noun", ko:"level of quality or ability", ex:"The school attracts teachers of high caliber.", ref:"HIT Vocabulary · p.199"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"callous", pos:"adjective", ko:"not caring about other people’s pain", ex:"His callous joke about the accident upset everyone.", ref:"HIT Vocabulary · p.199"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"candid", pos:"adjective", ko:"honest and direct", ex:"Thanks for your candid opinion of my essay.", ref:"HIT Vocabulary · p.199"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"capricious", pos:"adjective", ko:"changing suddenly and without reason", ex:"The capricious weather ruined our picnic plans.", ref:"HIT Vocabulary · p.200"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"celestial", pos:"adjective", ko:"relating to the sky or outer space; heavenly", ex:"The telescope showed planets and other celestial bodies.", ref:"HIT Vocabulary · p.200"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"censure", pos:"verb", ko:"to criticize strongly and formally", ex:"The council censured the mayor for lying.", ref:"HIT Vocabulary · p.200"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"chagrin", pos:"noun", ko:"embarrassment or annoyance at a failure", ex:"To his chagrin, he tripped on stage.", ref:"HIT Vocabulary · p.200"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"chide", pos:"verb", ko:"to scold mildly", ex:"Mom chided me for leaving my shoes on the stairs.", ref:"HIT Vocabulary · p.201"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"circumvent", pos:"verb", ko:"to find a way around a rule or obstacle", ex:"They tried to circumvent the rules by using a fake name.", ref:"HIT Vocabulary · p.201"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"clamor", pos:"noun", ko:"a loud, confused noise, often of many people", ex:"The clamor from the cafeteria could be heard down the hall.", ref:"HIT Vocabulary · p.202"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"clot", pos:"noun", ko:"a thick lump, especially of blood", ex:"Doctors removed the blood clot from his leg.", ref:"HIT Vocabulary · p.202"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"clutch", pos:"verb", ko:"to hold tightly", ex:"The child clutched her teddy bear during the storm.", ref:"HIT Vocabulary · p.202"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"cogent", pos:"adjective", ko:"clear, logical, and convincing", ex:"She made a cogent case for a longer recess.", ref:"HIT Vocabulary · p.202"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"commend", pos:"verb", ko:"to praise formally", ex:"The principal commended the volunteers.", ref:"HIT Vocabulary · p.203"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"compensate", pos:"verb", ko:"to pay or make up for a loss or injury", ex:"The airline compensated us for the lost luggage.", ref:"HIT Vocabulary · p.204"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"conciliatory", pos:"adjective", ko:"trying to make peace or end anger", ex:"He sent a conciliatory text after the argument.", ref:"HIT Vocabulary · p.204"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"confer", pos:"verb", ko:"to discuss together before deciding; also, to give (a title or award)", ex:"The referees conferred before making the call.", ref:"HIT Vocabulary · p.204"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"conscientious", pos:"adjective", ko:"careful and hard-working; wanting to do right", ex:"A conscientious student checks every answer twice.", ref:"HIT Vocabulary · p.205"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"contention", pos:"noun", ko:"disagreement or argument; also, a claim argued for", ex:"The new rule became a point of contention.", ref:"HIT Vocabulary · p.205"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"contiguous", pos:"adjective", ko:"sharing a border; touching", ex:"The contiguous United States does not include Alaska or Hawaii.", ref:"HIT Vocabulary · p.205"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"convalesce", pos:"verb", ko:"to rest and recover after an illness", ex:"She convalesced at home for two weeks after surgery.", ref:"HIT Vocabulary · p.212"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"copious", pos:"adjective", ko:"large in amount; plentiful", ex:"He took copious notes during the lecture.", ref:"HIT Vocabulary · p.212"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"corpulent", pos:"adjective", ko:"very fat (a polite word)", ex:"The corpulent king could barely fit on his throne.", ref:"HIT Vocabulary · p.212"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"cosmopolitan", pos:"adjective", ko:"including people and ideas from many countries", ex:"New York is a cosmopolitan city.", ref:"HIT Vocabulary · p.213"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"credulous", pos:"adjective", ko:"too ready to believe things; easily fooled", ex:"The credulous boy believed the prank call.", ref:"HIT Vocabulary · p.213"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"criterion", pos:"noun", ko:"a standard used to judge something (plural: criteria)", ex:"Kindness is my main criterion for choosing friends.", ref:"HIT Vocabulary · p.213"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"cursory", pos:"adjective", ko:"quick and not thorough", ex:"He gave the contract only a cursory glance.", ref:"HIT Vocabulary · p.214"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"culpable", pos:"adjective", ko:"deserving blame", ex:"The driver was found culpable for the crash.", ref:"HIT Vocabulary · p.214"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"decimate", pos:"verb", ko:"to destroy a large part of something", ex:"The disease decimated the bird population.", ref:"HIT Vocabulary · p.215"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"defer", pos:"verb", ko:"to put off until later; also, to yield to someone (“defer to”)", ex:"They deferred the decision until next week.", ref:"HIT Vocabulary · p.215"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"deference", pos:"noun", ko:"polite respect, often by giving way to someone", ex:"Out of deference to the elders, we let them speak first.", ref:"HIT Vocabulary · p.215"},
+/* batch 3: Lessons 3-3 to 4-2 (pp.216–231) */
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"deficient", pos:"adjective", ko:"lacking something needed; not good enough", ex:"The report was deficient in evidence.", ref:"HIT Vocabulary · p.216"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"delectable", pos:"adjective", ko:"delicious; very pleasant", ex:"The bakery sells delectable lemon tarts.", ref:"HIT Vocabulary · p.216"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"deplore", pos:"verb", ko:"to feel or express strong disapproval of", ex:"The principal deplores bullying of any kind.", ref:"HIT Vocabulary · p.216"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"despondent", pos:"adjective", ko:"very sad and without hope", ex:"He was despondent after his team lost the final.", ref:"HIT Vocabulary · p.216"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"detain", pos:"verb", ko:"to keep someone from leaving; to hold in custody", ex:"Security detained the man for questioning.", ref:"HIT Vocabulary · p.217"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"detour", pos:"noun", ko:"a longer, indirect route taken to avoid something", ex:"Road work forced us to take a detour.", ref:"HIT Vocabulary · p.217"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"diction", pos:"noun", ko:"the choice of words, or clearness of speech", ex:"The actor’s crisp diction carried to the back row.", ref:"HIT Vocabulary · p.218"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"diffuse", pos:"verb", ko:"to spread out widely (as an adjective: spread out, not concentrated)", ex:"The smell of popcorn diffused through the theater.", ref:"HIT Vocabulary · p.218"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"diminutive", pos:"adjective", ko:"very small", ex:"The diminutive dog barked at the giant horse.", ref:"HIT Vocabulary · p.219"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"discerning", pos:"adjective", ko:"showing good judgment and taste", ex:"A discerning reader spots weak arguments quickly.", ref:"HIT Vocabulary · p.219"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"disparage", pos:"verb", ko:"to speak of someone or something as unimportant or bad", ex:"Don’t disparage your sister’s drawing.", ref:"HIT Vocabulary · p.220"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"dispel", pos:"verb", ko:"to drive away a feeling, belief, or crowd", ex:"The coach’s speech dispelled our doubts.", ref:"HIT Vocabulary · p.220"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"disseminate", pos:"verb", ko:"to spread information widely", ex:"The school disseminated the news by email.", ref:"HIT Vocabulary · p.221"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"diverge", pos:"verb", ko:"to go in different directions; to differ", ex:"Our opinions diverge on which movie is best.", ref:"HIT Vocabulary · p.221"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"diversion", pos:"noun", ko:"a change of route; also, something that distracts or amuses", ex:"Board games were a welcome diversion on the rainy day.", ref:"HIT Vocabulary · p.228"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"divulge", pos:"verb", ko:"to make known something private or secret", ex:"She refused to divulge the ending of the book.", ref:"HIT Vocabulary · p.228"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"ecumenical", pos:"adjective", ko:"universal; especially, bringing different Christian churches together", ex:"The ecumenical service welcomed people of every church.", ref:"HIT Vocabulary · p.229"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"edifice", pos:"noun", ko:"a large, impressive building", ex:"The old bank is a grand marble edifice.", ref:"HIT Vocabulary · p.229"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"egregious", pos:"adjective", ko:"shockingly bad", ex:"Forgetting his own mother’s birthday was an egregious mistake.", ref:"HIT Vocabulary · p.229"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"emancipate", pos:"verb", ko:"to set free from slavery or control", ex:"The new law emancipated thousands of workers.", ref:"HIT Vocabulary · p.230"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"embellish", pos:"verb", ko:"to decorate; also, to add untrue details to a story", ex:"He embellished his fishing story every time he told it.", ref:"HIT Vocabulary · p.230"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"embezzle", pos:"verb", ko:"to secretly steal money you were trusted to manage", ex:"The treasurer embezzled the club’s funds.", ref:"HIT Vocabulary · p.231"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"eminent", pos:"adjective", ko:"famous and respected in a field", ex:"An eminent scientist spoke at graduation.", ref:"HIT Vocabulary · p.231"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"emphatic", pos:"adjective", ko:"said firmly and forcefully", ex:"Her answer was an emphatic “No!”", ref:"HIT Vocabulary · p.231"},
+/* batch 4: Lessons 4-3 to 6-2 (pp.232–263) */
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"entourage", pos:"noun", ko:"a group of people who travel with an important person", ex:"The singer arrived with her entourage of bodyguards and stylists.", ref:"HIT Vocabulary · p.232"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"enunciate", pos:"verb", ko:"to pronounce words clearly", ex:"Please enunciate so the back row can hear you.", ref:"HIT Vocabulary · p.232"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"equilibrium", pos:"noun", ko:"a state of balance", ex:"The gymnast kept her equilibrium on the narrow beam.", ref:"HIT Vocabulary · p.232"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"equitable", pos:"adjective", ko:"fair and equal to everyone", ex:"The teacher found an equitable way to split the groups.", ref:"HIT Vocabulary · p.233"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"equivocal", pos:"adjective", ko:"unclear and open to more than one meaning, often on purpose", ex:"His equivocal reply left us unsure whether he would come.", ref:"HIT Vocabulary · p.233"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"exalt", pos:"verb", ko:"to praise highly; to raise in rank", ex:"The poem exalts the courage of ordinary soldiers.", ref:"HIT Vocabulary · p.233"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"exculpate", pos:"verb", ko:"to clear someone of blame", ex:"The security video exculpated the student.", ref:"HIT Vocabulary · p.234"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"exorbitant", pos:"adjective", ko:"far too high, especially of a price", ex:"The hotel charged an exorbitant fee for Wi-Fi.", ref:"HIT Vocabulary · p.234"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"explicate", pos:"verb", ko:"to explain something in detail", ex:"The teacher explicated the poem line by line.", ref:"HIT Vocabulary · p.234"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"fabricate", pos:"verb", ko:"to make up something false; also, to build or manufacture", ex:"He fabricated an excuse about a flat tire.", ref:"HIT Vocabulary · p.235"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"fallow", pos:"adjective", ko:"left unplanted for a season to recover; unused", ex:"The farmer let the east field lie fallow this year.", ref:"HIT Vocabulary · p.235"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"feasible", pos:"adjective", ko:"possible to do; practical", ex:"Finishing the project by Friday is feasible if we start now.", ref:"HIT Vocabulary · p.236"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"feign", pos:"verb", ko:"to pretend", ex:"She feigned a headache to skip the quiz.", ref:"HIT Vocabulary · p.236"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"finesse", pos:"noun", ko:"delicate skill and tact", ex:"He handled the angry customer with finesse.", ref:"HIT Vocabulary · p.236"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"foolhardy", pos:"adjective", ko:"recklessly bold", ex:"Climbing the cliff without a rope was foolhardy.", ref:"HIT Vocabulary · p.237"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"glut", pos:"noun", ko:"far too much of something; an oversupply", ex:"A glut of apples made prices fall.", ref:"HIT Vocabulary · p.237"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"hackneyed", pos:"adjective", ko:"overused and no longer interesting", ex:"“Once upon a time” is a hackneyed opening.", ref:"HIT Vocabulary · p.244"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"haggard", pos:"adjective", ko:"looking very tired, thin, or worn out", ex:"After three sleepless nights she looked haggard.", ref:"HIT Vocabulary · p.244"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"haphazard", pos:"adjective", ko:"without order or planning; random", ex:"Books were stacked in a haphazard pile.", ref:"HIT Vocabulary · p.245"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"hapless", pos:"adjective", ko:"unlucky", ex:"The hapless goalie slipped just as the ball came in.", ref:"HIT Vocabulary · p.245"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"haughty", pos:"adjective", ko:"proud and looking down on others", ex:"The haughty prince refused to speak to the servants.", ref:"HIT Vocabulary · p.245"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"havoc", pos:"noun", ko:"great destruction or disorder (“wreak havoc”)", ex:"The puppy wreaked havoc in the kitchen.", ref:"HIT Vocabulary · p.246"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"homogenous", pos:"adjective", ko:"all of the same kind; uniform (also spelled homogeneous)", ex:"Stir the paint until the color is homogenous.", ref:"HIT Vocabulary · p.246"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"idiosyncratic", pos:"adjective", ko:"peculiar to one person; odd", ex:"Her idiosyncratic habit is reading the last page first.", ref:"HIT Vocabulary · p.246"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"imminent", pos:"adjective", ko:"about to happen very soon", ex:"The dark sky warned of an imminent storm.", ref:"HIT Vocabulary · p.247"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"impart", pos:"verb", ko:"to give or pass on (knowledge or a quality)", ex:"Grandpa imparted his love of fishing to all of us.", ref:"HIT Vocabulary · p.247"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"incarcerate", pos:"verb", ko:"to put in prison", ex:"The thief was incarcerated for two years.", ref:"HIT Vocabulary · p.248"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"incumbent", pos:"adjective", ko:"currently holding an office (as a noun: the person holding it)", ex:"The incumbent mayor is running again.", ref:"HIT Vocabulary · p.248"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"indefatigable", pos:"adjective", ko:"never getting tired; tireless", ex:"The indefatigable volunteers worked all weekend.", ref:"HIT Vocabulary · p.249"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"indict", pos:"verb", ko:"to formally charge with a crime (pronounced in-DITE)", ex:"The grand jury indicted the CEO for fraud.", ref:"HIT Vocabulary · p.249"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"indulge", pos:"verb", ko:"to let yourself or someone have what is wanted", ex:"On his birthday he indulged in two slices of cake.", ref:"HIT Vocabulary · p.250"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"ingenuous", pos:"adjective", ko:"innocent and trusting; naive (not ingenious = clever)", ex:"The ingenuous boy believed every story he heard.", ref:"HIT Vocabulary · p.250"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"innocuous", pos:"adjective", ko:"harmless; not likely to offend", ex:"It was an innocuous question, but she got upset.", ref:"HIT Vocabulary · p.250"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"integral", pos:"adjective", ko:"necessary to make something complete; essential", ex:"Practice is integral to learning an instrument.", ref:"HIT Vocabulary · p.251"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"interim", pos:"adjective", ko:"temporary; for the time in between", ex:"An interim coach led the team until a new one was hired.", ref:"HIT Vocabulary · p.251"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"invigorate", pos:"verb", ko:"to give energy and strength to", ex:"A morning swim invigorated him.", ref:"HIT Vocabulary · p.252"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"judicious", pos:"adjective", ko:"showing good judgment; wise", ex:"She made judicious use of her allowance.", ref:"HIT Vocabulary · p.253"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"jurisdiction", pos:"noun", ko:"the official power to make legal decisions in an area", ex:"The case is outside this court’s jurisdiction.", ref:"HIT Vocabulary · p.253"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"juxtapose", pos:"verb", ko:"to place side by side, especially to compare", ex:"The museum juxtaposed old and new photos of the city.", ref:"HIT Vocabulary · p.260"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"kinetic", pos:"adjective", ko:"relating to or caused by motion", ex:"A moving car has kinetic energy.", ref:"HIT Vocabulary · p.260"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"lackluster", pos:"adjective", ko:"dull; lacking energy or brightness", ex:"The team gave a lackluster performance.", ref:"HIT Vocabulary · p.260"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"lampoon", pos:"noun", ko:"a piece of writing or a show that mocks someone (as a verb: to mock)", ex:"The comedy show was a lampoon of the president.", ref:"HIT Vocabulary · p.260"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"languid", pos:"adjective", ko:"slow and lacking energy", ex:"The hot afternoon made everyone languid.", ref:"HIT Vocabulary · p.261"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"latent", pos:"adjective", ko:"present but hidden or not yet developed", ex:"Art class revealed his latent talent.", ref:"HIT Vocabulary · p.261"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"liaison", pos:"noun", ko:"a person or link that connects two groups", ex:"She acts as the liaison between the students and the principal.", ref:"HIT Vocabulary · p.262"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"lineage", pos:"noun", ko:"the line of ancestors a person comes from", ex:"The horse’s lineage includes two champions.", ref:"HIT Vocabulary · p.263"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"lubricate", pos:"verb", ko:"to apply oil or grease to make parts move smoothly", ex:"Dad lubricated the squeaky door hinge.", ref:"HIT Vocabulary · p.263"},
+/* batch 5: Lessons 6-3 to 8-3 (pp.264–297) */
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"malady", pos:"noun", ko:"a disease or illness; a serious problem", ex:"The old sailor suffered from a strange malady.", ref:"HIT Vocabulary · p.264"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"lull", pos:"noun", ko:"a short, quiet pause in activity", ex:"There was a lull in the storm before the wind picked up again.", ref:"HIT Vocabulary · p.264"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"mar", pos:"verb", ko:"to spoil or damage the look or quality of", ex:"A single scratch marred the new table.", ref:"HIT Vocabulary · p.264"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"meander", pos:"verb", ko:"to wander slowly with no fixed direction; to wind back and forth", ex:"The river meanders through the valley.", ref:"HIT Vocabulary · p.265"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"meddle", pos:"verb", ko:"to interfere in other people’s business", ex:"Stop meddling in your brother’s friendships.", ref:"HIT Vocabulary · p.265"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"memento", pos:"noun", ko:"an object kept to remember a person or event", ex:"She kept the ticket stub as a memento of the concert.", ref:"HIT Vocabulary · p.266"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"meritorious", pos:"adjective", ko:"deserving praise or reward", ex:"He received an award for meritorious service.", ref:"HIT Vocabulary · p.266"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"minute", pos:"adjective", ko:"extremely small (pronounced my-NOOT)", ex:"The scientist examined minute particles under the microscope.", ref:"HIT Vocabulary · p.267"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"misconstrue", pos:"verb", ko:"to understand something wrongly", ex:"She misconstrued my joke as an insult.", ref:"HIT Vocabulary · p.267"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"monotonous", pos:"adjective", ko:"dull because it never changes", ex:"The monotonous hum of the fan put me to sleep.", ref:"HIT Vocabulary · p.268"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"moor", pos:"verb", ko:"to tie up a boat so it stays in place", ex:"They moored the sailboat at the dock.", ref:"HIT Vocabulary · p.268"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"morose", pos:"adjective", ko:"gloomy and bad-tempered", ex:"He was morose all week after losing the election.", ref:"HIT Vocabulary · p.268"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"mourn", pos:"verb", ko:"to feel or show deep sadness after a loss", ex:"The town mourned the death of its beloved mayor.", ref:"HIT Vocabulary · p.268"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"munificent", pos:"adjective", ko:"extremely generous", ex:"A munificent donor paid for the new library.", ref:"HIT Vocabulary · p.269"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"myriad", pos:"adjective", ko:"countless; very many (also a noun: a myriad of)", ex:"The garden was full of myriad colorful flowers.", ref:"HIT Vocabulary · p.269"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"nebulous", pos:"adjective", ko:"vague and unclear; hazy", ex:"He had only a nebulous plan for the summer.", ref:"HIT Vocabulary · p.276"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"neutralize", pos:"verb", ko:"to stop something from having an effect; to cancel out", ex:"Baking soda can neutralize the acid.", ref:"HIT Vocabulary · p.276"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"noncommittal", pos:"adjective", ko:"not showing a clear opinion or decision", ex:"When asked about the plan, she gave a noncommittal shrug.", ref:"HIT Vocabulary · p.277"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"officious", pos:"adjective", ko:"too eager to give orders or offer unwanted help; bossy", ex:"The officious hall monitor reported every small mistake.", ref:"HIT Vocabulary · p.279"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"ominous", pos:"adjective", ko:"suggesting that something bad will happen", ex:"Ominous black clouds gathered over the field.", ref:"HIT Vocabulary · p.279"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"onerous", pos:"adjective", ko:"heavy and difficult to bear; burdensome", ex:"Caring for the farm alone was an onerous task.", ref:"HIT Vocabulary · p.280"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"optimum", pos:"adjective", ko:"best or most favorable", ex:"Sixty-five degrees is the optimum temperature for running.", ref:"HIT Vocabulary · p.280"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"opulent", pos:"adjective", ko:"rich and luxurious", ex:"They stayed in an opulent hotel with gold-trimmed walls.", ref:"HIT Vocabulary · p.280"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"oratory", pos:"noun", ko:"the art or skill of public speaking", ex:"His powerful oratory moved the whole crowd.", ref:"HIT Vocabulary · p.280"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"orthodox", pos:"adjective", ko:"following traditional, accepted beliefs or methods", ex:"The coach used orthodox training methods.", ref:"HIT Vocabulary · p.280"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"overlook", pos:"verb", ko:"to fail to notice; also, to look down over from above", ex:"Don’t overlook the small print at the bottom.", ref:"HIT Vocabulary · p.281"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"overture", pos:"noun", ko:"a first move toward an agreement or friendship; also, the opening music of an opera", ex:"The rival team made an overture of peace.", ref:"HIT Vocabulary · p.282"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"palatable", pos:"adjective", ko:"pleasant to taste; acceptable", ex:"Adding honey made the medicine more palatable.", ref:"HIT Vocabulary · p.282"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"paltry", pos:"adjective", ko:"very small or meager; worthless", ex:"He was paid a paltry sum for hours of work.", ref:"HIT Vocabulary · p.282"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"parch", pos:"verb", ko:"to make very dry, especially with heat (often “parched”)", ex:"The sun parched the fields all summer.", ref:"HIT Vocabulary · p.282"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"parry", pos:"verb", ko:"to block or turn aside a blow; to dodge a question", ex:"The fencer parried every thrust.", ref:"HIT Vocabulary · p.283"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"patron", pos:"noun", ko:"a person who supports an artist or cause with money; a regular customer", ex:"The museum thanked its patrons at the gala.", ref:"HIT Vocabulary · p.283"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"patronizing", pos:"adjective", ko:"talking down to someone as if they were less intelligent", ex:"Her patronizing tone annoyed the new students.", ref:"HIT Vocabulary · p.283"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"pedantic", pos:"adjective", ko:"too concerned with small details or showing off learning", ex:"The pedantic tutor corrected every comma.", ref:"HIT Vocabulary · p.284"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"perjury", pos:"noun", ko:"the crime of lying under oath", ex:"The witness was charged with perjury.", ref:"HIT Vocabulary · p.284"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"permeate", pos:"verb", ko:"to spread through every part of something", ex:"The smell of bread permeated the house.", ref:"HIT Vocabulary · p.284"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"pernicious", pos:"adjective", ko:"very harmful, often in a slow or hidden way", ex:"Rumors can have a pernicious effect on friendships.", ref:"HIT Vocabulary · p.284"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"perspicacious", pos:"adjective", ko:"quick to notice and understand things; sharp-minded", ex:"A perspicacious reader spotted the clue early.", ref:"HIT Vocabulary · p.285"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"pertain", pos:"verb", ko:"to relate to or be connected with (“pertain to”)", ex:"These rules pertain only to the upper school.", ref:"HIT Vocabulary · p.285"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"pervade", pos:"verb", ko:"to spread through and be present everywhere in", ex:"A feeling of excitement pervaded the stadium.", ref:"HIT Vocabulary · p.285"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"poignant", pos:"adjective", ko:"causing a sharp feeling of sadness or emotion", ex:"The movie’s poignant ending made everyone cry.", ref:"HIT Vocabulary · p.292"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"posthumous", pos:"adjective", ko:"happening after a person’s death", ex:"The author won a posthumous award.", ref:"HIT Vocabulary · p.294"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"posture", pos:"noun", ko:"the position in which you hold your body", ex:"Good posture helps prevent back pain.", ref:"HIT Vocabulary · p.294"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"preamble", pos:"noun", ko:"an introduction to a speech or document", ex:"The preamble explains the purpose of the Constitution.", ref:"HIT Vocabulary · p.294"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"premonition", pos:"noun", ko:"a feeling that something, often bad, is about to happen", ex:"She had a premonition that the bus would be late.", ref:"HIT Vocabulary · p.295"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"preposterous", pos:"adjective", ko:"completely absurd; ridiculous", ex:"The idea that the moon is cheese is preposterous.", ref:"HIT Vocabulary · p.295"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"pretentious", pos:"adjective", ko:"trying to seem more important or cultured than you are", ex:"His pretentious speech was full of big words.", ref:"HIT Vocabulary · p.295"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"pristine", pos:"adjective", ko:"perfectly clean and untouched; like new", ex:"The vintage car was in pristine condition.", ref:"HIT Vocabulary · p.296"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"prolific", pos:"adjective", ko:"producing a great deal of work or many offspring", ex:"She is a prolific author with forty books.", ref:"HIT Vocabulary · p.296"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"promenade", pos:"noun", ko:"a leisurely walk, or a paved path for walking", ex:"We took a promenade along the seaside.", ref:"HIT Vocabulary · p.296"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"prune", pos:"verb", ko:"to cut off unwanted parts, especially branches; to trim", ex:"Dad prunes the hedges every spring.", ref:"HIT Vocabulary · p.297"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"pugnacious", pos:"adjective", ko:"eager to argue or fight; aggressive", ex:"The pugnacious boy picked fights at recess.", ref:"HIT Vocabulary · p.297"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"pun", pos:"noun", ko:"a joke that plays on words with two meanings or similar sounds", ex:"“I’m reading a book on anti-gravity; it’s impossible to put down” is a pun.", ref:"HIT Vocabulary · p.297"},
+/* batch 6: Lessons 8-4 to 10-3 (pp.298–329) */
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"pungent", pos:"adjective", ko:"having a sharp, strong taste or smell", ex:"The pungent smell of onions filled the kitchen.", ref:"HIT Vocabulary · p.298"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"quaint", pos:"adjective", ko:"attractively unusual or old-fashioned", ex:"We stayed in a quaint cottage with a thatched roof.", ref:"HIT Vocabulary · p.298"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"qualm", pos:"noun", ko:"an uneasy feeling of doubt or guilt about what one is doing", ex:"She had no qualms about telling the truth.", ref:"HIT Vocabulary · p.298"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"quixotic", pos:"adjective", ko:"idealistic in a way that is impractical or unrealistic", ex:"His quixotic plan to end world hunger by Friday made us smile.", ref:"HIT Vocabulary · p.299"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"rancorous", pos:"adjective", ko:"full of bitter, long-lasting resentment", ex:"The rancorous argument split the club in two.", ref:"HIT Vocabulary · p.299"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"recalcitrant", pos:"adjective", ko:"stubbornly refusing to obey authority or control", ex:"The recalcitrant mule would not move an inch.", ref:"HIT Vocabulary · p.300"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"reciprocal", pos:"adjective", ko:"given and received in return; mutual", ex:"Their friendship was based on reciprocal trust.", ref:"HIT Vocabulary · p.300"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"recluse", pos:"noun", ko:"a person who lives alone and avoids other people", ex:"The old recluse rarely left his cabin in the woods.", ref:"HIT Vocabulary · p.300"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"refute", pos:"verb", ko:"to prove that a statement or claim is false", ex:"The scientist refuted the myth with clear evidence.", ref:"HIT Vocabulary · p.301"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"relegate", pos:"verb", ko:"to move to a lower or less important position", ex:"The injured star was relegated to the bench.", ref:"HIT Vocabulary · p.301"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"reparation", pos:"noun", ko:"making amends for a wrong; payment for damage done", ex:"The company paid reparations to the families it had harmed.", ref:"HIT Vocabulary · p.308"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"repulse", pos:"verb", ko:"to drive back an attack; also, to cause disgust in", ex:"The soldiers repulsed the invaders at the gate.", ref:"HIT Vocabulary · p.309"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"requisite", pos:"noun", ko:"something that is necessary for a purpose (also an adjective: required)", ex:"Patience is a requisite for teaching young children.", ref:"HIT Vocabulary · p.309"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"rescind", pos:"verb", ko:"to cancel officially; to take back (a law, order, or agreement)", ex:"The school rescinded the new phone ban after protests.", ref:"HIT Vocabulary · p.309"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"restitution", pos:"noun", ko:"giving back what was taken, or paying for damage or loss", ex:"The thief had to make restitution to the store owner.", ref:"HIT Vocabulary · p.310"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"resuscitate", pos:"verb", ko:"to bring back to life or consciousness; to revive", ex:"The lifeguard resuscitated the swimmer with CPR.", ref:"HIT Vocabulary · p.310"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"retribution", pos:"noun", ko:"punishment given in return for a wrong", ex:"The villain feared retribution for his crimes.", ref:"HIT Vocabulary · p.311"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"revere", pos:"verb", ko:"to respect deeply, with a feeling of awe", ex:"Many students revere their old music teacher.", ref:"HIT Vocabulary · p.311"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"revert", pos:"verb", ko:"to go back to a former state or habit", ex:"After the diet ended, he reverted to eating junk food.", ref:"HIT Vocabulary · p.312"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"revile", pos:"verb", ko:"to criticize in an abusive, angry way", ex:"The traitor was reviled by his own people.", ref:"HIT Vocabulary · p.312"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"rotund", pos:"adjective", ko:"round and plump", ex:"The rotund little man laughed heartily.", ref:"HIT Vocabulary · p.312"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"rue", pos:"verb", ko:"to bitterly regret", ex:"You will rue the day you skipped practice.", ref:"HIT Vocabulary · p.312"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"sanctimonious", pos:"adjective", ko:"acting morally superior to others in a hypocritical way", ex:"His sanctimonious lecture annoyed everyone, since he broke the rules too.", ref:"HIT Vocabulary · p.313"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"sanguine", pos:"adjective", ko:"cheerfully optimistic", ex:"The coach remained sanguine about the team’s chances.", ref:"HIT Vocabulary · p.313"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"satiate", pos:"verb", ko:"to satisfy fully, or even more than fully", ex:"The huge dinner satiated even the hungriest guest.", ref:"HIT Vocabulary · p.314"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"secede", pos:"verb", ko:"to formally withdraw from a group, nation, or organization", ex:"Several states seceded from the Union in 1861.", ref:"HIT Vocabulary · p.314"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"sedate", pos:"adjective", ko:"calm, quiet, and unhurried (as a verb: to calm with a drug)", ex:"They walked at a sedate pace through the park.", ref:"HIT Vocabulary · p.314"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"sedentary", pos:"adjective", ko:"involving a lot of sitting and little exercise", ex:"A sedentary lifestyle can harm your health.", ref:"HIT Vocabulary · p.314"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"sequel", pos:"noun", ko:"a book, film, or event that follows and continues an earlier one", ex:"The sequel was even better than the first movie.", ref:"HIT Vocabulary · p.315"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"sequester", pos:"verb", ko:"to isolate or keep apart", ex:"The jury was sequestered in a hotel during the trial.", ref:"HIT Vocabulary · p.315"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"shirk", pos:"verb", ko:"to avoid a duty or responsibility", ex:"He shirked his chores by pretending to be sick.", ref:"HIT Vocabulary · p.315"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"skirmish", pos:"noun", ko:"a short, minor fight or conflict", ex:"A skirmish broke out between the two fans.", ref:"HIT Vocabulary · p.316"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"slander", pos:"noun", ko:"a false spoken statement that damages someone’s reputation", ex:"He sued the newspaper editor for slander.", ref:"HIT Vocabulary · p.316"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"smear", pos:"verb", ko:"to damage someone’s reputation with false claims; also, to spread something messy", ex:"The ad tried to smear the other candidate.", ref:"HIT Vocabulary · p.316"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"smother", pos:"verb", ko:"to suffocate by covering; to cover thickly or hold back", ex:"She smothered the fire with a blanket.", ref:"HIT Vocabulary · p.316"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"snub", pos:"verb", ko:"to ignore or treat someone coldly on purpose", ex:"She snubbed him by walking past without a word.", ref:"HIT Vocabulary · p.317"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"stipulation", pos:"noun", ko:"a condition or requirement in an agreement", ex:"One stipulation of the deal was that he finish school.", ref:"HIT Vocabulary · p.317"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"sublime", pos:"adjective", ko:"so excellent or beautiful that it inspires awe", ex:"The view from the mountaintop was sublime.", ref:"HIT Vocabulary · p.324"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"substantiate", pos:"verb", ko:"to prove with evidence", ex:"Can you substantiate your claim with facts?", ref:"HIT Vocabulary · p.324"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"succumb", pos:"verb", ko:"to give in to a force, temptation, or illness", ex:"He finally succumbed to sleep after midnight.", ref:"HIT Vocabulary · p.324"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"sully", pos:"verb", ko:"to damage the purity or reputation of; to stain", ex:"One lie sullied his good name.", ref:"HIT Vocabulary · p.324"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"sumptuous", pos:"adjective", ko:"splendid and expensive-looking; lavish", ex:"The hotel served a sumptuous breakfast buffet.", ref:"HIT Vocabulary · p.325"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"supercilious", pos:"adjective", ko:"behaving as if one is better than others; haughty", ex:"The supercilious clerk looked down at our muddy shoes.", ref:"HIT Vocabulary · p.325"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"supple", pos:"adjective", ko:"bending easily; flexible", ex:"Yoga keeps her body supple.", ref:"HIT Vocabulary · p.325"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"surmise", pos:"noun", ko:"a guess based on little evidence (as a verb: to guess)", ex:"My surmise that it would rain proved right.", ref:"HIT Vocabulary · p.326"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"susceptible", pos:"adjective", ko:"easily affected or harmed by something", ex:"Young children are more susceptible to colds.", ref:"HIT Vocabulary · p.326"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"tacit", pos:"adjective", ko:"understood without being said out loud", ex:"They had a tacit agreement not to mention the accident.", ref:"HIT Vocabulary · p.326"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"taint", pos:"verb", ko:"to spoil or contaminate slightly", ex:"One rotten apple can taint the whole basket.", ref:"HIT Vocabulary · p.326"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"tarnish", pos:"verb", ko:"to make dull or less bright; to damage a reputation", ex:"Cheating tarnished the champion’s record.", ref:"HIT Vocabulary · p.327"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"taut", pos:"adjective", ko:"stretched tight", ex:"Pull the rope taut before tying the knot.", ref:"HIT Vocabulary · p.327"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"tenacious", pos:"adjective", ko:"holding on firmly; refusing to give up", ex:"The tenacious reporter kept asking questions.", ref:"HIT Vocabulary · p.327"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"tepid", pos:"adjective", ko:"only slightly warm; lacking enthusiasm", ex:"The audience gave a tepid response to the new song.", ref:"HIT Vocabulary · p.328"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"torrid", pos:"adjective", ko:"very hot and dry; also, full of intense passion", ex:"The desert was torrid by noon.", ref:"HIT Vocabulary · p.328"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"tranquil", pos:"adjective", ko:"calm and peaceful", ex:"The lake was tranquil at sunrise.", ref:"HIT Vocabulary · p.328"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"transcend", pos:"verb", ko:"to go beyond the usual limits of", ex:"Great music transcends language.", ref:"HIT Vocabulary · p.328"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"trite", pos:"adjective", ko:"overused and no longer fresh or original", ex:"“Follow your dreams” felt like a trite ending to the speech.", ref:"HIT Vocabulary · p.328"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"unattainable", pos:"adjective", ko:"impossible to reach or achieve", ex:"For years, a four-minute mile seemed unattainable.", ref:"HIT Vocabulary · p.329"},
+/* batch 7: Lessons 10-4 to 10-5 (pp.330–333) */
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"unprecedented", pos:"adjective", ko:"never done or known before", ex:"The flood caused unprecedented damage to the town.", ref:"HIT Vocabulary · p.330"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"unflinching", pos:"adjective", ko:"not showing fear or hesitation; steady", ex:"She faced the bully with unflinching courage.", ref:"HIT Vocabulary · p.330"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"verbose", pos:"adjective", ko:"using more words than are needed", ex:"His verbose essay could have been half as long.", ref:"HIT Vocabulary · p.330"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"vie", pos:"verb", ko:"to compete eagerly with others for something", ex:"The two teams will vie for the championship.", ref:"HIT Vocabulary · p.331"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"vigilant", pos:"adjective", ko:"carefully watching for possible danger", ex:"The vigilant guard noticed the open window.", ref:"HIT Vocabulary · p.331"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"vindictive", pos:"adjective", ko:"wanting to hurt someone in return for a wrong; vengeful", ex:"The vindictive player tried to trip the boy who had fouled him.", ref:"HIT Vocabulary · p.331"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"vociferous", pos:"adjective", ko:"expressing opinions loudly and forcefully", ex:"The fans were vociferous in their support of the coach.", ref:"HIT Vocabulary · p.332"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"wail", pos:"verb", ko:"to cry loudly in sorrow or pain", ex:"The baby wailed until his bottle arrived.", ref:"HIT Vocabulary · p.332"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"waive", pos:"verb", ko:"to give up a right or not require something", ex:"The school waived the late fee this time.", ref:"HIT Vocabulary · p.332"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"wrath", pos:"noun", ko:"extreme anger", ex:"He feared his mother’s wrath after breaking the vase.", ref:"HIT Vocabulary · p.333"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"writhe", pos:"verb", ko:"to twist and turn the body, as in pain", ex:"The snake writhed on the hot sand.", ref:"HIT Vocabulary · p.333"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"zany", pos:"adjective", ko:"amusingly unusual and silly", ex:"Her zany costume made everyone laugh.", ref:"HIT Vocabulary · p.333"},
+{date:"2026-10-03", lv:"HIT Vocabulary", w:"zealous", pos:"adjective", ko:"full of eager, passionate enthusiasm", ex:"The zealous volunteers worked through the night.", ref:"HIT Vocabulary · p.333"}
 ];
 VOCAB.forEach(v=>{ v.uv = true; v.o = [v.ko]; v.a = 0; });
 /* page-range sets so the deck can be studied / printed 20–26 words at a time */
@@ -4229,10 +4515,20 @@ const UV_SECS = [
   {k:"c", from:131, to:150, label:"pp.139–147 · Skill, Wealth, Fear, Courage"},
   {k:"d", from:151, to:170, label:"pp.157–167 · Concealment, Agreement, Eating"},
   {k:"e", from:171, to:190, label:"pp.175–185 · Size, Weakness, Strength, Care"},
-  {k:"f", from:191, to:999, label:"pp.195–205 · Residence, Obedience, Time, Necessity"}
+  {k:"f", from:191, to:999, label:"pp.195–205 · Residence, Obedience, Time, Necessity"},
+  {k:"h1", book:"HIT Vocabulary", from:1, to:195, label:"HIT Vocabulary · Lessons 1-1 to 1-5 (pp.180–189)"},
+  {k:"h2", book:"HIT Vocabulary", from:196, to:211, label:"HIT Vocabulary · Lessons 2-1 to 2-5 (pp.196–205)"},
+  {k:"h3", book:"HIT Vocabulary", from:212, to:227, label:"HIT Vocabulary · Lessons 3-1 to 3-5 (pp.212–221)"},
+  {k:"h4", book:"HIT Vocabulary", from:228, to:243, label:"HIT Vocabulary · Lessons 4-1 to 4-5 (pp.228–237)"},
+  {k:"h5", book:"HIT Vocabulary", from:244, to:259, label:"HIT Vocabulary · Lessons 5-1 to 5-5 (pp.244–253)"},
+  {k:"h6", book:"HIT Vocabulary", from:260, to:275, label:"HIT Vocabulary · Lessons 6-1 to 6-5 (pp.260–269)"},
+  {k:"h7", book:"HIT Vocabulary", from:276, to:291, label:"HIT Vocabulary · Lessons 7-1 to 7-5 (pp.276–285)"},
+  {k:"h8", book:"HIT Vocabulary", from:292, to:307, label:"HIT Vocabulary · Lessons 8-1 to 8-5 (pp.292–301)"},
+  {k:"h9", book:"HIT Vocabulary", from:308, to:323, label:"HIT Vocabulary · Lessons 9-1 to 9-5 (pp.308–317)"},
+  {k:"h10", book:"HIT Vocabulary", from:324, to:999, label:"HIT Vocabulary · Lessons 10-1 to 10-5 (pp.324–333)"}
 ];
 const uvPage = d => { const m = /p\.(\d+)/.exec(d.ref||""); return m ? +m[1] : 0; };
-const uvSec = d => (UV_SECS.find(S=>uvPage(d)>=S.from && uvPage(d)<=S.to)||{}).k;
+const uvSec = d => (UV_SECS.find(S=>(S.book||"Vocabulary 22000")===d.lv && uvPage(d)>=S.from && uvPage(d)<=S.to)||{}).k;
 const ANA = DATA.filter(isAna);
 
 function cardId(d){ return (d.uv ? "uv:" : "") + (d.date||"undated") + "|" + d.w; }
@@ -4355,7 +4651,7 @@ function applySet(pool, v){
 }
 function setLabel(sel){
   const o = sel.options[sel.selectedIndex];
-  return o ? o.textContent.replace(/\s+\u2014\s+\d+$/,"").replace(/^[\s\u2003\u21b3]+/,"") : "All";
+  return o ? o.textContent.replace(/\s+\u2014\s+\d+$/,"").replace(/^[\s\u2003\u21b3\u00b7]+/,"") : "All";
 }
 
 
@@ -4393,7 +4689,7 @@ function historyBar(hist, pool, prefix, onReset){
 
 
 /* ---- multi-select menus: several entries combined into one set ---- */
-const MP_EXCL = ["all","one"];               // entries that stand alone
+const MP_EXCL = ["all","one","uv:all"];               // entries that stand alone
 function multiLabel(sel, v){
   return v.split("+").map(p=>{
     const o = [...sel.options].find(x=>x.value===p && !x.dataset.multi);
@@ -5073,9 +5369,11 @@ function buildDeck(){
   if(deckVal==="syn:all") deck = SYN.slice();
   else if(deckVal==="ana:all") deck = ANA.slice();
   else deck = applySet(DATA, deckVal);
+  const fq = (document.getElementById("fc-find").value||"").trim();
+  if(fq) deck = deck.filter(d=>cardMatch(d, fq));
   di = 0;
   document.getElementById("fc-deckline").innerHTML =
-    `<b>Deck</b>${setLabel(deckSel)} \u2014 ${deck.length} card${deck.length===1?"":"s"}`;
+    `<b>Deck</b>${setLabel(deckSel)}${fq ? ` \u00b7 search \u201c${fq.replace(/</g,"&lt;")}\u201d` : ""} \u2014 ${deck.length} card${deck.length===1?"":"s"}`;
   buildQuizlet();
   fcHistory();
   paintCard();
@@ -5202,6 +5500,11 @@ deckSel.addEventListener("change",()=>{
 });
 document.getElementById("fc-prev").addEventListener("click",()=>{ if(di>0){ di--; paintCard(); } });
 document.getElementById("fc-next").addEventListener("click",()=>{ if(di<deck.length-1){ di++; paintCard(); } });
+(function(){
+  const f = document.getElementById("fc-find"); let t;
+  f.addEventListener("input", ()=>{ clearTimeout(t); t = setTimeout(buildDeck, 150); });
+  f.addEventListener("keydown", e=>{ if(e.key==="Escape"){ f.value=""; buildDeck(); } e.stopPropagation(); });
+})();
 document.getElementById("fc-shuffle").addEventListener("click",()=>{
   for(let i=deck.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [deck[i],deck[j]]=[deck[j],deck[i]]; }
   di=0; paintCard(); buildQuizlet();
@@ -5251,6 +5554,12 @@ document.addEventListener("keydown",e=>{
 window.addEventListener("resize", sizeCard);
 
 /* ---- Quizlet export ---- */
+/* flashcard search: headword, choices, definition, example, explanation */
+function cardMatch(d, q){
+  if(!q) return true;
+  const hay = [d.w, (d.o||[]).join(" "), d.ko, d.ex||"", d.tip||""].join(" ").replace(/<[^>]+>/g,"").toLowerCase();
+  return q.toLowerCase().split(/\s+/).filter(Boolean).every(t=>hay.includes(t));
+}
 function stripTags(s){ return String(s).replace(/<[^>]+>/g,"").replace(/&quot;/g,'"').replace(/&amp;/g,"&"); }
 function quizletText(){
   const notes = document.getElementById("ql-notes").checked;
@@ -5507,6 +5816,16 @@ const SESSION_NOTES = {
       "PERUSE shows up again (missed Sep 5 and Sep 8 as a synonym)."],
   todo:"<b>Next</b> — A set-phrase deck: 30 common pairs (beck and call, rank and file, prim and proper, null and void, hale and hearty, time immemorial…). Many SSAT analogies that look impossible are just these phrases."}
 ],
+"2026-10-03": [
+ {h:"HIT Vocabulary, Upper Level Lessons 1–10 · 255 words marked as unknown",
+  li:["He highlighted 255 words across Lessons 1-1 to 10-5. About a quarter of them have already cost him points somewhere else in this workbook — those are the ones to learn first.",
+      "<b>Missed as a synonym question, and still unknown now</b> (29): <b>indefatigable</b> (missed 3 times: Sep 8, 20, 23), <b>tenacious</b> (Sep 8, Sep 28), <b>recalcitrant</b> (Sep 5, Sep 8), <b>poignant</b>, <b>preposterous</b>, <b>chide</b> (all Oct 4), reciprocal, supercilious (Sep 28), substantiate (Sep 23), parch (Sep 20), hapless, sequester (Sep 19), quixotic, auspicious (Sep 6), austere, chagrin, entourage, exalt, fabricate, liaison, onerous, pernicious, surmise, disseminate (Sep 8 notebook), adamant, assimilate, embellish, pretentious, slander (Sep 5).",
+      "<b>The right answer he could not recognize</b> (10): languid (LETHARGIC, Oct 4), preposterous (IRRATIONAL, Sep 28), berate (HARANGUE, Sep 28), benediction (Control : regulator, Sep 28), divulge (Intercept : interference, Oct 4), egregious (NEFARIOUS, Sep 6), supple (LIMBER), commend (PRAISE, Sep 8), embezzle (Misdemeanor : felony, Sep 23), auspicious (Favorable : propitious, Sep 20).",
+      "<b>Analogy stems he missed</b> (9): corpulent and rotund (Rotund : corpulent, Sep 24), celestial, fallow (Sep 24), havoc, memento, cursory, candid (Sep 28), pungent (Oct 4).",
+      "<b>Wrong choices he actually picked</b> (8): ardent (for TERSE), nebulous, quaint, rescind, sequel (for MOTIF), edifice, rotund (for GAUNT), tenacious (for ADVERSE). He chose these without knowing what they meant.",
+      "<b>Marked as unknown in both books</b> (Oct 3 HIT and Oct 4 Vocabulary 22000, 20 words): acquiesce, altercation, bulwark, censure, cogent, commend, defer, diminutive, dispel, divulge, edifice, equitable, imminent, incumbent, invigorate, latent, lineage, palatable, sumptuous, tenacious."],
+  todo:"<b>Next</b> — Start with the five words that keep coming back: <b>indefatigable, tenacious, recalcitrant, poignant, preposterous</b>. Then the 20 words marked in both books. Print them with Word cards → Print test and check again in a week."}
+],
 "2026-10-04": [
  {h:"Upper Level Practice Test 2, Section 3 (pp.74–79) · 35/60 · 25 misses",
   li:["Score 35/60 matches the 25 misses found (synonyms 10, analogies 15). Down from 39/60 on the Upper Level PT1 retake.",
@@ -5540,7 +5859,7 @@ function sessionStats(key){
 function renderNotes(){
   const sel = document.getElementById("notes-view");
   const v = sel.value || "all";
-  const keys = DATES.map(D=>D.key).filter(k=>v==="all" || v===k).slice().reverse();
+  const keys = DATES.map(D=>D.key).filter(k=>(v==="all" || v===k) && hasNoteData(k)).slice().reverse();
   document.getElementById("notes-list").innerHTML = keys.map(k=>{
     const D = DATES.find(x=>x.key===k), S = sessionStats(k);
     const blocks = (SESSION_NOTES[k]||[]).map(b=>
@@ -5550,12 +5869,12 @@ function renderNotes(){
     return `<article class="snote" data-key="${k}">
       <div class="snote-head"><h3>${D.label}<small>${D.note}</small></h3>
         <button class="btn no-print" data-print-one="${k}">Print this session</button></div>
-      <p class="src">Missed: ${S.syn.length} synonyms · ${S.ana.length} analogies · ${S.rq.length} reading questions${S.nPass?` in ${S.nPass} passage${S.nPass===1?"":"s"}`:""}</p>
+      ${(S.syn.length+S.ana.length+S.rq.length) ? `<p class="src">Missed: ${S.syn.length} synonyms · ${S.ana.length} analogies · ${S.rq.length} reading questions${S.nPass?` in ${S.nPass} passage${S.nPass===1?"":"s"}`:""}</p>
       <div class="stats">
         <div><h4>Synonyms</h4>${S.synT}</div>
         <div><h4>Analogies</h4>${S.anaT}</div>
         <div><h4>Reading</h4>${S.readT}</div>
-      </div>${again}${blocks}
+      </div>` : `<p class="src">No test this day · ${VOCAB.filter(v=>v.date===k).length} words marked as unknown</p>`}${again}${blocks}
     </article>`;
   }).join("");
   document.querySelectorAll("[data-print-one]").forEach(b=>b.addEventListener("click",()=>{
@@ -5566,10 +5885,11 @@ function renderNotes(){
     setTimeout(()=>{ delete document.body.dataset.printOne; document.querySelectorAll(".snote.printme").forEach(a=>a.classList.remove("printme")); }, 600);
   }));
 }
+function hasNoteData(k){ return !!SESSION_NOTES[k] || DATA.some(d=>d.date===k) || PASSAGES.some(P=>P.date===k); }
 (function(){
   const sel = document.getElementById("notes-view");
   sel.innerHTML = `<option value="all">All sessions, newest first</option>` +
-    DATES.slice().reverse().map(D=>`<option value="${D.key}">${D.label} · ${D.note}</option>`).join("");
+    DATES.filter(D=>hasNoteData(D.key)).slice().reverse().map(D=>`<option value="${D.key}">${D.label} · ${D.note}</option>`).join("");
   sel.addEventListener("change", renderNotes);
   document.getElementById("notes-print").addEventListener("click",()=>{
     printSection("notes", false, sel.value==="all" ? "All sessions" : DATES.find(x=>x.key===sel.value).label);
@@ -5585,6 +5905,7 @@ const WC = (function(){
   const $ = id => document.getElementById(id);
   const sel = $("wc-set"), card = $("wcard");
   let setVal = "all", queue = [], learn = [], know = [], hist = [], cur = null, total = 0;
+  let src = "syn", vals = {syn:"all", uv:"uv:all"};
 
   function list(v){
     if(v.includes("+")){ const seen=new Set(), out=[]; v.split("+").forEach(p=>list(p).forEach(d=>{ if(!seen.has(d)){ seen.add(d); out.push(d); } })); return out; }
@@ -5594,31 +5915,52 @@ const WC = (function(){
     return applySet(SYN, v);
   }
   function uvMenu(){
-    if(!VOCAB.length) return "";
     const opt = (v,t,n)=>`<option value="${v}">${t} \u2014 ${n}</option>`;
-    let h = opt("uv:all","All marked words", VOCAB.length);
-    const dated = DATES.filter(D=>VOCAB.some(d=>d.date===D.key));
-    dated.forEach(D=>{ h += opt("uv:date:"+D.key, "\u2003\u21b3 " + D.label, VOCAB.filter(d=>d.date===D.key).length); });
-    UV_SECS.forEach(S=>{
-      const ws = VOCAB.filter(d=>uvSec(d)===S.k); if(!ws.length) return;
-      const ds = [...new Set(ws.map(d=>d.date))].map(k=>(DATES.find(x=>x.key===k)||{label:k}).label);
-      h += opt("uv:sec:"+S.k, "\u2003\u21b3 " + ds.join(", ") + " \u00b7 " + S.label, ws.length);
+    let h = opt("uv:all","All unknown words", VOCAB.length);
+    /* each date, then its page-range sets underneath */
+    DATES.filter(D=>VOCAB.some(d=>d.date===D.key)).forEach(D=>{
+      h += opt("uv:date:"+D.key, "\u2003\u21b3 " + D.label, VOCAB.filter(d=>d.date===D.key).length);
+      UV_SECS.forEach(S=>{
+        const ws = VOCAB.filter(d=>uvSec(d)===S.k); if(!ws.length) return;
+        const first = ws.map(d=>d.date).sort()[0]; if(first!==D.key) return;
+        h += opt("uv:sec:"+S.k, "\u2003\u2003\u00b7 " + S.label, ws.length);
+      });
     });
-    return `<optgroup label="\u2500\u2500 WORDS I DIDN\u2019T KNOW \u2500\u2500">${h}</optgroup>`;
+    return h;
   }
-  function menu(){ setVal = buildSetMenu(sel, SYN, setVal, uvMenu(), v=>list(v).length); if(!list(setVal).length && setVal!=="all"){ setVal="all"; } bar(); }
+  function menu(){
+    if(src==="uv"){
+      sel.innerHTML = uvMenu();
+      keepMulti(sel, setVal, v=>list(v).length);
+      sel.value = [...sel.options].some(x=>x.value===setVal) ? setVal : "uv:all";
+      setVal = sel.value;
+      sel.dispatchEvent(new Event("mp-sync"));
+    } else {
+      if(setVal.startsWith("uv:")) setVal = "all";
+      setVal = buildSetMenu(sel, SYN, setVal, "", v=>list(v).length);
+      if(!list(setVal).length && setVal!=="all") setVal = "all";
+    }
+    vals[src] = setVal;
+    bar();
+  }
+  function deckList(){
+    const q = ($("wc-find").value||"").trim();
+    const l = list(setVal);
+    return q ? l.filter(d=>cardMatch(d, q)) : l;
+  }
   function bar(){
     historyBar($("wc-history"), list(setVal), "In this deck: ", ()=>{
       menu(); fresh(false); progressLine(); synBoard.refresh(); anaBoard.refresh();
     });
   }
   function start(list){
+    try{ qlWords(); }catch(e){}
     queue = list.slice(); learn = []; know = []; hist = []; total = queue.length;
     $("wc-play").hidden = false; $("wc-done").hidden = true;
     next();
   }
   function fresh(shuffle){
-    let l = list(setVal);
+    let l = deckList();
     if(shuffle) for(let i=l.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [l[i],l[j]]=[l[j],l[i]]; }
     start(l);
   }
@@ -5670,6 +6012,11 @@ const WC = (function(){
     tally();
     $("wc-play").hidden = true;
     const box = $("wc-done"); box.hidden = false;
+    if(!total){
+      const q = ($("wc-find").value||"").trim();
+      box.innerHTML = `<h3>No cards</h3><p>${q ? `Nothing in this deck matches \u201c${q.replace(/</g,"&lt;")}\u201d.` : "This deck is empty."}</p>`;
+      return;
+    }
     const newKnow = know.filter(d=>!isKnown(d)).length;
     box.innerHTML = `<h3>${know.length} of ${total} known</h3>
       <p>${learn.length ? learn.length + " still learning — go round again with just those." : "Every card in this deck sorted as known."}</p>
@@ -5691,8 +6038,11 @@ const WC = (function(){
   $("wc-no").addEventListener("click", ()=>sortCard(false));
   $("wc-undo").addEventListener("click", undo);
   $("wc-shuffle").addEventListener("click", ()=>fresh(true));
+  { const f = $("wc-find"); let t;
+    f.addEventListener("input", ()=>{ clearTimeout(t); t = setTimeout(()=>fresh(false), 150); });
+    f.addEventListener("keydown", e=>{ if(e.key==="Escape"){ f.value=""; fresh(false); } e.stopPropagation(); }); }
   function printWords(test){
-    const l = list(setVal); if(!l.length) return;
+    const l = deckList(); if(!l.length) return;
     const box = $("wc-print");
     const ans = d => d.uv ? d.ko : `${d.o[d.a]} \u2014 ${d.ko}`;
     const src = d => [d.ref || (d.pg ? lvLabel(d) : ""), d.date ? (DATES.find(x=>x.key===d.date)||{}).label : ""].filter(Boolean).join(" \u00b7 ");
@@ -5705,9 +6055,48 @@ const WC = (function(){
     }
     printSection("wc", false, test ? "test" : "list");
   }
+  /* Quizlet export for the current Word cards deck */
+  function qlWords(){
+    const ex = $("wql-ex").checked, by = new Map();
+    deckList().forEach(d=>{
+      const k = d.w.trim().toLowerCase();
+      const meaning = d.uv ? d.ko : d.o[d.a] + " \u2014 " + stripTags(d.ko);
+      const prev = by.get(k);
+      if(!prev){ by.set(k, {w:k, m:[meaning], ex: d.uv ? d.ex : ""}); return; }
+      if(!prev.m.includes(meaning)) prev.m.push(meaning);
+      if(!prev.ex && d.uv) prev.ex = d.ex;
+    });
+    const cards = [...by.values()];
+    const lines = cards.map(c=>{
+      let def = c.m.join(" / ");
+      if(ex && c.ex) def += " | e.g. " + c.ex;
+      return c.w + "\t" + def.replace(/[\t\n]+/g," ").replace(/\s+/g," ").trim();
+    });
+    const total = deckList().length;
+    $("wql-count").textContent = cards.length + " cards" + (total>cards.length ? ` \u00b7 ${total-cards.length} repeated word${total-cards.length===1?"":"s"} merged` : "") + " \u00b7 words in lowercase";
+    $("wql-text").value = lines.join("\n");
+  }
+  $("wql-ex").addEventListener("change", qlWords);
+  $("wql-copy").addEventListener("click", async ()=>{
+    const ta = $("wql-text"), btn = $("wql-copy");
+    ta.select(); ta.setSelectionRange(0, ta.value.length);
+    let ok = false;
+    try{ await navigator.clipboard.writeText(ta.value); ok = true; }
+    catch(e){ try{ ok = document.execCommand("copy"); }catch(e2){} }
+    btn.textContent = ok ? "Copied \u2713" : "Press \u2318/Ctrl + C";
+    setTimeout(()=>{ btn.textContent = "Copy all"; }, 2200);
+  });
+  $("wql-download").addEventListener("click", ()=>{
+    const name = setLabel(sel).replace(/[^\w]+/g,"-").toLowerCase();
+    const blob = new Blob([$("wql-text").value], {type:"text/plain;charset=utf-8"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = `quizlet-words-${name}.txt`;
+    document.body.appendChild(a); a.click();
+    setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  });
   $("wc-print-l").addEventListener("click", ()=>printWords(false));
   $("wc-print-t").addEventListener("click", ()=>printWords(true));
-  sel.addEventListener("change", ()=>{ setVal = sel.value; bar(); fresh(false); });
+  sel.addEventListener("change", ()=>{ setVal = sel.value; vals[src] = setVal; bar(); fresh(false); });
   let sx = null;
   card.addEventListener("touchstart", e=>{ sx = e.touches[0].clientX; }, {passive:true});
   card.addEventListener("touchend", e=>{
@@ -5721,7 +6110,14 @@ const WC = (function(){
     else if(e.key==="ArrowRight"){ e.preventDefault(); sortCard(true); }
     else if(e.key==="ArrowLeft"){ e.preventDefault(); sortCard(false); }
   }, true);
-  return { open(){ menu(); if(!cur && !total) fresh(false); else tally(); } };
+  return { open(m){
+    const s2 = m==="uv" ? "uv" : "syn";
+    $("wc-note").textContent = s2==="uv"
+      ? "Words he marked as unknown in the vocabulary books (not test misses). Tap the card to flip it, then sort it: still learning or know it."
+      : "Synonym questions he missed, as word cards. Tap the card to flip it, then sort it: still learning or know it.";
+    if(s2!==src){ src = s2; setVal = vals[src]; $("wc-find").value = ""; menu(); fresh(false); return; }
+    menu(); if(!cur && !total) fresh(false); else tally();
+  } };
 })();
 
 let fcMode = "quiz";
@@ -5729,12 +6125,12 @@ try{ fcMode = localStorage.getItem("ssat-v2-fcmode") || "quiz"; }catch(e){}
 function setFcMode(m){
   fcMode = m;
   try{ localStorage.setItem("ssat-v2-fcmode", m); }catch(e){}
-  document.getElementById("mode-word").setAttribute("aria-pressed", m==="word");
-  document.getElementById("mode-quiz").setAttribute("aria-pressed", m==="quiz");
-  document.getElementById("wc").hidden = m!=="word";
+  ["uv","word","quiz"].forEach(k=>document.getElementById("mode-"+k).setAttribute("aria-pressed", m===k));
+  document.getElementById("wc").hidden = m==="quiz";
   document.getElementById("qc").hidden = m!=="quiz";
-  if(m==="word") WC.open(); else { buildDeckMenu(); buildDeck(); }
+  if(m==="quiz"){ buildDeckMenu(); buildDeck(); } else WC.open(m);
 }
+document.getElementById("mode-uv").addEventListener("click", ()=>setFcMode("uv"));
 document.getElementById("mode-word").addEventListener("click", ()=>setFcMode("word"));
 document.getElementById("mode-quiz").addEventListener("click", ()=>setFcMode("quiz"));
 
