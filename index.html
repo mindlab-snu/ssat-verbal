@@ -144,6 +144,8 @@ body{
   padding:1px 6px;border-radius:2px;margin-left:8px;vertical-align:2px;white-space:nowrap;
 }
 .badge.soft{color:var(--muted);border-color:var(--rule);background:transparent}
+.badge.re{color:#fff;background:var(--red);border-color:var(--red)}
+.re-line{display:block;margin-top:6px;color:var(--red);font-family:var(--sans);font-size:13px;font-weight:600}
 .opts{display:flex;flex-direction:column;gap:8px}
 .opt{
   display:block;width:100%;text-align:left;cursor:pointer;
@@ -495,6 +497,7 @@ body{
 .wface .tr{font-size:13.5px;color:var(--muted);margin-top:16px;max-width:44ch;line-height:1.55}
 .wface .tr b{color:var(--red);font-weight:600}
 .wface .kn{position:absolute;top:12px;right:16px;font-size:11px;font-weight:700;color:var(--green);letter-spacing:.06em}
+.wface .kn.re{color:var(--red)}
 .wc-acts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .wc-acts .btn{min-height:52px;font-size:15.5px;font-weight:600;border-radius:12px}
 .wc-acts .no{color:var(--red);border-color:var(--red);background:var(--paper)}
@@ -559,6 +562,11 @@ body{
   .wp-test .wp-row{align-items:baseline;margin-bottom:16pt}
   .wp-line{flex:1;border-bottom:.75pt solid #000;margin-left:6pt;min-width:60pt}
   .wp-key{column-count:2}
+  .wp-mc{column-count:2;column-gap:28pt}
+  .wp-q{break-inside:avoid;margin:0 0 11pt;font-size:10pt;line-height:1.35}
+  .wp-stem{display:flex;gap:6pt;align-items:baseline;margin-bottom:2pt}
+  .wp-stem b{font-family:var(--serif);font-size:11.5pt}
+  .wp-opt{padding-left:20pt}
   .wp-keypage{page-break-before:always;break-before:page;font-family:var(--sans)}
 }
 /* ---------- answer key (print only) ---------- */
@@ -1734,7 +1742,7 @@ const DATA = [
  tip:"He took (A) illogical because both start with <em>il-</em>. Here il- simply negates legitimate (lawful), so illegitimate means <strong>unauthorized</strong>.", pat:2},
 {cat:"unknown", date:"2026-09-28", lv:"TV1 Introductory", pg:"p.116 #6", w:"TRANSFER", pos:"verb", o:["squabble", "own", "presume", "give", "require"], a:3, pick:0, ko:"to move or hand something from one person or place to another",
  tip:"He took (A) squabble, which has no link to the word. Trans- (across) + -fer (carry) means to carry across, or <strong>give</strong> over.", pat:6},
-{cat:"look", date:"2026-09-28", lv:"TV1 Introductory", pg:"p.117 #19", w:"PRECLUDE", pos:"verb", o:["connect to", "confirm", "write on", "consist of", "rule out"], a:4, pick:0, ko:"to prevent from happening; to rule out in advance",
+{cat:"look", date:"2026-09-28", lv:"TV1 Introductory", pg:"p.117 #19", w:"PRECLUDE", pos:"verb", o:["connect to", "confirm", "write on", "consist of", "rule out"], a:4, pick:0, re:[{d:"2026-09-29",p:3}], ko:"to prevent from happening; to rule out in advance",
  tip:"He took (A) connect to, reading preclude as <em>include</em>, as his own margin note says. Pre- (before) + -clude (shut) means to shut out beforehand, so <strong>rule out</strong>. He also missed preclude in the Sep 24 analogy set.", pat:1},
 {cat:"look", date:"2026-09-28", lv:"TV1 Introductory", pg:"p.117 #20", w:"SUBJUGATE", pos:"verb", o:["study", "conquer", "narrate", "teach", "define"], a:1, pick:2, ko:"to bring under control by force",
  tip:"He took (C) narrate, probably from <em>subject</em>, as in the subject of a story. Sub- (under) + jug (yoke) means to put under the yoke, so <strong>conquer</strong>.", pat:1},
@@ -1742,39 +1750,39 @@ const DATA = [
  tip:"He took (D) cause, the other end of cause and effect. An effect is the <strong>end product</strong>. Also watch (E) affect, the look-alike verb.", pat:7},
 {cat:"effect", date:"2026-09-28", lv:"TV1 Introductory", pg:"p.118 #42", w:"INFLUENCE", pos:"verb", o:["comfort", "shape", "power", "compliment", "talent"], a:1, pick:2, ko:"to have an effect on how someone or something develops",
  tip:"He took (C) power. Influence is a kind of power as a noun, but the closest match is the verb sense: to <strong>shape</strong> something.", pat:3},
-{cat:"unknown", date:"2026-09-28", lv:"TV1 Intermediate", pg:"p.118 #4", w:"IRRATIONAL", pos:"adjective", o:["invaluable", "sparse", "valid", "audacious", "preposterous"], a:4, pick:1, ko:"not based on reason; absurd",
+{cat:"unknown", date:"2026-09-28", lv:"TV1 Intermediate", pg:"p.118 #4", w:"IRRATIONAL", pos:"adjective", o:["invaluable", "sparse", "valid", "audacious", "preposterous"], a:4, pick:1, re:[{d:"2026-09-29",p:1}], ko:"not based on reason; absurd",
  tip:"He took (B) sparse, which has nothing to do with reason, so preposterous was probably the unknown word. Preposterous means <strong>absurd, against reason</strong>.", pat:6},
 {cat:"affix", date:"2026-09-28", lv:"TV1 Intermediate", pg:"p.119 #7", w:"MONOTONY", pos:"noun", o:["single ownership", "excitement", "lack of variety", "melody", "vast expanse"], a:2, pick:0, ko:"tedious sameness; a lack of variety",
  tip:"He took (A) single ownership, reading mono- (one) as in monopoly. Mono + tone means one tone: a <strong>lack of variety</strong>.", pat:2},
-{cat:"look", date:"2026-09-28", lv:"TV1 Intermediate", pg:"p.119 #13", w:"PICTURESQUE", pos:"adjective", o:["motionless", "delightful", "imperceptible", "capture", "comical"], a:1, pick:0, ko:"pleasing to look at, like a picture",
+{cat:"look", date:"2026-09-28", lv:"TV1 Intermediate", pg:"p.119 #13", w:"PICTURESQUE", pos:"adjective", o:["motionless", "delightful", "imperceptible", "capture", "comical"], a:1, pick:0, re:[{d:"2026-09-29",p:0}], ko:"pleasing to look at, like a picture",
  tip:"He took (A) motionless, thinking of a still picture. Picturesque means <strong>charming, delightful to see</strong>.", pat:1},
 {cat:"look", date:"2026-09-28", lv:"TV1 Intermediate", pg:"p.119 #22", w:"PATERNAL", pos:"adjective", o:["protective", "punishing", "demeaning", "gratuitous", "impatient"], a:0, pick:2, ko:"fatherly; like a caring father",
  tip:"He took (C) demeaning, probably thinking of <em>patronizing</em> (talking down). Pater means father, so paternal means <strong>fatherly, protective</strong>.", pat:1},
-{cat:"unknown", date:"2026-09-28", lv:"TV1 Intermediate", pg:"p.120 #28", w:"RECIPROCAL", pos:"adjective", o:["singular", "robust", "mutual", "inaccessible", "adverse"], a:2, pick:4, ko:"given and received in return; mutual",
+{cat:"unknown", date:"2026-09-28", lv:"TV1 Intermediate", pg:"p.120 #28", w:"RECIPROCAL", pos:"adjective", o:["singular", "robust", "mutual", "inaccessible", "adverse"], a:2, pick:4, re:[{d:"2026-09-29",p:4}], ko:"given and received in return; mutual",
  tip:"He took (E) adverse. Reciprocal means going both ways, so <strong>mutual</strong>.", pat:6},
-{cat:"look", date:"2026-09-28", lv:"TV1 Intermediate", pg:"p.120 #34", w:"CONCEIVE", pos:"verb", o:["convenient to", "double cross", "agree to", "think up", "renovate"], a:3, pick:2, ko:"to form an idea in the mind",
+{cat:"look", date:"2026-09-28", lv:"TV1 Intermediate", pg:"p.120 #34", w:"CONCEIVE", pos:"verb", o:["convenient to", "double cross", "agree to", "think up", "renovate"], a:3, pick:2, re:[{d:"2026-09-29",p:2}], ko:"to form an idea in the mind",
  tip:"He took (C) agree to. His notes (perceive, receive, deceive) show he was guessing from -ceive, and agree to is <em>concede</em>. To conceive a plan is to <strong>think it up</strong>.", pat:1},
 {cat:"look", date:"2026-09-28", lv:"TV1 Intermediate", pg:"p.120 #35", w:"DEDUCE", pos:"verb", o:["produce", "figure out", "detract from", "deteriorate", "waive"], a:1, pick:2, ko:"to reach a conclusion by reasoning",
  tip:"He took (C) detract from, mixing up deduce with <em>deduct</em> (take away). To deduce is to <strong>figure out</strong> by reasoning.", pat:1},
-{cat:"unknown", date:"2026-09-28", lv:"TV1 Intermediate", pg:"p.120 #36", w:"SIGNIFICANCE", pos:"noun", o:["radiance", "substance", "presumption", "triviality", "impudence"], a:1, pick:0, ko:"importance; real weight or meaning",
+{cat:"unknown", date:"2026-09-28", lv:"TV1 Intermediate", pg:"p.120 #36", w:"SIGNIFICANCE", pos:"noun", o:["radiance", "substance", "presumption", "triviality", "impudence"], a:1, pick:0, re:[{d:"2026-09-29",p:0}], ko:"importance; real weight or meaning",
  tip:"He took (A) radiance, perhaps reading a sign or signal as something bright. Significance means importance, or <strong>substance</strong>. (D) triviality is its opposite.", pat:6},
-{cat:"effect", date:"2026-09-28", lv:"TV1 Intermediate", pg:"p.120 #42", w:"TENACIOUS", pos:"adjective", o:["resolute", "secure", "tender", "wavering", "starving"], a:0, pick:1, ko:"holding on firmly and refusing to give up",
+{cat:"effect", date:"2026-09-28", lv:"TV1 Intermediate", pg:"p.120 #42", w:"TENACIOUS", pos:"adjective", o:["resolute", "secure", "tender", "wavering", "starving"], a:0, pick:1, re:[{d:"2026-09-29",p:1}], ko:"holding on firmly and refusing to give up",
  tip:"Second miss (Sep 8: notebook). He took (B) secure. Holding tight is close, but tenacious describes a person’s <strong>determination</strong>, so resolute.", pat:3},
 {cat:"look", date:"2026-09-28", lv:"TV1 Intermediate", pg:"p.120 #46", w:"RESPITE", pos:"noun", o:["relief from", "movement toward", "physique", "hatred of", "havoc"], a:0, pick:3, ko:"a short break from something difficult",
  tip:"He took (D) hatred of because he heard <em>spite</em> inside re-spite, as his margin note shows. A respite is <strong>relief from</strong> something hard.", pat:1},
-{cat:"look", date:"2026-09-28", lv:"TV1 Intermediate", pg:"p.120 #47", w:"HINDER", pos:"verb", o:["sinister", "kindle", "impede", "rigorous", "authorize"], a:2, pick:1, ko:"to get in the way of; to slow down",
+{cat:"look", date:"2026-09-28", lv:"TV1 Intermediate", pg:"p.120 #47", w:"HINDER", pos:"verb", o:["sinister", "kindle", "impede", "rigorous", "authorize"], a:2, pick:1, re:[{d:"2026-09-29",p:1}], ko:"to get in the way of; to slow down",
  tip:"He took (B) kindle, which rhymes with hinder. To hinder is to <strong>impede</strong>.", pat:1},
 {cat:"look", date:"2026-09-28", lv:"TV1 Advanced", pg:"p.121 #2", w:"EXORCISE", pos:"verb", o:["apply", "pray for", "scare", "athletic", "drive out"], a:4, pick:0, ko:"to drive out an evil spirit",
  tip:"He took (A) apply, reading exorcise as <em>exercise</em>, as his notes show (exercise, execute). To exorcise is to <strong>drive out</strong> a spirit.", pat:1},
-{cat:"look", date:"2026-09-28", lv:"TV1 Advanced", pg:"p.121 #11", w:"ENGENDER", pos:"verb", o:["separate by", "split apart", "seal in", "bring about", "classify as"], a:3, pick:0, ko:"to cause or give rise to",
+{cat:"look", date:"2026-09-28", lv:"TV1 Advanced", pg:"p.121 #11", w:"ENGENDER", pos:"verb", o:["separate by", "split apart", "seal in", "bring about", "classify as"], a:3, pick:0, re:[{d:"2026-09-29",p:1}], ko:"to cause or give rise to",
  tip:"He took (A) separate by, from <em>gender</em> (sorting by sex), as his note shows. To engender is to <strong>bring about</strong>: distrust engenders fear.", pat:1},
-{cat:"affix", date:"2026-09-28", lv:"TV1 Advanced", pg:"p.121 #16", w:"TRANSCRIBE", pos:"verb", o:["abridge", "copy", "condense", "confound", "apply"], a:1, pick:0, ko:"to write out a copy of spoken or written words",
+{cat:"affix", date:"2026-09-28", lv:"TV1 Advanced", pg:"p.121 #16", w:"TRANSCRIBE", pos:"verb", o:["abridge", "copy", "condense", "confound", "apply"], a:1, pick:0, re:[{d:"2026-09-29",p:0}], ko:"to write out a copy of spoken or written words",
  tip:"He took (A) abridge; his note says <em>change writing</em>. Trans + scribe means to write across: make a written <strong>copy</strong>, not a shorter one.", pat:2},
-{cat:"affix", date:"2026-09-28", lv:"TV1 Advanced", pg:"p.121 #17", w:"INSCRIPTION", pos:"noun", o:["established law", "solid stone", "fanciful lyrics", "carved message", "simple explanation"], a:3, pick:0, ko:"words carved or written on a surface",
+{cat:"affix", date:"2026-09-28", lv:"TV1 Advanced", pg:"p.121 #17", w:"INSCRIPTION", pos:"noun", o:["established law", "solid stone", "fanciful lyrics", "carved message", "simple explanation"], a:3, pick:0, re:[{d:"2026-09-29",p:0}], ko:"words carved or written on a surface",
  tip:"He took (A) established law, thinking of <em>prescription</em>; his note also says description. In + scribe means writing <strong>on</strong> something, so a carved message.", pat:2},
 {cat:"unknown", date:"2026-09-28", lv:"TV1 Advanced", pg:"p.122 #20", w:"QUANDARY", pos:"noun", o:["unpleasant sensation", "unnavigable swamp", "confused idea", "impossible dilemma", "strong moral"], a:3, pick:1, ko:"a state of uncertainty about what to do",
  tip:"Second miss (Sep 8: notebook). He took (B) unnavigable swamp, a stuck-in-the-mud image. A quandary is a <strong>dilemma</strong>.", pat:6},
-{cat:"look", date:"2026-09-28", lv:"TV1 Advanced", pg:"p.122 #21", w:"VACILLATE", pos:"verb", o:["eliminate from", "vacuum up", "evoke that", "reflect upon", "waver between"], a:4, pick:1, ko:"to keep changing one’s mind; to waver",
+{cat:"look", date:"2026-09-28", lv:"TV1 Advanced", pg:"p.122 #21", w:"VACILLATE", pos:"verb", o:["eliminate from", "vacuum up", "evoke that", "reflect upon", "waver between"], a:4, pick:1, re:[{d:"2026-09-29",p:1}], ko:"to keep changing one’s mind; to waver",
  tip:"He took (B) vacuum up because both words start with vac-. To vacillate is to <strong>waver</strong> between options.", pat:1},
 {cat:"opposite", date:"2026-09-28", lv:"TV1 Advanced", pg:"p.122 #32", w:"HARANGUE", pos:"verb", o:["make an example of", "pay tribute to", "berate", "fine-tune", "hang from"], a:2, pick:1, ko:"to lecture someone at length in an aggressive way",
  tip:"He took (B) pay tribute to, which has the opposite tone. A harangue is a long, angry lecture, so to <strong>berate</strong>.", pat:7},
@@ -1784,42 +1792,42 @@ const DATA = [
  tip:"He took (C) ardent. Terse means using few words, often curtly, so <strong>brusque</strong>. The answer and the trap are both advanced words.", pat:6},
 {cat:"look", date:"2026-09-28", lv:"TV1 Advanced", pg:"p.123 #40", w:"PONDEROUS", pos:"adjective", o:["contemplate", "pervasive", "scholarly", "tedious", "personable"], a:3, pick:0, ko:"slow and heavy; dull and laborious",
  tip:"He took (A) contemplate, from <em>ponder</em>. But ponderous comes from Latin <em>pondus</em> (weight) and means heavy, slow, <strong>tedious</strong>. Also, (A) is a verb, while the stem is an adjective.", pat:1},
-{cat:"unknown", date:"2026-09-28", lv:"TV1 Advanced", pg:"p.123 #43", w:"RETICENT", pos:"adjective", o:["candid", "incompatible", "elderly", "taciturn", "primitive"], a:3, pick:1, ko:"not revealing one’s thoughts; reserved",
+{cat:"unknown", date:"2026-09-28", lv:"TV1 Advanced", pg:"p.123 #43", w:"RETICENT", pos:"adjective", o:["candid", "incompatible", "elderly", "taciturn", "primitive"], a:3, pick:1, re:[{d:"2026-09-29",p:4}], ko:"not revealing one’s thoughts; reserved",
  tip:"He took (B) incompatible. Reticent means <strong>quiet and reserved</strong>, so taciturn. (A) candid is the opposite.", pat:6},
 {cat:"unknown", date:"2026-09-28", lv:"TV1 Advanced", pg:"p.123 #45", w:"OBSEQUIOUS", pos:"adjective", o:["subservient", "insulting", "extraordinary", "inopportune", "pretentious"], a:0, pick:3, ko:"too eager to please or obey",
  tip:"He took (D) inopportune. Obsequious describes someone fawning and <strong>subservient</strong>.", pat:6},
-{cat:"affix", date:"2026-09-28", lv:"TV1 Advanced", pg:"p.123 #46", w:"SUPERCILIOUS", pos:"adjective", o:["instantaneous", "arrogant", "secondary", "desultory", "intricate"], a:1, pick:0, ko:"behaving as if one is better than others",
+{cat:"affix", date:"2026-09-28", lv:"TV1 Advanced", pg:"p.123 #46", w:"SUPERCILIOUS", pos:"adjective", o:["instantaneous", "arrogant", "secondary", "desultory", "intricate"], a:1, pick:0, re:[{d:"2026-09-29",p:0}], ko:"behaving as if one is better than others",
  tip:"He took (A) instantaneous, perhaps reading super- as super-fast. Supercilious comes from the raised eyebrow and means <strong>arrogant</strong>.", pat:2},
 {cat:"look", date:"2026-09-28", lv:"TV1 Advanced", pg:"p.123 #47", w:"CHICANERY", pos:"noun", o:["deception", "fashionable", "property", "sweetness", "crazy plan"], a:0, pick:1, ko:"trickery used to deceive",
  tip:"He took (B) fashionable because he heard <em>chic</em>. Chicanery is <strong>deception</strong>. Also, (B) is an adjective, while the stem is a noun.", pat:1},
 /* ====== 2026-09-28 · The Tutorverse, Verbal analogies pp.125–135 ====== */
 {cat:"same", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.125 Antonyms #6", w:"Merciful is to pitiless as merciless is to", pos:"antonyms", o:["forgiving", "judge", "obedient", "harsh", "pathetic"], a:0, pick:4, ko:"Merciful and pitiless are opposites, so the answer is the opposite of merciless: forgiving.",
  tip:"He first marked (A), scribbled it out, and took (E) pathetic, which only sounds close to pitiless. The stem pair are <strong>opposites</strong>, and the opposite of merciless is forgiving.", pat:5},
-{cat:"same", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.125 Antonyms #9", w:"Verdant is to barren as candid is to", pos:"antonyms", o:["forthright", "fertile", "restrained", "arable", "friendly"], a:2, pick:3, ko:"Verdant (green and growing) is the opposite of barren; the opposite of candid (open, frank) is restrained.",
+{cat:"same", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.125 Antonyms #9", w:"Verdant is to barren as candid is to", pos:"antonyms", o:["forthright", "fertile", "restrained", "arable", "friendly"], a:2, pick:3, re:[{d:"2026-09-29",p:4}], ko:"Verdant (green and growing) is the opposite of barren; the opposite of candid (open, frank) is restrained.",
  tip:"He took (D) arable, a farmland word that fits the <em>topic</em> of verdant but not the relation. Candid means frank, and its <strong>opposite</strong> is restrained.", pat:5},
 {cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.125 Association #1", w:"Open is to sesame as", pos:"set phrase", o:["sardine is to swordfish", "unicycle is to exquisite", "implore is to defer", "pretty is to please", "reptile is to whale"], a:3, pick:0, ko:"“Open sesame” is a set phrase, as “pretty please” is.",
  tip:"He took (A) sardine is to swordfish. His note (you open a sesame to eat it) treated sesame as food. In the Association set the pairs are <strong>set phrases</strong>: open sesame, pretty please.", pat:5},
-{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.125 Association #2", w:"Null is to void as", pos:"set phrase", o:["forgive is to forget", "mend is to break", "remember is to photograph", "blame is to accuse", "close is to conclude"], a:0, pick:3, ko:"“Null and void” is a set phrase, as “forgive and forget” is.",
+{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.125 Association #2", w:"Null is to void as", pos:"set phrase", o:["forgive is to forget", "mend is to break", "remember is to photograph", "blame is to accuse", "close is to conclude"], a:0, pick:3, re:[{d:"2026-09-29",p:3}], ko:"“Null and void” is a set phrase, as “forgive and forget” is.",
  tip:"He wrote syn and took (D) blame is to accuse. Null and void do mean nearly the same thing, but here the link is the <strong>fixed phrase</strong> null and void, like forgive and forget.", pat:5},
-{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.126 Association #3", w:"Fun is to games as supply is to", pos:"set phrase", o:["amount", "provide", "carnival", "demand", "enjoyment"], a:3, pick:2, ko:"“Fun and games” is a set phrase, as “supply and demand” is.",
+{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.126 Association #3", w:"Fun is to games as supply is to", pos:"set phrase", o:["amount", "provide", "carnival", "demand", "enjoyment"], a:3, pick:2, re:[{d:"2026-09-29",p:2}], ko:"“Fun and games” is a set phrase, as “supply and demand” is.",
  tip:"He took (C) carnival, which matches the fun theme. The pairs are <strong>phrases</strong>: fun and games, supply and demand.", pat:5},
-{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.126 Association #4", w:"Under is to weather as bite is to", pos:"idiom", o:["fish", "bullet", "chew", "bitten", "mouth"], a:1, pick:2, ko:"“Under the weather” and “bite the bullet” are idioms.",
+{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.126 Association #4", w:"Under is to weather as bite is to", pos:"idiom", o:["fish", "bullet", "chew", "bitten", "mouth"], a:1, pick:2, re:[{d:"2026-09-29",p:2}], ko:"“Under the weather” and “bite the bullet” are idioms.",
  tip:"He took (C) chew, a meaning link to bite. The stem is an <strong>idiom</strong>: under the weather, bite the bullet.", pat:5},
-{cat:"type", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.126 Association #6", w:"Lamb is to mutton as chicken is to", pos:"animal : name of its meat", o:["coop", "dinner", "egg", "nugget", "poultry"], a:4, pick:3, ko:"Mutton is the meat of sheep, as poultry is the meat of chickens and other birds.",
+{cat:"type", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.126 Association #6", w:"Lamb is to mutton as chicken is to", pos:"animal : name of its meat", o:["coop", "dinner", "egg", "nugget", "poultry"], a:4, pick:3, re:[{d:"2026-09-29",p:3}], ko:"Mutton is the meat of sheep, as poultry is the meat of chickens and other birds.",
  tip:"He took (D) nugget, a food made from chicken. Mutton is the general <strong>name for the meat</strong>, and for chicken that word is poultry.", pat:5},
-{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.126 Association #7", w:"Reference is to obscure as", pos:"common pairing", o:["feline is to dog", "fear is to lion", "alien is to human", "beast is to mythical", "cat is to canine"], a:3, pick:2, ko:"“Obscure reference” and “mythical beast” are common noun + adjective pairings.",
+{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.126 Association #7", w:"Reference is to obscure as", pos:"common pairing", o:["feline is to dog", "fear is to lion", "alien is to human", "beast is to mythical", "cat is to canine"], a:3, pick:2, re:[{d:"2026-09-29",p:2}], ko:"“Obscure reference” and “mythical beast” are common noun + adjective pairings.",
  tip:"He wrote ant and took (C) alien is to human, looking for opposites. The link is a <strong>common pairing</strong>: an obscure reference, a mythical beast.", pat:5},
 {cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.126 Association #8", w:"Walking is to shoe as", pos:"compound noun", o:["spot is to tight", "garbage is to can", "paper is to printer", "handle is to door", "bowl is to cereal"], a:1, pick:2, ko:"A walking shoe and a garbage can are compound names.",
  tip:"He took (C) paper is to printer, a what-it-uses link. The pairs form <strong>compound nouns</strong>: walking shoe, garbage can.", pat:5},
-{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.126 Association #10", w:"Dagger is to cloak as", pos:"set phrase (reversed)", o:["tape is to rip", "cement is to glue", "sheath is to casing", "weapon is to knife", "mortar is to brick"], a:4, pick:2, ko:"“Cloak and dagger” and “brick and mortar” are set phrases, each given in reverse.",
+{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.126 Association #10", w:"Dagger is to cloak as", pos:"set phrase (reversed)", o:["tape is to rip", "cement is to glue", "sheath is to casing", "weapon is to knife", "mortar is to brick"], a:4, pick:2, re:[{d:"2026-09-29",p:2}], ko:"“Cloak and dagger” and “brick and mortar” are set phrases, each given in reverse.",
  tip:"He took (C) sheath is to casing, thinking of a knife’s cover. The link is the <strong>phrase</strong> cloak and dagger, like brick and mortar.", pat:5},
-{cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.126 Cause-and-Effect #3", w:"Nectar is to flower as", pos:"product : producer", o:["lift is to wing", "bees is to pollen", "sugar is to sweetness", "camera is to security", "seed is to petal"], a:0, pick:4, ko:"A flower produces nectar, as a wing produces lift.",
+{cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.126 Cause-and-Effect #3", w:"Nectar is to flower as", pos:"product : producer", o:["lift is to wing", "bees is to pollen", "sugar is to sweetness", "camera is to security", "seed is to petal"], a:0, pick:4, re:[{d:"2026-09-29",p:4}], ko:"A flower produces nectar, as a wing produces lift.",
  tip:"He took (E) seed is to petal, two flower parts. The stem is <strong>product : producer</strong>, and a wing produces lift.", pat:5},
 {cat:"same", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.126 Cause-and-Effect #5", w:"Speed is to cessation as", pos:"opposite states", o:["vivaciousness is to vitality", "swiftness is to alacrity", "humility is to arrogance", "moisture is to humidity", "velocity is to haste"], a:2, pick:1, ko:"Cessation ends speed; the two are opposite states, like humility and arrogance.",
  tip:"He took (B) swiftness is to alacrity, a synonym pair. His own note says cessation puts an end to speed, which makes them <strong>opposites</strong>.", pat:5},
-{cat:"trait", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.127 Cause-and-Effect #10", w:"Negligence is to precision as hesitation is to", pos:"lacking : what is lacked", o:["confidence", "courage", "outcomes", "defiance", "certainty"], a:0, pick:4, ko:"Negligence shows a lack of precision; hesitation shows a lack of confidence.",
+{cat:"trait", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.127 Cause-and-Effect #10", w:"Negligence is to precision as hesitation is to", pos:"lacking : what is lacked", o:["confidence", "courage", "outcomes", "defiance", "certainty"], a:0, pick:4, re:[{d:"2026-09-29",p:3}], ko:"Negligence shows a lack of precision; hesitation shows a lack of confidence.",
  tip:"He took (E) certainty, which is close. Hesitation is a lack of <strong>confidence</strong> in acting, while certainty is about knowing.", pat:5},
-{cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.127 Defining #6", w:"Hair is to barber as", pos:"thing : who removes it", o:["barrier is to impassible", "dam is to levee", "writing is to eraser", "homework is to paper", "hypothermia is to lifejacket"], a:2, pick:1, ko:"A barber removes hair, as an eraser removes writing.",
+{cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.127 Defining #6", w:"Hair is to barber as", pos:"thing : who removes it", o:["barrier is to impassible", "dam is to levee", "writing is to eraser", "homework is to paper", "hypothermia is to lifejacket"], a:2, pick:1, re:[{d:"2026-09-29",p:1}], ko:"A barber removes hair, as an eraser removes writing.",
  tip:"He took (B) dam is to levee, two similar structures. His note (a barber cuts hair) was right: <strong>thing : what removes it</strong>.", pat:5},
 {cat:"place", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.127 Defining #7", w:"Vegetation is to garden as", pos:"what grows : where", o:["soil is to seed", "flower is to petal", "birch is to tree", "moss is to rock", "fungus is to mushroom"], a:3, pick:4, ko:"Vegetation grows in a garden, as moss grows on a rock.",
  tip:"He took (E) fungus is to mushroom, a kind-of pair. The stem is <strong>what grows : where it grows</strong>.", pat:5},
@@ -1833,9 +1841,9 @@ const DATA = [
  tip:"He took (A) paramount. Check the order: the stem goes <strong>strong → mild</strong>, so the answer is the milder word, durable.", pat:5},
 {cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.129 Function/Object #7", w:"Control is to regulator as", pos:"what it gives : what gives it", o:["blessing is to benediction", "praise is to revel", "regress is to advance", "radio is to transmit", "therapist is to calm"], a:0, pick:1, ko:"A regulator provides control, as a benediction gives a blessing.",
  tip:"He took (B) praise is to revel. (D) and (E) have the right idea but in <strong>reverse order</strong> (thing : action). Blessing : benediction keeps the stem order.", pat:5},
-{cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.129 Function/Object #10", w:"Salve is to relieve as incision is to", pos:"thing : what it does", o:["pinpoint", "exact", "sear", "combine", "separate"], a:4, pick:0, ko:"A salve relieves; an incision separates (cuts apart).",
+{cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.129 Function/Object #10", w:"Salve is to relieve as incision is to", pos:"thing : what it does", o:["pinpoint", "exact", "sear", "combine", "separate"], a:4, pick:0, re:[{d:"2026-09-29",p:0}], ko:"A salve relieves; an incision separates (cuts apart).",
  tip:"He took (A) pinpoint, thinking of a precise cut. The stem is <strong>thing : what it does</strong>, and an incision separates tissue.", pat:5},
-{cat:"type", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.129 Grammar #2", w:"Walk is to walks as", pos:"plural verb : singular verb", o:["are is to is", "talks is to talk", "is is to are", "be is to being", "skip is to skipping"], a:0, pick:3, ko:"Walk and walks go with plural and singular subjects (they walk, he walks), as are and is do.",
+{cat:"type", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.129 Grammar #2", w:"Walk is to walks as", pos:"plural verb : singular verb", o:["are is to is", "talks is to talk", "is is to are", "be is to being", "skip is to skipping"], a:0, pick:3, re:[{d:"2026-09-29",p:3}], ko:"Walk and walks go with plural and singular subjects (they walk, he walks), as are and is do.",
  tip:"He took (D) be is to being, a base : -ing pair. Walk → walks is <strong>plural → singular</strong> verb, so are → is. (B) and (C) run backward.", pat:5},
 {cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.130 Individual/Object #6", w:"Soldier is to rifle as", pos:"person : tool", o:["purveyor is to vendor", "bible is to pontiff", "reaper is to sickle", "surrogate is to exception", "submarine is to navy"], a:2, pick:0, ko:"A soldier uses a rifle, as a reaper uses a sickle.",
  tip:"He took (A) purveyor is to vendor, two words for sellers. The stem is <strong>person : tool</strong>.", pat:5},
@@ -1843,56 +1851,56 @@ const DATA = [
  tip:"He took (E) wood. His note shows he knew validate means confirm. The link is <strong>action : its object</strong>, and what is woven is a garment.", pat:5},
 {cat:"part", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.131 Part/Whole #1", w:"Act is to play as", pos:"part : whole", o:["chalk is to board", "line is to recite", "stanza is to poem", "diary is to secret", "stage is to actor"], a:2, pick:0, ko:"An act is a section of a play, as a stanza is a section of a poem.",
  tip:"He read act as the verb (you act in a play) and took (A) chalk is to board. Here act is the noun: <strong>a part of a play</strong>, like a stanza of a poem.", pat:5},
-{cat:"part", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.132 Part/Whole #10", w:"Symbol is to cipher as worker is to", pos:"part : whole", o:["task", "staff", "manage", "weekend", "promotion"], a:1, pick:2, ko:"A symbol is one unit of a cipher; a worker is one member of a staff.",
+{cat:"part", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.132 Part/Whole #10", w:"Symbol is to cipher as worker is to", pos:"part : whole", o:["task", "staff", "manage", "weekend", "promotion"], a:1, pick:2, re:[{d:"2026-09-29",p:2}], ko:"A symbol is one unit of a cipher; a worker is one member of a staff.",
  tip:"He took (C) manage, a verb. The stem is <strong>part : whole</strong>, so the answer is the group: staff.", pat:5},
 {cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.132 Purpose/Object #2", w:"Matches is to candle as brush is to", pos:"tool : what it is used on", o:["wax", "detangle", "tidy", "beautiful", "fur"], a:4, pick:0, ko:"Matches are used on a candle; a brush is used on fur.",
  tip:"He took (A) wax, staying with the candle topic. The link is <strong>tool : what it is used on</strong>.", pat:5},
-{cat:"part", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.134 Whole/Part #3", w:"Jacket is to collar as tooth is to", pos:"whole : part", o:["dentist", "fluoride", "decay", "brush", "enamel"], a:4, pick:1, ko:"A collar is part of a jacket; enamel is part of a tooth.",
+{cat:"part", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.134 Whole/Part #3", w:"Jacket is to collar as tooth is to", pos:"whole : part", o:["dentist", "fluoride", "decay", "brush", "enamel"], a:4, pick:1, re:[{d:"2026-09-29",p:1}], ko:"A collar is part of a jacket; enamel is part of a tooth.",
  tip:"He took (B) fluoride, something added to teeth. The stem is <strong>whole : part</strong>.", pat:5},
-{cat:"part", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.134 Whole/Part #5", w:"Week is to day as", pos:"whole : part", o:["work is to play", "stag is to antler", "ash is to fireplace", "holiday is to vacation", "Saturday is to weekend"], a:1, pick:3, ko:"A day is part of a week, as an antler is part of a stag.",
+{cat:"part", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.134 Whole/Part #5", w:"Week is to day as", pos:"whole : part", o:["work is to play", "stag is to antler", "ash is to fireplace", "holiday is to vacation", "Saturday is to weekend"], a:1, pick:3, re:[{d:"2026-09-29",p:3}], ko:"A day is part of a week, as an antler is part of a stag.",
  tip:"He took (D) holiday is to vacation, near synonyms. The stem is <strong>whole : part</strong>. (E) is part : whole, the reverse.", pat:5},
-{cat:"part", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.134 Whole/Part #7", w:"Month is to week as school is to", pos:"whole : part", o:["bus", "grade", "district", "classroom", "curriculum"], a:3, pick:1, ko:"A week is part of a month; a classroom is part of a school.",
+{cat:"part", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.134 Whole/Part #7", w:"Month is to week as school is to", pos:"whole : part", o:["bus", "grade", "district", "classroom", "curriculum"], a:3, pick:1, re:[{d:"2026-09-29",p:1}], ko:"A week is part of a month; a classroom is part of a school.",
  tip:"He took (B) grade. The answer must be a <strong>part inside</strong> the school, as a week is a unit inside a month.", pat:5},
-{cat:"part", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.134 Whole/Part #8", w:"Cheese is to rind as avocado is to", pos:"whole : part", o:["pit", "plant", "ferment", "vegetable", "seedling"], a:0, pick:2, ko:"A rind is part of cheese; a pit is part of an avocado.",
+{cat:"part", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.134 Whole/Part #8", w:"Cheese is to rind as avocado is to", pos:"whole : part", o:["pit", "plant", "ferment", "vegetable", "seedling"], a:0, pick:2, re:[{d:"2026-09-29",p:4}], ko:"A rind is part of cheese; a pit is part of an avocado.",
  tip:"He took (C) ferment, thinking of how cheese is made. The link is <strong>whole : part</strong>.", pat:5},
-{cat:"same", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.134 Synonym #1", w:"Precede is to lead as", pos:"synonyms", o:["flaunt is to gaunt", "exceed is to limit", "dissolve is to solidify", "deflect is to absorb", "forgo is to decline"], a:4, pick:0, ko:"Precede and lead mean nearly the same, as forgo and decline do.",
+{cat:"same", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.134 Synonym #1", w:"Precede is to lead as", pos:"synonyms", o:["flaunt is to gaunt", "exceed is to limit", "dissolve is to solidify", "deflect is to absorb", "forgo is to decline"], a:4, pick:0, re:[{d:"2026-09-29",p:0}], ko:"Precede and lead mean nearly the same, as forgo and decline do.",
  tip:"He took (A) flaunt is to gaunt, a rhyming pair. The link is <strong>synonyms</strong>.", pat:5},
-{cat:"same", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.135 Synonym #8", w:"Cursory is to perfunctory as infallible is to", pos:"synonyms", o:["flawed", "everlasting", "detailed", "ceaseless", "perfect"], a:4, pick:3, ko:"Cursory and perfunctory are synonyms (quick and careless); infallible means perfect, never wrong.",
+{cat:"same", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.135 Synonym #8", w:"Cursory is to perfunctory as infallible is to", pos:"synonyms", o:["flawed", "everlasting", "detailed", "ceaseless", "perfect"], a:4, pick:3, re:[{d:"2026-09-29",p:0}], ko:"Cursory and perfunctory are synonyms (quick and careless); infallible means perfect, never wrong.",
  tip:"He took (D) ceaseless, perhaps from in-fall (never falling). Infallible means <strong>never wrong</strong>: perfect. He also missed perfunctory on Sep 20 and Sep 23.", pat:5},
 {cat:"same", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.135 Synonym #9", w:"Wane is to diminish as", pos:"synonyms", o:["edify is to edifice", "espouse is to marry", "accomplish is to accomplice", "circulate is to conceal", "relate is to understand"], a:1, pick:0, ko:"Wane and diminish are synonyms, as espouse and marry are.",
  tip:"He took (A) edify is to edifice, a look-alike pair. The link is <strong>synonyms</strong>: espouse means marry.", pat:5},
 {cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.135 Mixed 1 #4", w:"Set is to placemat as", pos:"action : what it is done to", o:["dish is to wash", "feast is to banquet", "agenda is to plan", "surprise is to celebration", "schedule is to meeting"], a:4, pick:3, ko:"You set down a placemat, as you schedule a meeting (action : its object).",
  tip:"He took (D) surprise is to celebration. His note (you set an item on a placemat) is close; the link is <strong>action : what it is done to</strong>, as in schedule : meeting.", pat:5},
 /* ====== 2026-09-28 · The Tutorverse, analogies Mixed 1–10 pp.136–145 ====== */
-{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.136 Mixed 1 #7", w:"Theoretical is to physics as", pos:"set phrase", o:["green is to color", "mad is to scientist", "hypothesis is to belief", "helmet is to visor", "experiment is to research"], a:1, pick:2, ko:"“Theoretical physics” and “mad scientist” are fixed adjective + noun phrases.",
+{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.136 Mixed 1 #7", w:"Theoretical is to physics as", pos:"set phrase", o:["green is to color", "mad is to scientist", "hypothesis is to belief", "helmet is to visor", "experiment is to research"], a:1, pick:2, re:[{d:"2026-09-29",p:2}], ko:"“Theoretical physics” and “mad scientist” are fixed adjective + noun phrases.",
  tip:"He took (C) hypothesis is to belief, staying with the science topic. The link is a <strong>fixed phrase</strong>: theoretical physics, mad scientist.", pat:5},
-{cat:"same", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.136 Mixed 1 #13", w:"Exemplary is to admirable as immutable is to", pos:"synonyms", o:["booming", "fluctuating", "permanent", "marvelous", "flawless"], a:2, pick:0, ko:"Exemplary and admirable are near synonyms; immutable (unchangeable) means permanent.",
+{cat:"same", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.136 Mixed 1 #13", w:"Exemplary is to admirable as immutable is to", pos:"synonyms", o:["booming", "fluctuating", "permanent", "marvelous", "flawless"], a:2, pick:0, re:[{d:"2026-09-29",p:4}], ko:"Exemplary and admirable are near synonyms; immutable (unchangeable) means permanent.",
  tip:"He wrote syn but took (A) booming, which suggests he did not know immutable. Im- (not) + mutable (changeable) = <strong>permanent</strong>.", pat:5},
 {cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.136 Mixed 2 #1", w:"Broom is to sweep as dynamite is to", pos:"tool : what it does", o:["create", "explode", "stick", "danger", "fuse"], a:1, pick:4, ko:"A broom is used to sweep; dynamite is used to explode (blast).",
  tip:"He wrote <em>broom is used to sweep</em> but took (E) fuse, a part of dynamite. The stem needs <strong>what it does</strong>: explode.", pat:5},
-{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.137 Mixed 2 #10", w:"Havoc is to wreak as amok is to", pos:"set phrase (reversed)", o:["run", "place", "sow", "terror", "rampage"], a:0, pick:4, ko:"“Wreak havoc” and “run amok” are fixed verb + noun phrases.",
+{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.137 Mixed 2 #10", w:"Havoc is to wreak as amok is to", pos:"set phrase (reversed)", o:["run", "place", "sow", "terror", "rampage"], a:0, pick:4, re:[{d:"2026-09-29",p:3}], ko:"“Wreak havoc” and “run amok” are fixed verb + noun phrases.",
  tip:"He took (E) rampage, which means the same as running amok. But the stem is a <strong>set phrase</strong>: you wreak havoc and run amok.", pat:5},
-{cat:"type", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.137 Mixed 2 #13", w:"Sworn is to swore as taken is to", pos:"past participle : past tense", o:["take", "takes", "took", "taking", "swearing"], a:2, pick:0, ko:"Sworn is the past participle and swore the past tense; taken → took.",
+{cat:"type", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.137 Mixed 2 #13", w:"Sworn is to swore as taken is to", pos:"past participle : past tense", o:["take", "takes", "took", "taking", "swearing"], a:2, pick:0, re:[{d:"2026-09-29",p:0}], ko:"Sworn is the past participle and swore the past tense; taken → took.",
  tip:"He wrote <em>past → present</em> and took (A) take. Both stem words are past forms: <strong>past participle → simple past</strong>, so taken → took.", pat:5},
 {cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.137 Mixed 3 #2", w:"Bottomless is to abyss as", pos:"set phrase (reversed)", o:["aluminum is to foil", "endless is to limited", "cavern is to explore", "plastic is to recycle", "fragrant is to foul"], a:0, pick:4, ko:"“Bottomless abyss” and “aluminum foil” are fixed adjective + noun phrases.",
  tip:"He took (E) fragrant is to foul, an opposite pair, though bottomless and abyss are <strong>not opposites</strong>. The link is the phrase bottomless abyss, like aluminum foil.", pat:5},
 {cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.138 Mixed 3 #6", w:"Synopsis is to summarize as blanket is to", pos:"thing : what it does", o:["rug", "abridge", "recreate", "weave", "warm"], a:4, pick:2, ko:"A synopsis summarizes; a blanket warms.",
  tip:"He took (C) recreate. His note (a synopsis summarizes a longer story) is right; apply the same test: <strong>what does a blanket do?</strong> It warms.", pat:5},
-{cat:"same", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.138 Mixed 3 #11", w:"Toxin is to poison as pinnacle is to", pos:"synonyms", o:["pedestal", "venom", "slope", "side", "summit"], a:4, pick:1, ko:"Toxin and poison are synonyms; pinnacle and summit are synonyms.",
+{cat:"same", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.138 Mixed 3 #11", w:"Toxin is to poison as pinnacle is to", pos:"synonyms", o:["pedestal", "venom", "slope", "side", "summit"], a:4, pick:1, re:[{d:"2026-09-29",p:0}], ko:"Toxin and poison are synonyms; pinnacle and summit are synonyms.",
  tip:"He took (B) venom, which matches toxin and poison in <strong>topic</strong>. The stem is a synonym pair, and pinnacle means summit.", pat:5},
 {cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.138 Mixed 3 #14", w:"Collect is to memento as peruse is to", pos:"action : its object", o:["organize", "reuse", "recycle", "report", "underline"], a:3, pick:4, ko:"You collect a memento; you peruse (read) a report.",
  tip:"He took (E) underline, a verb. The answer must be <strong>the thing acted on</strong>, a noun: you peruse a report. He has missed PERUSE twice before (Sep 5, Sep 8).", pat:5},
-{cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.139 Mixed 4 #7", w:"Fence is to separate as plunger is to", pos:"tool : what it does", o:["soak", "free", "equipment", "plumber", "bathroom"], a:1, pick:0, ko:"A fence separates; a plunger frees (unclogs) a drain.",
+{cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.139 Mixed 4 #7", w:"Fence is to separate as plunger is to", pos:"tool : what it does", o:["soak", "free", "equipment", "plumber", "bathroom"], a:1, pick:0, re:[{d:"2026-09-29",p:0}], ko:"A fence separates; a plunger frees (unclogs) a drain.",
  tip:"He took (A) soak, which is about water, not what a plunger <strong>does</strong>. A plunger frees a blocked drain.", pat:5},
-{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.139 Mixed 4 #10", w:"Prim is to proper as", pos:"set phrase", o:["front is to center", "reprehensible is to shameful", "pamper is to pander", "etiquette is to propriety", "manners is to behavior"], a:0, pick:2, ko:"“Prim and proper” and “front and center” are fixed paired phrases.",
+{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.139 Mixed 4 #10", w:"Prim is to proper as", pos:"set phrase", o:["front is to center", "reprehensible is to shameful", "pamper is to pander", "etiquette is to propriety", "manners is to behavior"], a:0, pick:2, re:[{d:"2026-09-29",p:1}], ko:"“Prim and proper” and “front and center” are fixed paired phrases.",
  tip:"He took (C) pamper is to pander, a look-alike pair. Say the stem aloud: <strong>prim and proper</strong>, like front and center.", pat:5},
-{cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.139 Mixed 4 #12", w:"Appellation is to identify as", pos:"thing : its purpose", o:["classification is to dispose", "cessation is to continue", "intermission is to interval", "communication is to transmission", "respite is to recover"], a:4, pick:1, ko:"An appellation (a name) serves to identify; a respite (a rest) serves to recover.",
+{cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.139 Mixed 4 #12", w:"Appellation is to identify as", pos:"thing : its purpose", o:["classification is to dispose", "cessation is to continue", "intermission is to interval", "communication is to transmission", "respite is to recover"], a:4, pick:1, re:[{d:"2026-09-29",p:0}], ko:"An appellation (a name) serves to identify; a respite (a rest) serves to recover.",
  tip:"He took (B) cessation is to continue, an opposite pair. An appellation is <strong>used to</strong> identify, as a respite is used to recover.", pat:5},
-{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.140 Mixed 5 #14", w:"Beck is to call as bread is to", pos:"set phrase", o:["spoon", "butter", "smile", "shake", "pepper"], a:1, pick:3, ko:"“Beck and call” and “bread and butter” are fixed paired phrases.",
+{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.140 Mixed 5 #14", w:"Beck is to call as bread is to", pos:"set phrase", o:["spoon", "butter", "smile", "shake", "pepper"], a:1, pick:3, re:[{d:"2026-09-29",p:2}], ko:"“Beck and call” and “bread and butter” are fixed paired phrases.",
  tip:"He took (D) shake. It is a <strong>set phrase</strong>: beck and call, bread and butter.", pat:5},
-{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.140 Mixed 6 #2", w:"Rank is to file as cut is to", pos:"set phrase", o:["snip", "glue", "scissor", "paste", "cabinet"], a:3, pick:4, ko:"“Rank and file” and “cut and paste” are fixed paired phrases.",
+{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.140 Mixed 6 #2", w:"Rank is to file as cut is to", pos:"set phrase", o:["snip", "glue", "scissor", "paste", "cabinet"], a:3, pick:4, re:[{d:"2026-09-29",p:0}], ko:"“Rank and file” and “cut and paste” are fixed paired phrases.",
  tip:"He took (E) cabinet, reading file as a filing cabinet. It is a <strong>phrase</strong>: rank and file, cut and paste.", pat:5},
-{cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.140 Mixed 6 #3", w:"Flame is to wax as heat is to", pos:"cause : what it melts", o:["beach", "desert", "arctic", "freezer", "chocolate"], a:4, pick:1, ko:"A flame melts wax; heat melts chocolate.",
+{cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.140 Mixed 6 #3", w:"Flame is to wax as heat is to", pos:"cause : what it melts", o:["beach", "desert", "arctic", "freezer", "chocolate"], a:4, pick:1, re:[{d:"2026-09-29",p:1}], ko:"A flame melts wax; heat melts chocolate.",
  tip:"He wrote <em>wax causes flame</em>, the reverse. A flame acts <strong>on</strong> wax and melts it, as heat melts chocolate. (B) desert is just a hot place.", pat:5},
 {cat:"part", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.141 Mixed 6 #10", w:"Menu is to entrée as pie is to", pos:"whole : part", o:["flaky", "baked", "dessert", "crust", "oven"], a:3, pick:2, ko:"An entrée is part of a menu; a crust is part of a pie.",
  tip:"He took (C) dessert, what a pie <strong>is</strong>. The stem is whole : part, so the answer is a part of a pie.", pat:5},
@@ -1900,25 +1908,25 @@ const DATA = [
  tip:"He wrote syn but took (C) transfer, pulled by trans-. Transpire means <strong>happen</strong>.", pat:5},
 {cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.141 Mixed 6 #12", w:"Exercise is to frailty as", pos:"remedy : what it overcomes", o:["blanket is to mattress", "workout is to physique", "sleep is to fatigue", "dream is to nightmare", "weakness is to feebleness"], a:2, pick:3, ko:"Exercise overcomes frailty, as sleep overcomes fatigue.",
  tip:"He took (D) dream is to nightmare. His note (frailty is not the goal of exercise) is right: exercise <strong>cures</strong> frailty, as sleep cures fatigue.", pat:5},
-{cat:"degree", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.141 Mixed 6 #14", w:"Think is to ruminate as", pos:"milder : more intense", o:["confirm is to demystify", "ponder is to decide", "fire is to conflagration", "wonder is to debunk", "question is to believe"], a:2, pick:1, ko:"To ruminate is to think deeply; a conflagration is a huge fire.",
+{cat:"degree", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.141 Mixed 6 #14", w:"Think is to ruminate as", pos:"milder : more intense", o:["confirm is to demystify", "ponder is to decide", "fire is to conflagration", "wonder is to debunk", "question is to believe"], a:2, pick:1, re:[{d:"2026-09-29",p:0}], ko:"To ruminate is to think deeply; a conflagration is a huge fire.",
  tip:"He wrote <em>→ intense</em> but took (B) ponder is to decide, a sequence. Only fire → conflagration is <strong>the same thing, more intense</strong>.", pat:5},
-{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.141 Mixed 7 #2", w:"Hearty is to hale as salad is to", pos:"set phrase (reversed)", o:["meal", "soup", "appetizer", "cucumber", "vegetable"], a:1, pick:4, ko:"“Hale and hearty” and “soup and salad” are fixed paired phrases.",
+{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.141 Mixed 7 #2", w:"Hearty is to hale as salad is to", pos:"set phrase (reversed)", o:["meal", "soup", "appetizer", "cucumber", "vegetable"], a:1, pick:4, re:[{d:"2026-09-29",p:2}], ko:"“Hale and hearty” and “soup and salad” are fixed paired phrases.",
  tip:"He took (E) vegetable, what a salad is made of. It is a <strong>phrase</strong>: hale and hearty, soup and salad.", pat:5},
 {cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.141 Mixed 7 #4", w:"Excuse is to mistake as lie is to", pos:"covers up : what is covered", o:["fib", "liar", "plea", "truth", "explain"], a:3, pick:2, ko:"An excuse covers a mistake; a lie covers the truth.",
  tip:"He took (C) plea, similar to an excuse. The stem is <strong>what hides : what is hidden</strong>; a lie hides the truth.", pat:5},
-{cat:"same", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.142 Mixed 7 #13", w:"Confide is to reveal as perceive is to", pos:"synonyms", o:["receive", "deceive", "offer", "detect", "confess"], a:3, pick:0, ko:"Confide and reveal are near synonyms; perceive means detect.",
+{cat:"same", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.142 Mixed 7 #13", w:"Confide is to reveal as perceive is to", pos:"synonyms", o:["receive", "deceive", "offer", "detect", "confess"], a:3, pick:0, re:[{d:"2026-09-29",p:0}], ko:"Confide and reveal are near synonyms; perceive means detect.",
  tip:"He wrote syn but took (A) receive, a <em>-ceive</em> look-alike. Perceive means to <strong>detect</strong>. The same -ceive trap caught CONCEIVE on Sep 28.", pat:5},
-{cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.142 Mixed 8 #4", w:"Instructor is to curriculum as baker is to", pos:"worker : what he works from", o:["pie", "dessert", "flour", "contest", "chef"], a:2, pick:1, ko:"An instructor works from a curriculum; a baker works from flour.",
+{cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.142 Mixed 8 #4", w:"Instructor is to curriculum as baker is to", pos:"worker : what he works from", o:["pie", "dessert", "flour", "contest", "chef"], a:2, pick:1, re:[{d:"2026-09-29",p:0}], ko:"An instructor works from a curriculum; a baker works from flour.",
  tip:"He took (B) dessert, what a baker <strong>produces</strong>. A curriculum is what an instructor works with, so the match is the baker’s material.", pat:5},
-{cat:"same", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.143 Mixed 8 #13", w:"Bizarre is to strange as steadfast is to", pos:"synonyms", o:["irresolute", "strenuous", "aberrant", "protective", "dependable"], a:4, pick:1, ko:"Bizarre and strange are synonyms; steadfast means dependable.",
+{cat:"same", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.143 Mixed 8 #13", w:"Bizarre is to strange as steadfast is to", pos:"synonyms", o:["irresolute", "strenuous", "aberrant", "protective", "dependable"], a:4, pick:1, re:[{d:"2026-09-29",p:1}], ko:"Bizarre and strange are synonyms; steadfast means dependable.",
  tip:"He wrote syn but took (B) strenuous, perhaps from <em>stead-</em> sounding sturdy. Steadfast means firm and <strong>dependable</strong>.", pat:5},
 {cat:"func", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.143 Mixed 9 #3", w:"Curator is to art as composer is to", pos:"person : what he works with", o:["harmonize", "notes", "atmosphere", "sing", "orchestral"], a:1, pick:4, ko:"A curator works with art; a composer works with notes.",
  tip:"He took (E) orchestral, an adjective. The answer must be <strong>a noun</strong> for what a composer works with: notes.", pat:5},
 {cat:"same", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.144 Mixed 9 #14", w:"Specific is to vague as", pos:"antonyms", o:["transitory is to provisional", "nebulous is to indefinite", "indelible is to erasable", "ineffaceable is to enduring", "precise is to unambiguous"], a:2, pick:0, ko:"Specific and vague are opposites, as indelible and erasable are.",
  tip:"He took (A) transitory is to provisional, which are near synonyms. The stem pair are <strong>opposites</strong>: indelible (cannot be erased) vs erasable.", pat:5},
-{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.144 Mixed 10 #1", w:"Immemorial is to time as wrought is to", pos:"set phrase (reversed)", o:["decorated", "iron", "road", "rope", "intended"], a:1, pick:2, ko:"“Time immemorial” and “wrought iron” are fixed phrases.",
+{cat:"char", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.144 Mixed 10 #1", w:"Immemorial is to time as wrought is to", pos:"set phrase (reversed)", o:["decorated", "iron", "road", "rope", "intended"], a:1, pick:2, re:[{d:"2026-09-29",p:2}], ko:"“Time immemorial” and “wrought iron” are fixed phrases.",
  tip:"He took (C) road. It is a <strong>set phrase</strong>: time immemorial, wrought iron.", pat:5},
-{cat:"type", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.145 Mixed 10 #10", w:"Facsimile is to manuscript as clone is to", pos:"copy : original", o:["replica", "person", "duplicate", "imitation", "twin"], a:1, pick:0, ko:"A facsimile is an exact copy of a manuscript; a clone is an exact copy of a person (or organism).",
+{cat:"type", date:"2026-09-28", t:"an", lv:"TV1 Analogies", pg:"p.145 Mixed 10 #10", w:"Facsimile is to manuscript as clone is to", pos:"copy : original", o:["replica", "person", "duplicate", "imitation", "twin"], a:1, pick:0, re:[{d:"2026-09-29",p:2}], ko:"A facsimile is an exact copy of a manuscript; a clone is an exact copy of a person (or organism).",
  tip:"He took (A) replica, another word for a copy. The stem is <strong>copy : what it copies</strong>, so the answer is the original: person.", pat:5},
 /* ====== 2026-10-04 · Upper Level SSAT Practice Test 2, Section 3 (pp.74–79, 35/60) ====== */
 {cat:"unknown", date:"2026-10-04", lv:"ULT2 Synonyms", pg:"p.75 #10", w:"GARRISON", pos:"noun", o:["admiral", "armada", "unification", "partition", "stronghold"], a:4, pick:1, ko:"a fortified place where troops are stationed",
@@ -1993,7 +2001,127 @@ const DATA = [
 {cat:"type", date:"2026-10-04", t:"an", lv:"PT3 Analogies", pg:"p.163 #38", w:"Grape is to pulp as", pos:"source of one product : source of another", o:["basalt is to salt", "carrot is to onion", "wine is to paper", "drawstring is to pants", "pony is to colt"], a:2, pick:0, ko:"Wine is made from grapes and paper from pulp, so grape : pulp matches wine : paper (each product to its source, in the same order).",
  tip:"His note (pulp is inside a grape) reads it as part : whole, which none of the choices fit. The book's link is <strong>raw material → product</strong>: grape → wine, pulp → paper.", pat:5},
 {cat:"part", date:"2026-10-04", t:"an", lv:"PT3 Analogies", pg:"p.165 #57", w:"Apogee is to orbit as", pos:"highest point : what it is the top of", o:["trench is to mountain", "surmount is to fresco", "crest is to wave", "mountain is to peak", "star is to constellation"], a:2, pick:4, ko:"The apogee is the highest (farthest) point of an orbit, as the crest is the highest point of a wave.",
- tip:"He took (E) star is to constellation, a part : whole pair. Apogee means the <strong>top point</strong>, like a crest. (D) mountain : peak is in the reverse order.", pat:5}
+ tip:"He took (E) star is to constellation, a part : whole pair. Apogee means the <strong>top point</strong>, like a crest. (D) mountain : peak is in the reverse order.", pat:5},
+/* 2026-10-09 · Kaplan SSAT Workshop, Ch.2 Analogies practice pp.18–30 (#71–90 on pp.25–26 not uploaded) */
+{cat:"degree", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.18 #7", w:"Chide is to mild as castigate is to", pos:"verb : how strong it is", o:["tepid", "sweet", "unbeatable", "uncertain", "harsh"], a:4, pick:1, ko:"To chide is to scold mildly; to castigate is to scold harshly.",
+ tip:"He took (B) sweet, the opposite of harsh. The stem is not about being kind: chide is a <strong>mild</strong> scolding, castigate a <strong>harsh</strong> one. Chide was also a synonym miss on Oct 4.", pat:5},
+{cat:"same", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.18 #8", w:"Abrupt is to gradual as", pos:"antonyms", o:["corrupt is to virtuous", "stirring is to sudden", "sneaky is to criminal", "remarkable is to alarming", "conspicuous is to extreme"], a:0, pick:1, ko:"Abrupt (sudden) is the opposite of gradual, as corrupt is the opposite of virtuous.",
+ tip:"He wrote <em>ant</em> and still took (B) stirring is to sudden. Sudden matches abrupt in meaning, but stirring and sudden are not opposites. Check that the answer pair is opposite <strong>too</strong>.", pat:5},
+{cat:"type", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.18 #10", w:"Violin is to string as", pos:"instrument : its family", o:["harp is to angelic", "drum is to stick", "score is to music", "oboe is to reed", "bass is to large"], a:3, pick:1, ko:"A violin is a string instrument; an oboe is a reed instrument.",
+ tip:"He took (B) drum is to stick, what you play it with. A violin is not played with strings; it <strong>is</strong> a string instrument, as an oboe is a reed instrument.", pat:5},
+{cat:"func", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.19 #16", w:"Mile is to length as", pos:"unit : what it measures", o:["acre is to land", "inch is to foot", "kilometer is to race", "yard is to fabric", "fathom is to depth"], a:4, pick:0, ko:"A mile is a unit of length; a fathom is a unit of depth.",
+ tip:"He took (A) acre is to land. Land is a thing measured, not a quantity: an acre measures <strong>area</strong>. The stem pairs a unit with a <strong>dimension</strong> (length, depth). Same family as Acre:field on Sep 23.", pat:5},
+{cat:"same", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.19 #19", w:"Delay is to hasten as", pos:"exact antonyms", o:["misunderstand is to dislike", "undermine is to improve", "sink is to descend", "remove is to indict", "facilitate is to impede"], a:4, pick:1, ko:"Delay and hasten are exact opposites, as facilitate (make easier) and impede (hold back) are.",
+ tip:"He took (B) undermine is to improve. They point in different directions, but the opposite of undermine is support or strengthen, not improve. Pick the pair that are <strong>exact</strong> opposites.", pat:5},
+{cat:"same", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.20 #23", w:"Anomalous is to standard as", pos:"exact antonyms", o:["rude is to kind", "demonstrative is to impassive", "profound is to brief", "taxing is to exhausting", "stoic is to urbane"], a:1, pick:0, ko:"Anomalous (out of the ordinary) is the opposite of standard; demonstrative (showing feelings) is the opposite of impassive.",
+ tip:"He wrote <em>ant</em> and took (A) rude is to kind. The opposite of rude is polite, not kind. Demonstrative and impassive are <strong>exact</strong> opposites.", pat:5},
+{cat:"func", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.20 #26", w:"Defilement is to shrine as", pos:"violation : what is violated", o:["disrespect is to fool", "vilification is to traitor", "execution is to dungeon", "breach is to contract", "ostracism is to politician"], a:3, pick:2, ko:"Defilement violates a shrine; a breach violates a contract.",
+ tip:"He took (C) execution is to dungeon, an act and a place. Defilement is <strong>damage done to</strong> something that should be kept whole, as a breach is to a contract.", pat:5},
+{cat:"place", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.20 #27", w:"Restaurant is to pasture as", pos:"where people eat : where animals eat", o:["fountain is to trough", "meal is to feed", "cafeteria is to lavatory", "kitchen is to dining room", "stable is to barracks"], a:0, pick:3, ko:"People eat at a restaurant and animals graze in a pasture; people drink from a fountain and animals from a trough.",
+ tip:"He took (D) kitchen is to dining room, two rooms for people. The stem is <strong>people's place : animals' place</strong> for the same need.", pat:5},
+{cat:"func", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.20 #30", w:"Soap is to bubbles as", pos:"material : what is made from it", o:["broth is to vegetables", "shower is to steam", "juice is to blender", "car is to gasoline", "cream is to butter"], a:4, pick:1, ko:"Bubbles are made out of soap; butter is made out of cream.",
+ tip:"He took (B) shower is to steam. Steam comes from hot water, not from the shower itself. Soap is the <strong>stuff</strong> the bubbles are made of, as cream is for butter.", pat:5},
+{cat:"place", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.21 #33", w:"Aquarium is to fish as arboretum is to", pos:"place : what is kept there", o:["elephant", "horse", "flower", "tree", "dog"], a:3, pick:2, ko:"An aquarium keeps fish on display; an arboretum keeps trees.",
+ tip:"He took (C) flower. <em>Arbor</em> means tree (arbor, arborist). A garden of flowers is a botanical garden; an <strong>arboretum</strong> is for trees.", pat:5},
+{cat:"type", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.21 #34", w:"Cadet is to soldier as", pos:"trainee : what he trains to become", o:["apprentice is to craftsman", "private is to army", "yeoman is to sailor", "rookie is to athlete", "lawyer is to judge"], a:0, pick:3, ko:"A cadet trains to become a soldier; an apprentice trains to become a craftsman.",
+ tip:"He took (D) rookie is to athlete. A rookie already <strong>is</strong> an athlete, just a new one. A cadet is still in training, like an apprentice.", pat:5},
+{cat:"place", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.21 #37", w:"Ice is to skating as", pos:"surface : sport played on it", o:["highway is to driving", "ballroom is to dancing", "ring is to boxing", "felt is to billiards", "water is to diving"], a:3, pick:0, ko:"Skating is done on a surface of ice; billiards is played on a surface of felt.",
+ tip:"He took (A) highway is to driving. Ice is the <strong>material</strong> of the surface, and so is felt. A highway is a road, a place, not a material.", pat:5},
+{cat:"degree", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.21 #38", w:"Paranoid is to suspicious as", pos:"extreme form : milder form", o:["distraught is to perturbed", "urban is to rural", "wealthy is to affluent", "jubilant is to irate", "despairing is to aloof"], a:0, pick:2, ko:"Paranoid is extremely suspicious; distraught is extremely perturbed.",
+ tip:"He wrote <em>syn</em> and took (C) wealthy is to affluent, two words of the same strength. Paranoid is a <strong>much stronger</strong> suspicious, so the answer needs a step up too.", pat:5},
+{cat:"part", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.21 #40", w:"Pearl is to oyster as", pos:"valued product : animal it comes from", o:["silk is to thread", "marble is to statue", "web is to spider", "ivory is to elephant", "calcium is to bone"], a:3, pick:4, ko:"A pearl is a prized material taken from an oyster; ivory is taken from an elephant.",
+ tip:"He took (E) calcium is to bone, but that pair is material : thing built from it. The stem is <strong>valued product : the animal</strong> it is taken from.", pat:5},
+{cat:"func", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.22 #41", w:"Chandler is to wax as", pos:"worker : material he works with", o:["cooper is to barrel", "wheelwright is to wheel", "baker is to bread", "carpenter is to wood", "blacksmith is to horseshoe"], a:3, pick:2, ko:"A chandler (candle maker) works with wax; a carpenter works with wood.",
+ tip:"He took (C) baker is to bread. Bread is the baker's <strong>product</strong>; wax is the chandler's <strong>raw material</strong>, as wood is the carpenter's. A, B, E all pair a worker with a product.", pat:5},
+{cat:"degree", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.22 #42", w:"Gathering is to mob as", pos:"ordinary : wild, out of control", o:["frenzy is to shark", "stray is to cat", "fire is to inferno", "tempest is to storm", "filibuster is to speech"], a:2, pick:4, ko:"A mob is a gathering out of control; an inferno is a fire out of control.",
+ tip:"He took (E) filibuster is to speech. A filibuster is a long speech meant to delay a vote, not a wilder speech. Also watch the order in (D): tempest is the bigger one, so it is reversed.", pat:5},
+{cat:"func", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.22 #43", w:"Acre is to land as", pos:"unit : what it measures", o:["luminosity is to space", "piquant is to dish", "fathom is to water", "millimeter is to fluid", "second is to velocity"], a:2, pick:3, ko:"An acre measures an area of land; a fathom measures a depth of water.",
+ tip:"He took (D) millimeter is to fluid. A millimeter measures length; fluid is measured in milliliters. A third unit miss: Mile:length (#16) and Acre:field (Sep 23).", pat:5},
+{cat:"place", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.22 #44", w:"Bison is to plains as kangaroo is to", pos:"animal : its home", o:["savanna", "desert", "tundra", "outback", "forest"], a:3, pick:4, ko:"Bison roam the plains of North America; kangaroos live in the Australian outback.",
+ tip:"He took (E) forest. Kangaroos are known for the dry, open <strong>outback</strong> of Australia, the same kind of open grassland as the plains.", pat:5},
+{cat:"same", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.22 #47", w:"Liquid is to gas as condensation is to", pos:"reversed processes", o:["precipitation", "evaporation", "sublimation", "freezing", "crystallization"], a:1, pick:0, ko:"Liquid turning to gas is evaporation; condensation is the reverse (gas to liquid).",
+ tip:"He took (A) precipitation, rain, which follows condensation. Liquid and gas are the two ends of one change; condensation and <strong>evaporation</strong> are the two directions of that change.", pat:5},
+{cat:"func", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.23 #55", w:"Gondola is to Ferris wheel as", pos:"thing that travels around : what it circles", o:["Sun is to galaxy", "wheel is to car", "glove is to boot", "fire is to inferno", "Moon is to Earth"], a:4, pick:1, ko:"A gondola travels in a circle around a Ferris wheel; the Moon travels around the Earth.",
+ tip:"He wrote <em>gondolas make up a Ferris wheel</em> and took (B) wheel is to car. The book reads it as <strong>moving in a circle around</strong>, which only (E) does.", pat:5},
+{cat:"trait", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.23 #56", w:"Knife is to dull as", pos:"object : how it fails", o:["conceptualization is to execution", "tire is to flat", "hammer is to weak", "torch is to burn", "microphone is to static"], a:1, pick:2, ko:"A knife that fails is dull; a tire that fails is flat.",
+ tip:"He took (C) hammer is to weak. Nobody calls a broken hammer weak. Dull is the <strong>standard word</strong> for a knife that stopped working, as flat is for a tire.", pat:5},
+{cat:"trait", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.23 #58", w:"Shadow is to substantial as", pos:"thing : quality it lacks", o:["book is to clever", "forest is to wild", "fire is to raging", "machine is to alive", "currency is to wealth"], a:3, pick:1, ko:"A shadow is not substantial; a machine is not alive.",
+ tip:"He took (B) forest is to wild, a quality a forest <strong>has</strong>. The stem is a quality a shadow <strong>lacks</strong>.", pat:5},
+{cat:"same", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.24 #65", w:"Hope is to optimism as despair is to", pos:"feeling : matching outlook", o:["sadness", "pessimism", "desolation", "skepticism", "ostracism"], a:1, pick:0, ko:"Hope goes with an optimistic outlook; despair goes with a pessimistic one.",
+ tip:"He took (A) sadness, a feeling. Optimism is an <strong>outlook</strong> (expecting good things), so the match is the outlook pessimism, the exact mirror word.", pat:5},
+{cat:"part", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.27 #93", w:"Oak is to acorn as", pos:"plant : what it produces", o:["poplar is to tree", "moss is to fern", "hedge is to vine", "dandelion is to mushroom", "flower is to seed"], a:4, pick:1, ko:"An oak produces acorns; a flower produces seeds.",
+ tip:"He took (B) moss is to fern, two plants. An acorn is the <strong>seed</strong> of the oak, so the answer must be a plant and what it produces.", pat:5},
+{cat:"place", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.27 #98", w:"Cafeteria is to students as", pos:"eating place : the people who eat there", o:["trough is to horses", "feed is to livestock", "kitchen is to families", "mess hall is to soldiers", "restaurant is to waiters"], a:3, pick:4, ko:"Students eat in a cafeteria; soldiers eat in a mess hall.",
+ tip:"He took (E) restaurant is to waiters, but waiters <strong>work</strong> there. The stem pairs the place with the people who <strong>eat</strong> there, as a group (students, soldiers).", pat:5},
+{cat:"type", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.27 #99", w:"Ungulate is to donkey as amphibian is to", pos:"class : one member", o:["alligator", "frog", "reptile", "turtle", "fish"], a:1, pick:0, ko:"A donkey is an ungulate (hoofed mammal); a frog is an amphibian.",
+ tip:"He took (A) alligator, which is a <strong>reptile</strong>. Amphibians live first in water, then on land: frogs, toads, salamanders.", pat:5},
+{cat:"func", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.27 #100", w:"Lace is to shoe as", pos:"fastener : what it closes", o:["cuff is to pants", "hand is to watch", "bridge is to spectacles", "brim is to hat", "catch is to necklace"], a:4, pick:2, ko:"A lace fastens a shoe; a catch fastens a necklace.",
+ tip:"He wrote <em>lace ties a shoe</em> and took (C) bridge is to spectacles, a part that holds glasses on the nose. The job is <strong>fastening</strong>, which only a catch does.", pat:5},
+{cat:"place", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.28 #101", w:"Strait is to sea as", pos:"narrow strip that joins two of them", o:["exit is to roadway", "isthmus is to landmass", "island is to archipelago", "ridge is to mountain", "port is to harbor"], a:1, pick:3, ko:"A strait is a narrow strip of water joining two seas; an isthmus is a narrow strip of land joining two landmasses.",
+ tip:"He wrote <em>strait leads to the sea</em> and took (D) ridge is to mountain. A strait is a <strong>narrow connector</strong>; its land twin is the isthmus.", pat:5},
+{cat:"type", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.28 #102", w:"Conscription is to enlistment as tax is to", pos:"forced form : voluntary form", o:["payment", "collection", "adherence", "refund", "revenue"], a:0, pick:1, ko:"Conscription is required enlistment; a tax is a required payment.",
+ tip:"He took (B) collection, what the government does. The stem is from the citizen's side: <strong>forced</strong> enlistment, so forced <strong>payment</strong>.", pat:5},
+{cat:"trait", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.28 #103", w:"Stoic is to reaction as spontaneous is to", pos:"person : what he lacks", o:["randomness", "intelligence", "remorse", "forethought", "shallowness"], a:3, pick:0, ko:"A stoic shows no reaction; a spontaneous person shows no forethought.",
+ tip:"He wrote <em>stoic is a type of reaction</em> and took (A) randomness, which spontaneous people have. Stoic means <strong>without</strong> visible reaction. Same stem word as Stoic:passion (Sep 24), same miss.", pat:5},
+{cat:"part", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.28 #104", w:"Crow is to murder as", pos:"animal : name of its group", o:["dog is to kennel", "whale is to pod", "bird is to nest", "elephant is to gaggle", "lion is to pack"], a:1, pick:3, ko:"A group of crows is a murder; a group of whales is a pod.",
+ tip:"He took (D) elephant is to gaggle. Gaggle is the word for geese (#31 had it). Elephants form a herd; lions a pride, not a pack.", pat:5},
+{cat:"part", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.28 #105", w:"Arc is to circumference as", pos:"piece : the curve or line it is part of", o:["radius is to circle", "speed is to distance", "segment is to line", "diagonal is to square", "degree is to triangle"], a:2, pick:0, ko:"An arc is a piece of a circumference; a segment is a piece of a line.",
+ tip:"He took (A) radius is to circle. A radius runs from the center and is not part of the edge. An arc <strong>lies on</strong> the circumference, as a segment lies on a line.", pat:5},
+{cat:"same", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.28 #108", w:"Equivocal is to ambivalent as boorish is to", pos:"synonyms", o:["cruel", "rude", "inept", "stubborn", "rash"], a:1, pick:3, ko:"Equivocal and ambivalent both mean uncertain or two-sided; boorish means rude and ill-mannered.",
+ tip:"He wrote <em>syn</em> correctly but took (D) stubborn. He did not know <strong>boorish</strong> (a boor is a crude, rude person).", pat:5},
+{cat:"degree", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.28 #109", w:"Scalding is to tepid as", pos:"extreme : barely there", o:["hot is to boiling", "frigid is to freezing", "ecstatic is to indifferent", "demure is to piqued", "loud is to deafening"], a:2, pick:1, ko:"Scalding is extremely hot and tepid barely warm; ecstatic is extremely happy and indifferent barely feeling anything.",
+ tip:"He took (B) frigid is to freezing, two words of about the same strength. The stem goes from the <strong>extreme</strong> down to the <strong>lukewarm</strong> end.", pat:5},
+{cat:"degree", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.28 #110", w:"Helpful is to patronizing as witty is to", pos:"good trait : too much of it", o:["humorous", "condescending", "vulgar", "fake", "smug"], a:4, pick:3, ko:"Helpfulness taken too far becomes patronizing; wit taken too far becomes smug.",
+ tip:"He took (D) fake. (B) condescending is the trap: it means the same as patronizing, not an overdone form of wit. Answer taken from the red mark; check the book's key.", pat:5},
+{cat:"func", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.29 #118", w:"Belief is to discredited as", pos:"thing : what happens when it is attacked", o:["authority is to obeyed", "task is to completed", "responsibility is to denied", "claim is to challenged", "personality is to assuaged"], a:3, pick:2, ko:"A belief can be discredited; a claim can be challenged.",
+ tip:"He wrote <em>syn</em> and took (C) responsibility is to denied. Discredited and challenged are both things done <strong>against</strong> an idea someone holds. Answer read from an unclear red mark; check the book's key.", pat:5},
+{cat:"func", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.29 #120", w:"Wheat is to flour as", pos:"raw material : product", o:["barley is to hops", "leaves are to root", "coarse is to smooth", "acorns are to sapling", "apples are to cider"], a:4, pick:0, ko:"Wheat is ground into flour; apples are pressed into cider.",
+ tip:"He took (A) barley is to hops, two plants used in beer. Flour is <strong>made from</strong> wheat, as cider is made from apples.", pat:5},
+{cat:"degree", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.30 #121", w:"Amateur is to champion as", pos:"first stage : completed stage", o:["matriculant is to graduate", "intern is to volunteer", "teacher is to principal", "prodigy is to professional", "student is to subject"], a:0, pick:2, ko:"An amateur is at the start and a champion at the top; a matriculant has just enrolled and a graduate has finished.",
+ tip:"He took (C) teacher is to principal, a job and its boss. <strong>Matriculant</strong> (a newly enrolled student) was likely the unknown word here.", pat:5},
+{cat:"degree", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.30 #123", w:"Concerned is to apprehensive as", pos:"milder : stronger", o:["appealing is to attractive", "objective is to subjective", "untenable is to intrigued", "dissuaded is to convinced", "interested is to eager"], a:4, pick:0, ko:"Apprehensive is a stronger form of concerned; eager is a stronger form of interested.",
+ tip:"He wrote <em>syn</em> and took (A) appealing is to attractive, the same strength. The stem <strong>steps up</strong>: worried more than concerned, so the answer must step up too.", pat:5},
+{cat:"func", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.30 #125", w:"Steep is to tea as", pos:"brewing method : drink", o:["percolate is to coffee", "stir is to ingredients", "steam is to broil", "baste is to gravy", "simmer is to broth"], a:0, pick:4, ko:"You steep tea leaves to make tea; you percolate coffee to make coffee.",
+ tip:"He took (E) simmer is to broth, a way to cook. Steeping and percolating are both ways to <strong>brew a drink</strong> with hot water.", pat:5},
+{cat:"place", date:"2026-10-09", t:"an", lv:"KP1 Analogies", pg:"p.30 #129", w:"Bison is to plain as cougar is to", pos:"animal : its home", o:["desert", "valley", "crest", "mountain", "bay"], a:3, pick:1, ko:"Bison live on the plains; cougars (mountain lions) live in the mountains.",
+ tip:"He took (B) valley. The cougar's other name is <strong>mountain lion</strong>. Same stem as #44 (Bison:plains), missed twice in one set.", pat:5},
+/* 2026-10-09 · Kaplan Part Three, Chapter 7 Synonyms practice pp.113–117 (#1–47, 29/47) */
+{cat:"unknown", date:"2026-10-09", lv:"KP1 Synonyms", pg:"p.113 #1", w:"DISMAL", pos:"adjective", o:["bleak", "crowded", "comfortable", "temporary", "typical"], a:0, pick:1, ko:"gloomy and depressing; causing sadness",
+ tip:"He took (B) crowded, which has nothing to do with dismal. A dismal day is gray and depressing — <strong>bleak</strong>.", pat:6},
+{cat:"look", date:"2026-10-09", lv:"KP1 Synonyms", pg:"p.113 #4", w:"PEDDLE", pos:"verb", o:["assemble", "steal", "edit", "deliver", "sell"], a:4, pick:1, ko:"to sell goods, often by going from place to place",
+ tip:"He took (B) steal, probably hearing <em>pilfer</em> or <em>meddle</em>. A peddler is a traveling salesman: to peddle is to <strong>sell</strong>. (Pedal, with an a, is the bike part.)", pat:1},
+{cat:"effect", date:"2026-10-09", lv:"KP1 Synonyms", pg:"p.113 #7", w:"OBSCURE", pos:"adjective", o:["tragic", "enigmatic", "obligatory", "ignored", "legendary"], a:1, pick:3, ko:"not clear; hard to understand or little known",
+ tip:"Second miss (Sep 5: the answer was cryptic). He took (D) ignored — obscure things often are ignored, but that is the result. The meaning is <strong>hard to understand</strong>: enigmatic, cryptic.", pat:3},
+{cat:"unknown", date:"2026-10-09", lv:"KP1 Synonyms", pg:"p.113 #10", w:"HOMAGE", pos:"noun", o:["youth", "wreath", "respect", "affection", "household"], a:2, pick:0, ko:"special honor or respect shown publicly",
+ tip:"He took (A) youth. To pay homage is to show <strong>respect</strong> (a tribute). (B) wreath is a trap: wreaths are laid in homage, but they are not homage itself.", pat:6},
+{cat:"look", date:"2026-10-09", lv:"KP1 Synonyms", pg:"p.114 #13", w:"IMPERIOUS", pos:"adjective", o:["royal", "friendly", "gusty", "arrogant", "insightful"], a:3, pick:0, ko:"proud and bossy; expecting to be obeyed",
+ tip:"He took (A) royal, from <em>imperial</em> (emperor). Imperious describes an attitude: <strong>arrogant</strong> and commanding. His margin notes (implore, imply) show he was guessing from the look.", pat:1},
+{cat:"look", date:"2026-10-09", lv:"KP1 Synonyms", pg:"p.114 #14", w:"HALLOW", pos:"verb", o:["revere", "dig", "inhabit", "discover", "release"], a:0, pick:1, ko:"to make or treat as holy",
+ tip:"He took (B) dig, reading <em>hollow</em>. Hallow with an a means to treat as holy (Halloween = All Hallows' Eve): <strong>revere</strong>.", pat:1},
+{cat:"look", date:"2026-10-09", lv:"KP1 Synonyms", pg:"p.115 #27", w:"CONCILIATE", pos:"verb", o:["advise", "displease", "separate", "conceptualize", "appease"], a:4, pick:0, ko:"to calm someone's anger; to win over",
+ tip:"He took (A) advise, likely from <em>council / counsel</em>. Conciliate means to make peace: <strong>appease</strong>. He highlighted <em>conciliatory</em> as unknown on Oct 3.", pat:1},
+{cat:"effect", date:"2026-10-09", lv:"KP1 Synonyms", pg:"p.115 #28", w:"SECURE", pos:"verb", o:["fasten", "decree", "impair", "save", "explore"], a:0, pick:3, ko:"to fix firmly in place; to fasten",
+ tip:"He took (D) save, thinking of <em>secure = safe</em>. As a verb here it means to <strong>fasten</strong> (secure your seatbelt). With a common word, check its other meanings.", pat:3},
+{cat:"effect", date:"2026-10-09", lv:"KP1 Synonyms", pg:"p.116 #31", w:"AMBIGUOUS", pos:"adjective", o:["simple", "curious", "double", "hazy", "hidden"], a:3, pick:4, ko:"having more than one possible meaning; unclear",
+ tip:"He took (E) hidden. An ambiguous meaning is not hidden; it is <strong>unclear</strong>, open to more than one reading — hazy. (C) double hints at the two meanings but does not mean unclear.", pat:3},
+{cat:"affix", date:"2026-10-09", lv:"KP1 Synonyms", pg:"p.116 #32", w:"PROSCRIBE", pos:"verb", o:["write", "order", "outlaw", "advise", "legislate"], a:2, pick:0, ko:"to forbid by law",
+ tip:"He took (A) write, from <em>-scribe</em> (scribble, scribe). Proscribe means to <strong>outlaw</strong>; prescribe is to order. Do not judge by the root alone.", pat:2},
+{cat:"unknown", date:"2026-10-09", lv:"KP1 Synonyms", pg:"p.116 #33", w:"ACQUIESCENCE", pos:"noun", o:["immersion", "condescension", "reticence", "permission", "silence"], a:3, pick:0, ko:"quiet acceptance or agreement",
+ tip:"He took (A) immersion. He highlighted <em>acquiesce</em> as unknown in both vocabulary books (Oct 3 and Oct 4). To acquiesce is to go along with: <strong>consent, permission</strong>.", pat:6},
+{cat:"look", date:"2026-10-09", lv:"KP1 Synonyms", pg:"p.116 #34", w:"DELVE", pos:"verb", o:["invent", "explore", "dive", "divide", "cut"], a:1, pick:2, ko:"to search or research deeply",
+ tip:"He took (C) dive — delve and dive look alike, and we say “dive into a topic.” But delve means to dig deep for information: <strong>explore</strong>.", pat:1},
+{cat:"look", date:"2026-10-09", lv:"KP1 Synonyms", pg:"p.116 #36", w:"LEVY", pos:"verb", o:["buttress", "assess", "summon", "conspire", "loan"], a:1, pick:0, ko:"to impose or collect a tax or fine",
+ tip:"He took (A) buttress, likely from <em>levee</em> (a wall against flooding). To levy a tax is to impose it: <strong>assess</strong>.", pat:1},
+{cat:"effect", date:"2026-10-09", lv:"KP1 Synonyms", pg:"p.116 #37", w:"CRITERION", pos:"noun", o:["perception", "classification", "credential", "benchmark", "experience"], a:3, pick:1, ko:"a standard used to judge something",
+ tip:"He took (B) classification — criteria are used to classify, but that is the use. A criterion is the <strong>standard</strong> itself: benchmark. He highlighted criterion as unknown on Oct 3.", pat:3},
+{cat:"look", date:"2026-10-09", lv:"KP1 Synonyms", pg:"p.116 #38", w:"FORLORN", pos:"adjective", o:["forgotten", "exonerated", "dejected", "rotten", "mistaken"], a:2, pick:0, ko:"sad and lonely, as if abandoned",
+ tip:"He took (A) forgotten, from the <em>for-</em> sound. A forlorn person feels abandoned and hopeless: <strong>dejected</strong>.", pat:1},
+{cat:"affix", date:"2026-10-09", lv:"KP1 Synonyms", pg:"p.117 #42", w:"PROFESS", pos:"verb", o:["repel", "predict", "declare", "upset", "instigate"], a:2, pick:1, ko:"to declare openly",
+ tip:"He took (B) predict, reading <em>pro-</em> as “before.” His margin note (confess) was closer: to profess is to <strong>declare</strong> openly, as a professor professes knowledge.", pat:2},
+{cat:"look", date:"2026-10-09", lv:"KP1 Synonyms", pg:"p.117 #43", w:"INGENUOUS", pos:"adjective", o:["inventive", "addictive", "imaginative", "artless", "dependent"], a:3, pick:0, ko:"innocent and trusting; without cunning",
+ tip:"He took (A) inventive — that is <em>ingenious</em>. Ingenuous (with -uous) means innocent, naive: <strong>artless</strong>. He highlighted ingenuous as unknown on Oct 3, and the card says “not ingenious.”", pat:1},
+{cat:"unknown", date:"2026-10-09", lv:"KP1 Synonyms", pg:"p.117 #46", w:"WREST", pos:"verb", o:["glide", "elevate", "smash", "seize", "shove"], a:3, pick:0, ko:"to pull or take away by force",
+ tip:"He took (A) glide. Wrest is related to wrestle: to <strong>seize</strong> or twist something away from someone.", pat:6}
 ];
 /* Each passage: lines are the book's own lines, so the line numbers in the
    questions point at the right place. A blank string starts a new paragraph. */
@@ -4042,6 +4170,1836 @@ const PASSAGES = [
    "cat": "tone"
   }
  ]
+},
+{
+ "id": "igr-p1",
+ "date": "2026-10-09",
+ "src": "Ivy Global SSAT Reading Practice · p.169",
+ "title": "Passage — Hanami",
+ "by": "",
+ "lines": [
+  "Hanami (“flower viewing”) is the Japanese traditional custom of enjoying the beauty of",
+  "flowers, especially cherry blossoms, or sakura. The practice of Hanami is more than a",
+  "thousand years old, and is still very popular in Japan today. It takes place in the spring.",
+  "The blossoms only last for a week or two, usually from March to April, and they are",
+  "followed by the media and waited for by most of the Japanese people. Full bloom usually",
+  "comes about one week after the opening of the first blossoms. Another week later, the",
+  "blooming peak is over and the blossoms are falling from the trees.",
+  "",
+  "The practice of Hanami is many centuries old. It is said to have started during the Nara",
+  "Period (710-784) when the Chinese Tang Dynasty influenced Japan in many ways, one of",
+  "which was the custom of enjoying flowers. The sakura were considered sacred by the",
+  "Japanese, and they were so important that they still are a cultural symbol of Japan. People",
+  "believed that gods inhabited the trees, and the Hanami party was used to divine that year’s",
+  "harvest and to announce the season of planting rice. The Japanese people today continue",
+  "the tradition of Hanami, gathering in great numbers wherever the flowering trees are",
+  "found. Thousands of people fill the parks to hold feasts under the flowering trees, and",
+  "sometimes these parties go on until late at night."
+ ],
+ "qs": [
+  {
+   "n": 12,
+   "cat": "detail",
+   "q": "According to the passage, what was the <em>original</em> purpose of the Hanami tradition?",
+   "o": [
+    "to admire the beauty of the sakura",
+    "to pay tribute to the Tang Dynasty",
+    "to honor the gods and the harvest season",
+    "to build national spirit through communal celebrations",
+    "to celebrate the coming of the spring"
+   ],
+   "a": 2,
+   "pick": 0,
+   "why": "He took (A), which is what Hanami means <strong>today</strong>. The question asks for the <strong>original</strong> purpose: lines 12–13 say gods lived in the trees and the party was used to divine the harvest and announce rice planting."
+  },
+  {
+   "n": 13,
+   "cat": "detail",
+   "q": "According to the passage, the sakura<br>I. bloom for a short time in March or April<br>II. are the blossoms of the cherry tree<br>III. were first planted in Japan in 710",
+   "o": [
+    "I only",
+    "II only",
+    "I and II only",
+    "I and III only",
+    "I, II, and III"
+   ],
+   "a": 2,
+   "pick": 1,
+   "why": "He took (B) and crossed out I. But lines 4 and 6–7 say the blossoms last only a week or two, from March to April, so I is true too. (III is false: 710 is when the custom began, not when the trees were planted.)"
+  }
+ ]
+},
+{
+ "id": "igr-p2",
+ "date": "2026-10-09",
+ "src": "Ivy Global SSAT Reading Practice · p.170",
+ "title": "Passage — Peggy on the cross-beam",
+ "by": "",
+ "lines": [
+  "“Peggy! Where are you? Aunt Helen wants you! Wherever are you hiding?”",
+  "",
+  "Getting no response to her calls, the speaker, a girl of fifteen, ran out across the",
+  "farmyard. She peeped into the cart-shed. She searched in the kitchen garden, but there was",
+  "nothing to be seen except the daffodils under the gooseberry-bushes. Round through the",
+  "orchard she sped, bringing down a shower of cherry-blossom as she brushed against the",
+  "trees, but without any sign of the truant. Here and there Lilian ran—now peeping into the",
+  "garage, now peering at the top of a ladder, now rummaging in the tool-shed, then back",
+  "through the sand-quarry into the stack-yard, where there was a very good chance that the",
+  "young lady might be hidden away; but Lilian’s efforts were fruitless, and she was just",
+  "turning away to give up the useless search, when the sound of a laugh attracted her to the",
+  "barn. The door was slightly ajar, and she peeped in.",
+  "",
+  "On the floor among the straw sat a little boy of eight or nine years old, gazing with",
+  "delight into the rafters of the roof. Lilian glanced up, and beheld a sight which made her",
+  "gasp with horror. The barn was spanned by a great cross-beam, which ran across the whole",
+  "length from one end to another. Mounted on this, fully fifteen feet above the ground, a girl",
+  "was slowly walking along, her gray eyes bright with excitement and her arms stretched out",
+  "on either side to balance herself as she went on her perilous journey."
+ ],
+ "qs": [
+  {
+   "n": 14,
+   "cat": "whole",
+   "q": "A good title for this passage could be",
+   "o": [
+    "The Daredevil Girl",
+    "Angry Aunt Helen",
+    "A Day in the Country",
+    "A Game of Hide-and-Seek",
+    "Lilian the Tattletale"
+   ],
+   "a": 0,
+   "pick": 2,
+   "why": "He took (C), which only names the <strong>setting</strong> (a farm). The whole passage builds to one moment: Peggy walking a beam fifteen feet up, “her perilous journey.” A title names the point, not the backdrop."
+  }
+ ]
+},
+{
+ "id": "igr-p3",
+ "date": "2026-10-09",
+ "src": "Ivy Global SSAT Reading Practice · p.172",
+ "title": "Passage — Montagu and Capulet",
+ "by": "",
+ "lines": [
+  "Once upon a time there lived in Verona two great families named Montagu and",
+  "Capulet. They were both rich, and I suppose they were as sensible, in most things, as other",
+  "rich people. But in one thing they were extremely silly. There was an ancient quarrel",
+  "between the two families, an argument so old that no one could remember what it was",
+  "about or whom exactly it had concerned. But this quarrel hovered over Verona like a black",
+  "cloud, ready to erupt into a storm at any moment. Instead of making it up like reasonable",
+  "folks, they made a sort of pet of their quarrel, and would not let it die out. A Montagu",
+  "wouldn’t speak to a Capulet if he met one in the street—nor a Capulet to a Montagu—or if",
+  "they did speak, it was to say rude and odious things, which often ended in a fight. And",
+  "their relations and servants were just as foolish, so that street fights and duels and",
+  "skirmishes of that kind were always growing out of the Montagu-and-Capulet quarrel."
+ ],
+ "qs": [
+  {
+   "n": 23,
+   "cat": "whole",
+   "q": "An appropriate title for this passage would be",
+   "o": [
+    "How to Annoy Your Neighbor",
+    "The Fight that Wouldn’t End",
+    "Famous People from Verona",
+    "Lives of the Rich and Ridiculous",
+    "A History of the Ruling Families of Verona"
+   ],
+   "a": 1,
+   "pick": 3,
+   "why": "He took (D), built from two words in lines 2–3 (rich, silly). But the families’ wealth is a side detail; every sentence after line 3 is about the <strong>quarrel</strong> that “would not die out.”"
+  }
+ ]
+},
+{
+ "id": "igr-p4",
+ "date": "2026-10-09",
+ "src": "Ivy Global SSAT Reading Practice · p.175",
+ "title": "Passage — Richard Wagner",
+ "by": "",
+ "lines": [
+  "Richard Wagner was unlike most of the other great composers. He did not show any",
+  "talent for music until he was almost a man. All that he thought of was writing plays. When",
+  "he did study, he was so bright and worked so hard that he learned in less than a year more",
+  "than many learn in a lifetime.",
+  "",
+  "When we read the stories of Charles Dickens we make many friends. And they are",
+  "among the very best we ever have. There are Little Nell, Paul Dombey, Sam Weller,",
+  "Oliver Twist, and a host of others. Writers like Dickens bring all sorts of people before us.",
+  "But few composers can do such a thing. Yet there are some who do this, and one of the",
+  "greatest is Richard Wagner. In his operas a host of people live, people as real and as",
+  "interesting as those in the stories of Charles Dickens. There is Walter, who sings the Prize",
+  "Song in Die Meistersinger, and Eva, whom he loves. And in the same opera there is",
+  "Beckmesser, the fussy old schoolmaster kind of a man. And Hans Sachs, the cobbler.",
+  "",
+  "Nor was Wagner satisfied with making characters who were merely people just like",
+  "ourselves. There are in the operas by Richard Wagner, gods and goddesses, giants and",
+  "Rhine maidens, and Nibelungs. Wagner was able to evoke these characters through his",
+  "operatic compositions."
+ ],
+ "qs": [
+  {
+   "n": 34,
+   "cat": "detail",
+   "q": "Which of the following is NOT stated or implied by the passage?",
+   "o": [
+    "Wagner was a talented playwright.",
+    "Most composers show a talent for music at a young age.",
+    "Charles Dickens has created many likeable characters.",
+    "Wagner wrote an opera called Die Meistersinger.",
+    "Wagner was not satisfied with making characters who were just ordinary people."
+   ],
+   "a": 0,
+   "pick": 1,
+   "why": "He took (B), but line 1 implies it: Wagner was <strong>unlike</strong> most composers because he showed no talent until he was almost a man. The passage says he <em>thought of</em> writing plays (line 2), never that he was good at it — so (A) is the one not stated."
+  }
+ ]
+},
+{
+ "id": "igr-p5",
+ "date": "2026-10-09",
+ "src": "Ivy Global SSAT Reading Practice · p.178",
+ "title": "Passage — The Bookshelf",
+ "by": "",
+ "lines": [
+  "Books are as essentially a part of the home where boys and girls are growing into",
+  "manhood and womanhood as any other part of the furnishings. Parents have no more right",
+  "to starve a child’s mind than they have his body. A child needs tools for his brain as much",
+  "as for his hands. All these things are found, and found only, in books.",
+  "",
+  "The child is helpless to provide himself with these necessaries for life. The majority of",
+  "parents are eager that their children shall start early and right on that road which leads to",
+  "honorable success. But it is impossible for any parent, by no matter how liberal an",
+  "expenditure, to collect books that shall adequately cover all a child’s needs and interests.",
+  "This is the task of experts. We at The Bookshelf Company are experts. The Bookshelf is a",
+  "collection of written material that creates a desire for knowledge, and then satisfies that",
+  "desire. The Editors have selected all the most important subjects and have brought them to",
+  "life with vivid illustrations. Order your copy of The Bookshelf today."
+ ],
+ "qs": [
+  {
+   "n": 8,
+   "cat": "vocab",
+   "q": "In lines 7-8, the author implies that",
+   "o": [
+    "no matter how long a parent searches, he or she will never be able to find enough information to satisfy his or her child’s curiosity",
+    "no matter how much money a parent spends, he or she will never be able to collect enough books to address his or her child’s interests and needs",
+    "no matter how hard a parent tries, he or she will never be able to collect the books required by his or her child’s school.",
+    "no matter what the parents’ politics, they will never be good at educating their own children",
+    "even if a parent teaches his or her child the values of liberty, the parent must back up his or her argument with books"
+   ],
+   "a": 1,
+   "pick": 0,
+   "why": "He took (A), about time spent searching. The key phrase is “liberal an <strong>expenditure</strong>”: an expenditure is money spent, and <em>liberal</em> here means generous, not political. So: however much money a parent spends. (D) and (E) are traps on the political sense of liberal."
+  }
+ ]
+},
+{
+ "id": "igr-p6",
+ "date": "2026-10-09",
+ "src": "Ivy Global SSAT Reading Practice · p.179",
+ "title": "Passage — Alexander Graham Bell",
+ "by": "",
+ "lines": [
+  "Alexander Graham Bell is commonly credited as the inventor of the first practical",
+  "telephone. Bell was the first to obtain a patent, in 1876, for an “apparatus for transmitting",
+  "vocal or other sounds telegraphically,” after experimenting with many primitive sound",
+  "transmitters and receivers. Bell was also an astute and articulate business man with",
+  "influential and wealthy friends.",
+  "",
+  "Bell did for the telephone what Henry Ford did for the automobile. Although not the",
+  "first to experiment with telephonic devices, Bell and the companies founded in his name",
+  "were the first to develop commercially practical telephones around which a successful",
+  "business could be built and grown. Bell adopted carbon transmitters similar to Edison’s",
+  "transmitters and adapted telephone exchanges and switching plug boards developed for",
+  "sending telegraphs. Watson and other Bell engineers invented numerous other",
+  "improvements to telephony. Bell succeeded where others failed to assemble a",
+  "commercially viable telephone system; it can therefore be argued that Bell invented the",
+  "telephone industry."
+ ],
+ "qs": [
+  {
+   "n": 10,
+   "cat": "tone",
+   "q": "The tone of this passage can be best described as",
+   "o": [
+    "amused",
+    "biased",
+    "worshiping",
+    "doubtful",
+    "informative"
+   ],
+   "a": 4,
+   "pick": 2,
+   "why": "He took (C) worshiping, probably from the Henry Ford comparison. But the author also says Bell was <strong>not</strong> the first to experiment and that Watson and others made many improvements. Facts on both sides, no gushing: informative."
+  }
+ ]
+},
+{
+ "id": "igr-p7",
+ "date": "2026-10-09",
+ "src": "Ivy Global SSAT Reading Practice · Challenge Passages (Part 4) · p.190",
+ "title": "Passage — The Bayeux Tapestry",
+ "by": "",
+ "lines": [
+  "The Bayeux Tapestry is an embroidered cloth nearly 230 feet long that depicts the",
+  "events leading up to the Norman conquest of England in 1066, focusing on the relationship",
+  "and struggle for power between William, Duke of Normandy, and Harold, Earl of Wessex",
+  "and later King of England, which culminated in the Battle of Hastings. The tapestry",
+  "consists of a series of scenes with Latin captions, embroidered on linen with colored",
+  "woolen yarns. It is likely that it was commissioned by Bishop Odo, William’s half-brother",
+  "and made in England in the 1070s. In 1729 the hanging was rediscovered by scholars at a",
+  "time when it was being displayed annually in Bayeux Cathedral. The tapestry is now",
+  "exhibited at Musée de la Tapisserie de Bayeux in Bayeux, France, in the region of",
+  "Normandy.",
+  "",
+  "One of the reasons for the tapestry’s importance is its depiction of Halley’s Comet. A",
+  "comet is a small icy solar system body that, when close enough to the Sun, displays a",
+  "visible coma (a thin, fuzzy, temporary atmosphere) and sometimes also a tail. Halley is the",
+  "only short-period comet (a comet that appears at least once every 200 years) that is clearly",
+  "visible to the naked eye from Earth, and thus the only naked-eye comet that might appear",
+  "twice in a human lifetime. In 1066, the comet was seen in England and thought to be a bad",
+  "omen. The comet is represented on the Bayeux Tapestry as a fiery star with a streaming",
+  "tail. Farther on, the tapestry depicts the bloody Battle of Hastings, where King Harold met",
+  "his untimely death."
+ ],
+ "qs": [
+  {
+   "n": 4,
+   "cat": "infer",
+   "q": "It can be inferred from the passage that",
+   "o": [
+    "the Bayeux Tapestry took nearly a decade to complete",
+    "William likely asked the Bishop Odo to have the tapestry commissioned",
+    "the majority of people will see Halley’s Comet twice in their lifetime",
+    "on the tapestry, Halley’s Comet is depicted as an omen of King Harold’s death",
+    "the Bayeux Tapestry is the most famous tapestry in Europe"
+   ],
+   "a": 3,
+   "pick": 4,
+   "why": "He took (E), which sounds true but the passage never compares it with other tapestries. An inference must rest on the text: the comet was seen as a <strong>bad omen</strong> (lines 16–17), and “farther on” the tapestry shows Harold’s death (lines 18–19)."
+  }
+ ]
+},
+{
+ "id": "igr-p8",
+ "date": "2026-10-09",
+ "src": "Ivy Global SSAT Reading Practice · Challenge Passages (Part 4) · p.192",
+ "title": "Passage — Obama’s inaugural address",
+ "by": "Barack Obama, inaugural address as the 44th President of the United States",
+ "lines": [
+  "That we are in the midst of crisis is now well understood. Our nation is at war. Our",
+  "economy is badly weakened, a consequence of greed and irresponsibility on the part of",
+  "some, but also our collective failure to make hard choices and prepare the nation for a new",
+  "age. Homes have been lost; jobs shed; businesses shuttered. Our health care is too costly;",
+  "our schools fail too many; and each day brings further evidence that the ways we use",
+  "energy strengthen our adversaries and threaten our planet.",
+  "",
+  "At a moment when the outcome of our revolution was most in doubt, the father of our",
+  "nation ordered these words be read to the people:",
+  "",
+  "“Let it be told to the future world, that in the depth of winter, when nothing but hope",
+  "and virtue could survive, that the city and the country, alarmed at one common danger,",
+  "came forth to meet it.”",
+  "",
+  "America, let us remember these timeless words. With hope and virtue, let us brave once",
+  "more the icy currents, and endure what storms may come. Let it be said by our children’s",
+  "children that when we were tested we refused to let this journey end, that we did not turn",
+  "back nor did we falter; and with eyes fixed on the horizon and God’s grace upon us, we",
+  "carried forth that great gift of freedom and delivered it safely to future generations."
+ ],
+ "qs": [
+  {
+   "n": 6,
+   "cat": "whole",
+   "q": "Which of the following would be a good title for this passage?",
+   "o": [
+    "The Future is Now",
+    "Stand Up For Your Beliefs",
+    "We are All American",
+    "Let Us Have Courage",
+    "The Worst is Over"
+   ],
+   "a": 3,
+   "pick": 0,
+   "why": "He took (A), from “future generations” in the last line. But the speech’s call is to <strong>brave</strong> the icy currents and <strong>endure</strong> the storms (lines 12–13): let us have courage."
+  },
+  {
+   "n": 7,
+   "cat": "detail",
+   "q": "Which of the following adversities does President Obama NOT mention in the passage?",
+   "o": [
+    "The environment has been damaged by energy production.",
+    "The education system suffers from inadequacies.",
+    "The country is at war.",
+    "Health care is too expensive.",
+    "Americans have lost hope."
+   ],
+   "a": 4,
+   "pick": 0,
+   "why": "He took (A), but lines 5–6 cover it: the way we use energy “threaten[s] our planet.” Obama never says Americans have <strong>lost</strong> hope — he asks them to act “with hope and virtue.” Check each choice against a line before choosing."
+  }
+ ]
+},
+{
+ "id": "igr-p9",
+ "date": "2026-10-09",
+ "src": "Ivy Global SSAT Reading Practice · Challenge Passages (Part 4) · p.194",
+ "title": "Passage — Young Handel",
+ "by": "",
+ "lines": [
+  "George Frederick Handel was born on February 23, 1685. Even before he could speak,",
+  "little George had shown a remarkable fondness for music, and the only toys he cared for",
+  "were such as were capable of producing musical sounds. With this love for music,",
+  "however, the father showed no sympathy whatever; he regarded the art with contempt, as",
+  "something beneath the serious notice of one who aspired to be a gentleman, and that his",
+  "child should have expressed an earnest desire to be taught to play only served to make him",
+  "angry. He had decided that George was to be a lawyer, and in order that nothing should",
+  "interfere with the carrying out of this intention he refused to allow the boy to attend school,",
+  "lest his fondness for music should induce someone to teach him his notes. Poor George",
+  "was therefore compelled to stifle his longing whilst in his father’s presence, and content",
+  "himself with ‘making music’ in the seclusion of his own chamber. It may seem strange that",
+  "Handel’s mother should not have interposed in order that her boy should be taught music,",
+  "but there is no doubt that the elderly surgeon ruled his household with a firm hand, which",
+  "not even his wife’s intercession would have made him relax. And how could she have",
+  "known that her son would grow up to be a great composer?"
+ ],
+ "qs": [
+  {
+   "n": 13,
+   "cat": "infer",
+   "q": "When the author says “with this love for music, however, the father showed no sympathy whatever” (lines 3–4), the author most likely means that",
+   "o": [
+    "no matter how Handel pleaded, his father would not listen to his compositions",
+    "Handel’s father’s taste in music was different from his son’s",
+    "Handel’s father was generally unkind to his son",
+    "Handel’s father strongly disapproved of his son’s interest in music",
+    "Handel’s father was deaf and could not enjoy music"
+   ],
+   "a": 3,
+   "pick": 0,
+   "why": "He took (A), but the boy was not composing yet, and pleading is not mentioned. The rest of the sentence explains the phrase: the father held music “with contempt” — he <strong>disapproved</strong> of the interest itself."
+  },
+  {
+   "n": 15,
+   "cat": "detail",
+   "q": "According to the passage, Handel’s father disapproved of his son’s love of music for all of the following reasons EXCEPT",
+   "o": [
+    "he hated music generally",
+    "he wanted his son to become a lawyer",
+    "he wanted his son to be a gentleman",
+    "he believed that his son was too good for music",
+    "he worried that his son wouldn’t make a living as a musician"
+   ],
+   "a": 4,
+   "pick": 1,
+   "why": "He took (B), which is stated outright in line 7 — he seems to have lost the word <strong>EXCEPT</strong>. In an EXCEPT question, cross out every choice the passage supports; the one left (E, making a living) is never mentioned."
+  }
+ ]
+},
+{
+ "id": "igr-p10",
+ "date": "2026-10-09",
+ "src": "Ivy Global SSAT Reading Practice · Challenge Passages (Part 4) · p.198",
+ "title": "Passage — Isadora Duncan",
+ "by": "",
+ "lines": [
+  "Isadora Duncan was a dancer considered by many to be the creator of modern dance.",
+  "Duncan believed that classical ballet, with its strict rules of posture and formation, was",
+  "“ugly and against nature.” She rejected traditional ballet steps, preferring to stress",
+  "improvisation, emotion, and the human form. She gained a very wide following and set up",
+  "several schools. Duncan became so celebrated that artists and authors created sculpture,",
+  "poetry, novels, and even jewelry inspired by her. When the Théâtre des Champs-Élysées",
+  "was built in 1913, her likeness was included in the bas-relief over the entrance, carved by",
+  "sculptor Antoine Bourdelle.",
+  "",
+  "Duncan restored dance to a high place among the arts. Breaking with convention, she",
+  "traced the art of dance back to its roots as a sacred art. Within this idea, she developed free",
+  "and natural movements inspired by the classical Greek arts, folk dances, social dances,",
+  "nature and natural forces. She also incorporated the new American athleticism, which",
+  "included skipping, running, jumping, leaping, and tossing."
+ ],
+ "qs": [
+  {
+   "n": 21,
+   "cat": "whole",
+   "q": "A good title for this passage might be",
+   "o": [
+    "Ballet vs. Modern Dance: The Debate of the Century",
+    "A History of Ancient and Modern Dance",
+    "An Unforgettable Performer",
+    "Breaking with Convention",
+    "A Star Is Born"
+   ],
+   "a": 3,
+   "pick": 2,
+   "why": "He took (C), but the passage never describes her performing. It is about what she <strong>rejected and changed</strong>: ballet’s strict rules out, free natural movement in. The phrase is even in line 9."
+  },
+  {
+   "n": 24,
+   "cat": "infer",
+   "q": "It can be inferred from the passage that Isadora Duncan is primarily famous because",
+   "o": [
+    "she was a skilled historian",
+    "she was an excellent dance teacher and opened several schools",
+    "she inspired thousands of artists to make beautiful jewelry and sculptures",
+    "she invented a new form of dance",
+    "she rescued modern dance from years of neglect and bad reputation"
+   ],
+   "a": 3,
+   "pick": 4,
+   "why": "He took (E), mixing up two ideas: she restored <strong>dance</strong> to a high place (line 9), but modern dance was her own creation (line 1), so it had no years of neglect to be rescued from. Line 1 gives the answer: creator of modern dance."
+  }
+ ]
+},
+{
+ "id": "igr-p11",
+ "date": "2026-10-09",
+ "src": "Ivy Global SSAT Reading Practice · Upper-Level Challenge Passages (Part 5) · p.201",
+ "title": "Passage — Helen Keller on optimism",
+ "by": "Helen Keller, who was both blind and deaf due to a childhood illness",
+ "lines": [
+  "Most people measure their happiness in terms of physical pleasure and material",
+  "possession. Could they win some visible goal which they have set on the horizon, how",
+  "happy they would be! Lacking this gift or that circumstance, they would be miserable. If",
+  "happiness is to be so measured, I who cannot hear or see have every reason to sit in a",
+  "corner with folded hands and weep. If I am happy in spite of my deprivations, if my",
+  "happiness is so deep that it is a faith, so thoughtful that it becomes a philosophy of life—if,",
+  "in short, I am an optimist, my testimony to the creed of optimism is worth hearing. As",
+  "sinners stand up in meeting and testify to the goodness of God, so one who is called",
+  "afflicted may rise up in gladness of conviction and testify to the goodness of life."
+ ],
+ "qs": [
+  {
+   "n": 1,
+   "cat": "whole",
+   "q": "A good title for this passage might be",
+   "o": [
+    "Life is Good",
+    "The Life of Helen Keller",
+    "Material Happiness",
+    "The Deaf Speak",
+    "The Sin of Resentfulness"
+   ],
+   "a": 0,
+   "pick": 3,
+   "why": "He took (D), which fits the speaker, not the message. She is not speaking for deaf people; she is testifying “to the <strong>goodness of life</strong>” (line 9) — the passage’s last words."
+  },
+  {
+   "n": 5,
+   "cat": "tone",
+   "q": "The tone of this passage could be described as",
+   "o": [
+    "harsh",
+    "aloof",
+    "upbeat",
+    "jolly",
+    "self-indulgent"
+   ],
+   "a": 2,
+   "pick": 1,
+   "why": "He took (B) aloof, which means cold and distant. She speaks warmly and personally (“I am an optimist,” “gladness of conviction”): upbeat. Jolly is too giddy for a serious, thoughtful passage."
+  }
+ ]
+},
+{
+ "id": "igr-p12",
+ "date": "2026-10-09",
+ "src": "Ivy Global SSAT Reading Practice · Upper-Level Challenge Passages (Part 5) · p.203",
+ "title": "Poem — November",
+ "by": "",
+ "verse": true,
+ "lines": [
+  "There is wind where the rose was,",
+  "Cold rain where sweet grass was,",
+  "And clouds like sheep",
+  "Stream o’er the steep",
+  "Grey skies where the lark was.",
+  "",
+  "Nought warm where your hand was,",
+  "Nought gold where your hair was,",
+  "But phantom, forlorn,",
+  "Beneath the thorn,",
+  "Your ghost where your face was.",
+  "",
+  "Cold wind where your voice was,",
+  "Tears, tears where my heart was,",
+  "And ever with me,",
+  "Child, ever with me,",
+  "Silence where hope was."
+ ],
+ "qs": [
+  {
+   "n": 8,
+   "cat": "device",
+   "q": "To what does the poet compare the clouds?",
+   "o": [
+    "the lark",
+    "sheep sitting still",
+    "running sheep",
+    "grey skies",
+    "his unhappiness"
+   ],
+   "a": 2,
+   "pick": 1,
+   "why": "He took (B). The clouds are “like sheep,” but the verb in line 4 is <strong>stream</strong>: they rush across the sky. Read the verb, not just the noun in the simile."
+  }
+ ]
+},
+{
+ "id": "igr-p13",
+ "date": "2026-10-09",
+ "src": "Ivy Global SSAT Reading Practice · Upper-Level Challenge Passages (Part 5) · p.208",
+ "title": "Passage — How to tell a story",
+ "by": "",
+ "lines": [
+  "There are several kinds of stories, but only one difficult kind—the humorous. I will talk",
+  "mainly about that one. The humorous story is American, the comic story is English, the",
+  "witty story is French. The humorous story depends for its effect upon the MANNER of the",
+  "telling; the comic story and the witty story upon the MATTER.",
+  "",
+  "The humorous story may be spun out to great length, and may wander around as much",
+  "as it pleases, and arrive nowhere in particular; but the comic and witty stories must be brief",
+  "and end with a point. The humorous story bubbles gently along, the others burst.",
+  "",
+  "The humorous story is told gravely; the teller does his best to conceal the fact that he",
+  "even dimly suspects that there is anything funny about it; but the teller of the comic story",
+  "tells you beforehand that it is one of the funniest things he has ever heard, then tells it with",
+  "eager delight, and is the first person to laugh when he gets through."
+ ],
+ "qs": [
+  {
+   "n": 21,
+   "cat": "detail",
+   "q": "According to the passage, humorous stories differ from witty and comic stories in<br>I. the way in which they are told<br>II. their length<br>III. their level of difficulty",
+   "o": [
+    "I only",
+    "II only",
+    "III only",
+    "I and II only",
+    "I, II, and III"
+   ],
+   "a": 4,
+   "pick": 3,
+   "why": "He took (D) and left out III. But the very first sentence says it: “only one <strong>difficult</strong> kind—the humorous.” Check roman numerals against the opening lines too."
+  },
+  {
+   "n": 22,
+   "cat": "detail",
+   "q": "According to the passage, what makes comic and witty stories successful?",
+   "o": [
+    "They are told in both English and French.",
+    "Their subject matter is funny.",
+    "The story-tellers laugh as they tell their stories.",
+    "They ramble without direction.",
+    "They are hard to understand."
+   ],
+   "a": 1,
+   "pick": 2,
+   "why": "He took (C): the comic teller does laugh (line 11), but that is not what makes the story work. Lines 3–4 give the rule: comic and witty stories depend on the <strong>MATTER</strong> — what the story is about."
+  }
+ ]
+},
+{
+ "id": "pr1-p1",
+ "date": "2026-10-09",
+ "src": "Princeton Review 1,000+ Practice Questions · Finding Information · p.305",
+ "title": "Passage — Brain plasticity",
+ "by": "",
+ "lines": [
+  "The brain has a remarkable ability to adapt and",
+  "change, a phenomenon called brain plasticity. Based on",
+  "changes in the environment, new connections among",
+  "neurons can form. Neurons are the communication",
+  "network of the brain; every perception, action, reaction,",
+  "and thought results from activated neurons. The results",
+  "of neuronal reorganization can amaze: for example, if",
+  "an area of the brain associated with a particular function",
+  "is damaged, another area of the brain might form",
+  "connections that will allow it to take on the lost function.",
+  "Brain plasticity has the potential to allow people with",
+  "certain learning disabilities to compensate for, and even",
+  "possibly overcome, those disabilities. Indeed, brain",
+  "training exercises have shown to improve memory and",
+  "other cognitive functions."
+ ],
+ "qs": [
+  {
+   "n": 7,
+   "cat": "infer",
+   "q": "The passage suggests that brain plasticity",
+   "o": [
+    "is found only in humans.",
+    "is not sufficiently understood.",
+    "involves connections among neurons.",
+    "can cause changes in the environment.",
+    "provides a cure for learning disabilities."
+   ],
+   "a": 2,
+   "pick": 4,
+   "why": "He took (E), but the passage only says people may <strong>compensate for</strong>, and “possibly” overcome, a disability (lines 11–13). A cure is far stronger than that. Lines 2–4 say it outright: plasticity means new connections among neurons."
+  }
+ ]
+},
+{
+ "id": "pr1-p2",
+ "date": "2026-10-09",
+ "src": "Princeton Review 1,000+ Practice Questions · Understanding Purpose · p.315",
+ "title": "Passage — Why young animals play",
+ "by": "",
+ "lines": [
+  "Why do young animals play? Scientific research has",
+  "yielded several theories. One theory suggests that play",
+  "is related to physical development: for many animals,",
+  "play is most intense when the brain and muscles are",
+  "at a particularly important stage of development for",
+  "movement. Another theory proposes that play provides",
+  "practice for important movements that will be necessary",
+  "for an adult animal, such as stalking prey. Play may also",
+  "have a social aspect, teaching animals about their own",
+  "strength and how to interact with others. Yet not all",
+  "scientists are convinced of these theories. Some argue",
+  "that play exists for a much less weighty purpose: just to",
+  "have fun."
+ ],
+ "qs": [
+  {
+   "n": 8,
+   "cat": "whole",
+   "q": "Which of the following best states the main idea of the passage?",
+   "o": [
+    "Different theories on animal play have been proposed.",
+    "It is unlikely that animal play has an important purpose.",
+    "The social aspect of animal play remains a point of controversy.",
+    "The purpose of play among animals is unlikely to be discovered.",
+    "It is most likely that animals play as part of their physical development."
+   ],
+   "a": 0,
+   "pick": 2,
+   "why": "He took (C), which takes one theory (the social one) and adds a controversy the passage never ties to it. The passage simply lists <strong>several theories</strong> (line 2) and ends with doubters — a survey of ideas, not a verdict on one."
+  }
+ ]
+},
+{
+ "id": "pr1-p3",
+ "date": "2026-10-09",
+ "src": "Princeton Review 1,000+ Practice Questions · Understanding Purpose · p.313",
+ "title": "Passage — Edgar at Thanksgiving",
+ "by": "",
+ "lines": [
+  "Edgar sneered in that condescending manner. “Are",
+  "you kidding me, Paul?” He followed this question with a",
+  "whining voice: “But what if I can’t do it? What if I make",
+  "a fool of myself? What if I fail?” He said this in front",
+  "of everyone at Thanksgiving dinner, and several people",
+  "rolled their eyes. As if that wasn’t bad enough, my father",
+  "chimed in, “Yes, not everyone has a sense of self. Paul",
+  "does not have your confidence. I guess that’s just how he",
+  "is.” I became angry at myself for thinking Edgar began",
+  "speaking to me out of candid concern. I was angry at my",
+  "father, too, for taking Edgar’s side."
+ ],
+ "qs": [
+  {
+   "n": 3,
+   "cat": "device",
+   "q": "The phrase “as if that wasn’t bad enough” is included to",
+   "o": [
+    "explain Paul’s embarrassment over his lack of confidence.",
+    "show that Edgar’s insensitivity was not an isolated occurrence.",
+    "show Paul’s father as a keen observer who can be brutally honest.",
+    "explain that Paul was upset over more than Edgar’s treatment of him."
+   ],
+   "a": 3,
+   "pick": 0,
+   "why": "He took (A). The phrase is a <strong>hinge</strong>: it moves from Edgar to a second blow — the father joining in. The last line confirms it: “I was angry at my father, too.” So Paul was hurt by more than Edgar."
+  }
+ ]
+},
+{
+ "id": "pr1-p4",
+ "date": "2026-10-09",
+ "src": "Princeton Review 1,000+ Practice Questions · Understanding Purpose · p.314",
+ "title": "Passage — Douglass and the Fifteenth Amendment",
+ "by": "",
+ "lines": [
+  "Frederick Douglass, the former slave and eloquent",
+  "author, was a vocal supporter of women’s right to vote,",
+  "but he and the women’s rights movement disagreed",
+  "over the Fifteenth Amendment to the United States",
+  "Constitution. The proposed Amendment would grant",
+  "suffrage to Black men, but women (white and Black)",
+  "would still be denied the right to vote. Douglass’ frequent",
+  "ally, Elizabeth Cady Stanton, opposed the exclusion",
+  "of women from the Fifteenth Amendment because she",
+  "(correctly) believed decades would pass before women",
+  "would obtain the right to vote. She wanted Douglass",
+  "to support an addition to the proposed Amendment",
+  "including women, but he did not agree. He felt that the",
+  "Fifteenth Amendment was already likely to be difficult",
+  "to pass and that the inclusion of women would doom the",
+  "proposal to failure."
+ ],
+ "qs": [
+  {
+   "n": 5,
+   "cat": "device",
+   "q": "The author likely describes Douglass as a “vocal supporter” of voting rights for women in order to",
+   "o": [
+    "explain why he and Stanton were allies.",
+    "illustrate the extent of his political judgment.",
+    "expose him as inconsistent in his views on women.",
+    "provide context for his opposition to changing the Fifteenth Amendment."
+   ],
+   "a": 3,
+   "pick": 1,
+   "why": "He took (B), but nothing in line 2 measures his judgment. The phrase sets up a <strong>contrast</strong> — “but he … disagreed” (line 3): calling him a supporter first shows that his refusal was a tactical choice, not opposition to women voting."
+  }
+ ]
+},
+{
+ "id": "pr1-p5",
+ "date": "2026-10-09",
+ "src": "Princeton Review 1,000+ Practice Questions · Tone · p.323",
+ "title": "Passage — Fireflies on the wall",
+ "by": "",
+ "lines": [
+  "On the clear days of autumn, and with Lake",
+  "Michigan so close to the yard, my brothers and I used to",
+  "claim that we could dive into the lake from our roof. Of",
+  "course, we couldn’t. Yet as the sun rose over the lake,",
+  "our living room sparkled with fireflies. The sun’s rays",
+  "bounced off the shimmering water and reflected back to",
+  "dance on our white walls. Just before the effect ended, the",
+  "back wall in particular was covered with so many flashing",
+  "pinpoints of light that it was like fireflies at night. But",
+  "once we turned around and faced the lake, with the sun",
+  "low on the horizon and the deep blue water reflecting the",
+  "yellow and orange rays in magnificent streaks, our breath",
+  "was taken away."
+ ],
+ "qs": [
+  {
+   "n": 3,
+   "cat": "tone",
+   "q": "The writer’s reaction when looking out at the lake is one of",
+   "o": [
+    "wonder.",
+    "amusement.",
+    "melancholy.",
+    "understanding.",
+    "unresponsiveness."
+   ],
+   "a": 0,
+   "pick": 1,
+   "why": "He took (B) amusement — fun, as in the joke about diving from the roof. But the question is about <strong>looking out at the lake</strong>: “magnificent streaks,” “our breath was taken away” (lines 12–13). That is awe: wonder."
+  }
+ ]
+},
+{
+ "id": "pr1-p6",
+ "date": "2026-10-09",
+ "src": "Princeton Review 1,000+ Practice Questions · Miscellaneous Drill · p.338",
+ "title": "Passage — Jason Juarez",
+ "by": "",
+ "lines": [
+  "Jason Juarez frequently claimed that his mother,",
+  "Judge Erica Juarez, did not insist that he become a lawyer.",
+  "Rather, she emphasized that many lawyers do not enjoy",
+  "the practice of law. Her tremendous standing in both",
+  "the legal community and the Latino community created",
+  "added pressure in his legal practice. “Her reputation as a",
+  "jurist creates expectations for me as a lawyer,” Juarez told",
+  "a reporter after he won an important legal case. “So many",
+  "people respect what Mama has accomplished.”"
+ ],
+ "qs": [
+  {
+   "n": 2,
+   "cat": "infer",
+   "q": "The passage describes the viewpoint of a",
+   "o": [
+    "judge",
+    "lawyer",
+    "reporter",
+    "law student",
+    "community organizer"
+   ],
+   "a": 1,
+   "pick": 2,
+   "why": "He took (C) because a reporter appears in line 8 — but the reporter only <strong>hears</strong> the quote. Whose feelings are described? Jason’s: “expectations for me as a lawyer.” Ask whose head the passage is inside, not who is mentioned."
+  }
+ ]
+},
+{
+ "id": "pr1-p7",
+ "date": "2026-10-09",
+ "src": "Princeton Review 1,000+ Practice Questions · ISEE Full Passages Drill · p.348",
+ "title": "Passage — Edison in New York",
+ "by": "The following passage describes an incident from Thomas Edison’s early days in New York City.",
+ "lines": [
+  "Opportunity, well overdue, came just three",
+  "weeks after arriving in New York. Seventeen",
+  "months as a telegrapher in Boston found me",
+  "deeply in debt, despite having acquired several",
+  "patents. Thirty-five dollars, borrowed from",
+  "a friend, bought a steamer ticket to the more",
+  "‘commercially oriented’ city farther south.",
+  "",
+  "Upon arriving in the Big Apple, I took up",
+  "residency in the basement of a building in the",
+  "Financial District, as I had nowhere else to live.",
+  "I spent my days meandering through buildings",
+  "in the area, watching, listening, and waiting in",
+  "solitude, wondering when opportunity might",
+  "present itself.",
+  "",
+  "On the particular morning in question, I",
+  "found myself wandering through a brokerage",
+  "firm, bedraggled and sipping a cup of tea I",
+  "had begged from a vendor. Suddenly, I heard",
+  "quite the commotion. It would seem that one",
+  "of the stock-tickers had malfunctioned, and the",
+  "manager was in quite a tizzy.",
+  "",
+  "Luckily, I had been sleeping in the",
+  "basement of this very building for three weeks,",
+  "and had walked through this very office",
+  "before, so I had observed this very machine in",
+  "operation before.",
+  "",
+  "Seeing that no one else’s attempts had",
+  "proven successful, I made my way through the",
+  "crowd of onlookers to have a go at it.",
+  "",
+  "After taking a few minutes to better",
+  "acquaint myself with the workings of the beast,",
+  "I maneuvered an errant spring back into its",
+  "rightful place. To the others’ astonishment, the",
+  "machine settled itself back into work. What",
+  "boggled my mind, however, was the manager’s",
+  "response: an offer of a position as repairman for",
+  "all machines in the company, for the ridiculous",
+  "sum of $300 per month. And thus, I was",
+  "suddenly delivered from abject poverty and into",
+  "prosperity."
+ ],
+ "qs": [
+  {
+   "n": 2,
+   "cat": "tone",
+   "q": "The tone of the second paragraph can best be described as",
+   "o": [
+    "friendly optimism",
+    "solitary trepidation",
+    "lonely anticipation",
+    "peaceful nostalgia"
+   ],
+   "a": 2,
+   "pick": 1,
+   "why": "He took (B), and half of it is right: “in solitude” (line 13) is lonely. But <strong>trepidation</strong> means fear, and he is not afraid — he is “waiting … wondering when opportunity might present itself” (lines 12–14). Waiting for something hoped for is anticipation."
+  }
+ ]
+},
+{
+ "id": "pr1-p8",
+ "date": "2026-10-09",
+ "src": "Princeton Review 1,000+ Practice Questions · ISEE Full Passages Drill · p.350",
+ "title": "Passage — Matryoshka dolls",
+ "by": "",
+ "lines": [
+  "Matryoshka dolls, also known as Russian",
+  "nesting dolls, are hallmarks of Russian",
+  "traditional folk art. There are traditionally at",
+  "least five nested dolls, each of which detaches",
+  "top from bottom to uncover a smaller figure of",
+  "the same style inside. Each hand-crafted set is",
+  "unique, and individual sets are often designed to",
+  "follow a specific theme.",
+  "",
+  "The classic Matryoshka doll portrays a",
+  "cheerful Russian lady with a sarafan covering",
+  "her head. Inside, the figures may be male or",
+  "female, and the smallest, innermost doll is",
+  "usually designed to look like a baby. The real",
+  "artwork is displayed in the painting of the dolls,",
+  "which can depict anything from peasant girls",
+  "in traditional attire to fairy-tale characters and",
+  "leaders.",
+  "",
+  "These dolls were originally modeled after",
+  "a doll from Honshu, Japan, and were adapted",
+  "to represent Russian culture. Today, they are",
+  "known around the world and have served as",
+  "inspiration for many other types of ‘object-in-",
+  "object’—or layering schemes—in all types of",
+  "artwork ranging from clothing to furniture."
+ ],
+ "qs": [
+  {
+   "n": 11,
+   "cat": "infer",
+   "q": "The author of the passage appears to care most deeply about the fact that",
+   "o": [
+    "Matryoshka dolls are trademarks of Russian art",
+    "the innermost doll represents a baby",
+    "Matryoshka dolls are artistically valuable because of the way they are painted",
+    "some Matryoshka dolls take months to make"
+   ],
+   "a": 2,
+   "pick": 0,
+   "why": "He took (A), the opening fact. But look for where the author steps in with a judgment: “The <strong>real</strong> artwork is displayed in the painting” (lines 13–14). The word <em>real</em> shows what the author values most."
+  }
+ ]
+},
+{
+ "id": "tvr-f3",
+ "date": "2026-10-09",
+ "src": "The Tutorverse Reading · Fiction · p.150",
+ "title": "Fiction Passage 3 — The thing in the grass",
+ "by": "",
+ "lines": [
+  "[Passage text not reproduced here. Read it in the book, p.150, lines 1–28. Line references below follow the book.]",
+  "Summary: two men hunting quail hear something thrashing in the bushes. Morgan, known for his coolness (lines 7–8),",
+  "turns pale, trembles, fires at the moving grass, and runs; the narrator is knocked down by something unseen."
+ ],
+ "qs": [
+  {
+   "n": 1,
+   "cat": "device",
+   "q": "Why does the narrator mention Morgan’s reputation (lines 7–8)?",
+   "o": [
+    "It explains why the pair startled a deer.",
+    "It foreshadows how Morgan later reacts.",
+    "It explains why the narrator is hunting with Morgan.",
+    "It shows why there is only one dog with the group.",
+    "It provides a frame of comparison for later actions."
+   ],
+   "a": 4,
+   "pick": 1,
+   "why": "He took (B). But Morgan later panics and runs — the <strong>opposite</strong> of his calm reputation. The reputation is a baseline that makes his fear stand out, not a hint of it."
+  }
+ ]
+},
+{
+ "id": "tvr-f5",
+ "date": "2026-10-09",
+ "src": "The Tutorverse Reading · Fiction · p.152",
+ "title": "Fiction Passage 5 — Della’s $1.87",
+ "by": "",
+ "lines": [
+  "[Passage text not reproduced here. Read it in the book, p.152, lines 1–29. Line references below follow the book.]",
+  "Summary: with only $1.87 to buy Jim a present, Della suddenly turns to the mirror — eyes shining, face pale (lines 5–6) —",
+  "lets down her beautiful hair, cries a little, and goes out to sell it for twenty dollars."
+ ],
+ "qs": [
+  {
+   "n": 1,
+   "cat": "infer",
+   "q": "Della’s face likely loses its color (line 6) because",
+   "o": [
+    "she cuts all her hair off to sell",
+    "Mme. Sofronie offers to buy all her hair",
+    "she has an idea that she doesn’t like but feels compelled to act upon",
+    "she realizes that she will never be able to afford or find Jim a good present",
+    "she feels as though she has just seen the queen of Sheba"
+   ],
+   "a": 2,
+   "pick": 3,
+   "why": "He took (D), the worry from lines 1–4. But at line 5 her eyes are <strong>shining</strong> — she has just had an idea (selling her hair). Shining eyes plus a pale face: a plan she dreads but will carry out."
+  }
+ ]
+},
+{
+ "id": "tvr-f6",
+ "date": "2026-10-09",
+ "src": "The Tutorverse Reading · Fiction · p.153",
+ "title": "Fiction Passage 6 — Master Horner",
+ "by": "",
+ "lines": [
+  "[Passage text not reproduced here. Read it in the book, p.153, lines 1–26. Line references below follow the book.]",
+  "Summary: a new schoolmaster has a hard first winter using the rod; the narrator says he is not cruel —",
+  "among the uneducated a teacher must first prove his strength. A huge older pupil, Joshua, bullies him."
+ ],
+ "qs": [
+  {
+   "n": 1,
+   "cat": "vocab",
+   "q": "As used in the sentence, “grave” (line 1) most nearly means",
+   "o": [
+    "tomb",
+    "trivial",
+    "jaunty",
+    "deadly",
+    "challenging"
+   ],
+   "a": 4,
+   "pick": 3,
+   "why": "He took (D), as in “grave danger.” Nobody dies here: “a grave time that first winter” means a serious, hard time — tears, sulky faces, a pupil who bullies him. Challenging."
+  }
+ ]
+},
+{
+ "id": "tvr-f7",
+ "date": "2026-10-09",
+ "src": "The Tutorverse Reading · Fiction · p.154",
+ "title": "Fiction Passage 7 — The Brant House",
+ "by": "",
+ "lines": [
+  "[Passage text not reproduced here. Read it in the book, p.154, lines 1–26. Line references below follow the book.]",
+  "Summary: two rich young men arrive at a quiet beach hotel with trunks, a butler, guns and dogs, as if going into the wilderness.",
+  "They go hunting in splendid outfits but bring back one snipe a day; even their dogs come home “crestfallen” (lines 25–26)."
+ ],
+ "qs": [
+  {
+   "n": 1,
+   "cat": "vocab",
+   "q": "The “watering-places” (line 3) probably refer to",
+   "o": [
+    "hunting trips",
+    "amusement parks",
+    "vacation destinations",
+    "backwoods wilderness",
+    "savage tracts of country"
+   ],
+   "a": 2,
+   "pick": 0,
+   "why": "He took (A), from the hunting later on. Line 3 compares the Brant’s beach with other, busier “watering-places” where people spend a summer sojourn — <strong>resorts</strong>, vacation destinations."
+  },
+  {
+   "n": 4,
+   "cat": "infer",
+   "q": "The narrator implies which of the following about Salsbury and Burnham’s hunting excursions?",
+   "o": [
+    "The men were not as good at hunting as they thought they were.",
+    "They were so successful that no game-birds remained in the region.",
+    "The hunters would not have been successful without their dogs.",
+    "Salsbury and Burnham were humiliated by their lack of success.",
+    "The prey they hunted fed all the guests staying at the Brant House for a week."
+   ],
+   "a": 0,
+   "pick": 3,
+   "why": "He took (D), but the humiliation in line 26 belongs to the <strong>dogs</strong>. The men show off grand gear and return with one snipe a day — big show, little result: worse hunters than they think."
+  }
+ ]
+},
+{
+ "id": "tvr-f8",
+ "date": "2026-10-09",
+ "src": "The Tutorverse Reading · Fiction · p.155",
+ "title": "Fiction Passage 8 — Leaving “life”",
+ "by": "",
+ "lines": [
+  "[Passage text not reproduced here. Read it in the book, p.155, lines 1–15. Line references below follow the book.]",
+  "Summary: the speaker calls society’s “life” a labyrinth of evil. She has lived it herself — “I have lived,”",
+  "days and nights of festivity (line 10) — and now wants to shut the door and seek peace at home in nature."
+ ],
+ "qs": [
+  {
+   "n": 3,
+   "cat": "detail",
+   "q": "Which of the following does the author cite as personal experience to support her central claim?",
+   "o": [
+    "“spectators of action” (line 5)",
+    "“hilarity and joy” (line 8)",
+    "“days and nights of festivity” (line 10)",
+    "“beauteous vesture of earth” (line 14)",
+    "“sublime pageantry” (lines 14–15)"
+   ],
+   "a": 2,
+   "pick": 3,
+   "why": "He took (D), but that is the peaceful home she <strong>wants</strong>, not something she has been through. Personal experience is marked by “I have”: “I have lived. I have spent days and nights of festivity.”"
+  }
+ ]
+},
+{
+ "id": "tvr-f9",
+ "date": "2026-10-09",
+ "src": "The Tutorverse Reading · Fiction · p.156",
+ "title": "Fiction Passage 9 — The bridge builder (poem)",
+ "by": "",
+ "lines": [
+  "[Passage text not reproduced here. Read it in the book, p.156, lines 1–22. Line references below follow the book.]",
+  "Summary: an old man crosses a chasm at twilight, then builds a bridge he will never use.",
+  "Asked why, he says a young man is coming behind him for whom the chasm may be a pitfall."
+ ],
+ "qs": [
+  {
+   "n": 4,
+   "cat": "device",
+   "q": "In the context of the passage, you can tell that “twilight” (line 5) refers to",
+   "o": [
+    "a difficult challenge",
+    "the end of a person’s life",
+    "the sun reflecting off the river",
+    "the light shining through the trees",
+    "morning"
+   ],
+   "a": 1,
+   "pick": 0,
+   "why": "He took (A), but the <strong>chasm</strong> is the challenge. Twilight is the end of the day, and the friend says “your journey will end with the ending day” — the old man is near the end of his life."
+  },
+  {
+   "n": 5,
+   "cat": "infer",
+   "q": "As described in the passage, the old man appears to be",
+   "o": [
+    "naïve",
+    "rushed",
+    "selfless",
+    "carefree",
+    "preoccupied"
+   ],
+   "a": 2,
+   "pick": 3,
+   "why": "He took (D): the stream “had no fears for him.” But that is only about crossing. What he <strong>does</strong> is build a bridge for a stranger he will never meet: selfless."
+  }
+ ]
+},
+{
+ "id": "tvr-f10",
+ "date": "2026-10-09",
+ "src": "The Tutorverse Reading · Fiction · p.157",
+ "title": "Fiction Passage 10 — Fall, leaves, fall (poem)",
+ "by": "",
+ "lines": [
+  "[Passage text not reproduced here. Read it in the book, p.157, lines 1–8. Line references below follow the book.]",
+  "Summary: the speaker urges the leaves to fall and the days to shorten; every falling leaf “speaks bliss” to her,",
+  "and she says she will smile at snow and sing as the dreary winter comes."
+ ],
+ "qs": [
+  {
+   "n": 1,
+   "cat": "tone",
+   "q": "The author’s tone can best be described as",
+   "o": [
+    "comical",
+    "frustrated",
+    "indifferent",
+    "impassioned",
+    "contemptuous"
+   ],
+   "a": 3,
+   "pick": 4,
+   "why": "He took (E) contemptuous (scornful). The speaker scorns nothing; she <strong>welcomes</strong> the decay with strong feeling — commands, “bliss,” “I shall smile,” “I shall sing.” Intense emotion: impassioned."
+  },
+  {
+   "n": 3,
+   "cat": "whole",
+   "q": "The passage is primarily about",
+   "o": [
+    "the biology of plants",
+    "roses and other blossoms",
+    "the comforts of warmer weather",
+    "reflecting on the changing season",
+    "the effects of daylight saving time"
+   ],
+   "a": 3,
+   "pick": 1,
+   "why": "He took (B), but the rose appears once, and only as what is <strong>missing</strong>. Every line is about autumn turning to winter and how the speaker feels about it."
+  }
+ ]
+},
+{
+ "id": "tvr-f11",
+ "date": "2026-10-09",
+ "src": "The Tutorverse Reading · Fiction · p.158",
+ "title": "Fiction Passage 11 — The daffodils (poem)",
+ "by": "",
+ "lines": [
+  "[Passage text not reproduced here. Read it in the book, p.158, lines 1–24. Line references below follow the book.]",
+  "Summary: wandering alone, the poet sees thousands of daffodils dancing by a lake. Later, lying on his couch",
+  "in a thoughtful mood, he sees them again in his mind — “the bliss of solitude” (line 22) — and his heart fills with pleasure."
+ ],
+ "qs": [
+  {
+   "n": 4,
+   "cat": "infer",
+   "q": "When the speaker writes “the bliss of solitude” (line 22), he is most likely referring to",
+   "o": [
+    "individual liberty",
+    "a tranquil home life",
+    "being a person in a crowd",
+    "time to reflect on nature’s beauty",
+    "escaping the drudgery of the week"
+   ],
+   "a": 3,
+   "pick": 0,
+   "why": "He took (A), reading solitude as freedom. But the stanza is about lying alone in a “pensive mood” when the daffodils flash back into memory — being alone is bliss because it lets him <strong>reflect</strong> on that beauty."
+  }
+ ]
+},
+{
+ "id": "tvr-f12",
+ "date": "2026-10-09",
+ "src": "The Tutorverse Reading · Fiction · p.159",
+ "title": "Fiction Passage 12 — The broken statue (poem)",
+ "by": "",
+ "lines": [
+  "[Passage text not reproduced here. Read it in the book, p.159, lines 1–14. Line references below follow the book.]",
+  "Summary: a traveler describes a shattered statue in the desert; its face (“visage,” line 4) still shows a proud frown.",
+  "The pedestal boasts “Look on my works … and despair!” — but nothing else remains; only empty sand."
+ ],
+ "qs": [
+  {
+   "n": 1,
+   "cat": "vocab",
+   "q": "In line 4, the word “visage” means",
+   "o": [
+    "face",
+    "sight",
+    "statue",
+    "person",
+    "landscape"
+   ],
+   "a": 0,
+   "pick": 1,
+   "why": "He took (B), from <em>vision / visual</em>. The next line describes the visage’s frown and wrinkled lip — it is a <strong>face</strong>."
+  },
+  {
+   "n": 6,
+   "cat": "whole",
+   "q": "Which of the following summarizes the main idea of the passage?",
+   "o": [
+    "Ozymandias was the greatest king in all of history.",
+    "Ancient sculptors are more skilled than today’s sculptors.",
+    "Deserts are not an appropriate environment for statues.",
+    "Only the largest and most impressive works of art remain forever.",
+    "Even the greatest accomplishments will eventually be lost or forgotten."
+   ],
+   "a": 4,
+   "pick": 3,
+   "why": "He took (D), the opposite of the poem: the huge statue did <strong>not</strong> last — it is a wreck, and “nothing beside remains.” The king’s boast against the empty sand shows that even greatness fades."
+  }
+ ]
+},
+{
+ "id": "tvr-n1",
+ "date": "2026-10-09",
+ "src": "The Tutorverse Reading · Nonfiction · p.160",
+ "title": "Nonfiction Passage 1 — Life is a train of moods",
+ "by": "",
+ "lines": [
+  "[Passage text not reproduced here. Read it in the book, p.160, lines 1–9. Line references below follow the book.]",
+  "Summary: life is a string of moods like beads (lines 1–2); each mood is a colored lens that shapes what we see.",
+  "Whether we enjoy a sunset or a poem depends on our mood; temperament is the iron wire the beads hang on (lines 8–9)."
+ ],
+ "qs": [
+  {
+   "n": 2,
+   "cat": "device",
+   "q": "The “beads” (line 9) probably refer to",
+   "o": [
+    "an iron wire",
+    "a person’s mood",
+    "a type of decoration",
+    "a person’s temperament",
+    "the interpretation of a book"
+   ],
+   "a": 1,
+   "pick": 2,
+   "why": "He took (C), reading the beads literally. Lines 1–2 set the image: “a train of moods like a string of beads” — each bead is a <strong>mood</strong>; temperament is the wire."
+  },
+  {
+   "n": 3,
+   "cat": "infer",
+   "q": "It is most reasonable to infer from the passage that a person who experiences a negative life event",
+   "o": [
+    "should welcome constructive criticism",
+    "thinks about it with a long-term point of view",
+    "focuses on how it makes him or her feel in the moment",
+    "deserves to suffer for not adequately preparing in advance",
+    "should reflect upon it in the peacefulness of nature"
+   ],
+   "a": 2,
+   "pick": 0,
+   "why": "He took (A), grabbing “criticism” from line 8, where it means literary criticism. The passage says each mood is a lens: a person sees an event through the <strong>mood of the moment</strong>."
+  },
+  {
+   "n": 4,
+   "cat": "whole",
+   "q": "This passage was probably taken from",
+   "o": [
+    "a historical novel",
+    "a scientific report",
+    "a personal journal or diary",
+    "an advertisement for beads",
+    "a commercial for national parks"
+   ],
+   "a": 2,
+   "pick": 0,
+   "why": "He took (A), but there is no story, character, or history. It is a personal, reflective musing on moods — the kind of writing found in a journal."
+  }
+ ]
+},
+{
+ "id": "tvr-n2",
+ "date": "2026-10-09",
+ "src": "The Tutorverse Reading · Nonfiction · p.161",
+ "title": "Nonfiction Passage 2 — What an essay is",
+ "by": "",
+ "lines": [
+  "[Passage text not reproduced here. Read it in the book, p.161, lines 1–17. Line references below follow the book.]",
+  "Summary: an essay states a proposition but lets the reader follow the writer’s thinking. Lines 4–6 list old essay titles,",
+  "some playful (“On the Graces and Anxieties of Pig-Driving,” “On the Enjoyment of Unpleasant Places”). An essay needs a point of view and a personality."
+ ],
+ "qs": [
+  {
+   "n": 2,
+   "cat": "tone",
+   "q": "The author’s tone in lines 4–6 can best be described as",
+   "o": [
+    "humorous",
+    "sincere",
+    "solemn",
+    "virtuous",
+    "vindictive"
+   ],
+   "a": 0,
+   "pick": 2,
+   "why": "He took (C) solemn, which fits the essay’s serious topic overall. But the question points only to lines 4–6, the list of titles — pig-driving, enjoying unpleasant places. Playful: humorous. (Answer chosen without a red mark; check the key.)"
+  }
+ ]
+},
+{
+ "id": "tvr-n3",
+ "date": "2026-10-09",
+ "src": "The Tutorverse Reading · Nonfiction · p.162",
+ "title": "Nonfiction Passage 3 — Health security for all",
+ "by": "",
+ "lines": [
+  "[Passage text not reproduced here. Read it in the book, p.162, lines 1–20. Line references below follow the book.]",
+  "Summary: medicine has advanced, yet the poor and rural people get less care. The speaker says government must act,",
+  "and ends with a resolution (lines 18–20): health is a national concern and financial barriers must be removed."
+ ],
+ "qs": [
+  {
+   "n": 1,
+   "cat": "whole",
+   "q": "The author’s primary purpose is to",
+   "o": [
+    "share specific details and facts",
+    "present a particular point of view",
+    "build empathy by sharing a story",
+    "criticize an opposing point of view",
+    "highlight a problem without a solution"
+   ],
+   "a": 1,
+   "pick": 4,
+   "why": "He took (E), but lines 16–20 <strong>give</strong> a solution: health security for all, financial barriers removed. A passage ending “We should resolve now…” is arguing a view."
+  },
+  {
+   "n": 5,
+   "cat": "infer",
+   "q": "Which of the following is the author most likely to discuss next?",
+   "o": [
+    "The people responsible for healthcare inequality.",
+    "An account of premature and preventable deaths.",
+    "Specific examples where poor people were unable to be treated.",
+    "Reasons why the government should ensure healthcare for everyone.",
+    "Particular areas in medicine which have made the greatest advancements."
+   ],
+   "a": 3,
+   "pick": 2,
+   "why": "He took (C), which goes backward — the problem was already laid out in lines 12–15. The passage ends on a proposal, so the next step is <strong>reasons</strong> for it."
+  }
+ ]
+},
+{
+ "id": "tvr-n4",
+ "date": "2026-10-09",
+ "src": "The Tutorverse Reading · Nonfiction · pp.163–164",
+ "title": "Nonfiction Passage 4 — Move Election Day",
+ "by": "",
+ "lines": [
+  "[Passage text not reproduced here. Read it in the book, p.163, lines 1–31. Line references below follow the book.]",
+  "Summary: U.S. voter turnout is low; Tuesday voting dates from farming days. Long lines, commutes and work are deterrents (lines 14–18)",
+  "that other countries avoid by voting on weekends or holidays. Congress should change the schedule; it could also make voting a festive event."
+ ],
+ "qs": [
+  {
+   "n": 3,
+   "cat": "whole",
+   "q": "The author of the passage is primarily concerned with",
+   "o": [
+    "increasing voter turnout",
+    "copying the lifestyles of European citizens",
+    "creating positive messaging for young voters",
+    "highlighting the social potential of Election Day",
+    "showcasing obvious contradictions in voting habits"
+   ],
+   "a": 0,
+   "pick": 3,
+   "why": "He took (D), an extra benefit added with “What’s more.” The thread from the first line (26% “too busy,” under 60% voting) to the end is <strong>turnout</strong>."
+  },
+  {
+   "n": 4,
+   "cat": "vocab",
+   "q": "As used in line 18, the word “deterrents” most nearly means",
+   "o": [
+    "anomalies",
+    "assessments",
+    "difficulties",
+    "establishments",
+    "incentives"
+   ],
+   "a": 2,
+   "pick": 0,
+   "why": "He took (A) anomalies (oddities). A deterrent <strong>deters</strong> — discourages. The deterrents are the lines, commutes and risk of being fired just listed: difficulties. (Answer chosen without a red mark.)"
+  }
+ ]
+},
+{
+ "id": "tvr-n5",
+ "date": "2026-10-09",
+ "src": "The Tutorverse Reading · Nonfiction · p.165",
+ "title": "Nonfiction Passage 5 — The roll of honor",
+ "by": "",
+ "lines": [
+  "[Passage text not reproduced here. Read it in the book, p.165, lines 1–30. Line references below follow the book.]",
+  "Summary: a campaign speech. Lines 3, 5, 7 each begin “Written on it are the names of…” — the struggling people of 1932.",
+  "Lines 16–18 contrast nine boom years (golden calf, ticker, mirage) with three years of bust. Government by organized money is as dangerous as government by organized mob."
+ ],
+ "qs": [
+  {
+   "n": 1,
+   "cat": "device",
+   "q": "The author’s repeated use of the phrase “written on it” (lines 3, 5, 7) is an example of",
+   "o": [
+    "simile",
+    "metaphor",
+    "anaphora",
+    "hyperbole",
+    "personification"
+   ],
+   "a": 2,
+   "pick": 1,
+   "why": "He took (B). The question is about <strong>repeating the same words at the start</strong> of lines 3, 5 and 7 — that is anaphora."
+  },
+  {
+   "n": 2,
+   "cat": "infer",
+   "q": "In the author’s opinion, the “things four years ago” (line 13) were",
+   "o": [
+    "abysmal",
+    "beneficial",
+    "necessary",
+    "unavoidable",
+    "unremarkable"
+   ],
+   "a": 0,
+   "pick": 3,
+   "why": "He took (D), but the people who saw them said “This can be changed. We will change it” — so not unavoidable. The things are starvation wages, sweatshops, evictions: abysmal."
+  },
+  {
+   "n": 3,
+   "cat": "device",
+   "q": "Which of the following does the author use to describe a period of plenty?",
+   "o": [
+    "“women in sweatshops” (line 4)",
+    "“years of the scourge” (line 16)",
+    "“years at the ticker” (line 17)",
+    "“years of despair” (line 18)",
+    "“organized money” (line 26)"
+   ],
+   "a": 2,
+   "pick": 4,
+   "why": "He took (E), which sounds rich but names a danger, not a time. Lines 16–18 pair boom years with bust years; the stock <strong>ticker</strong> years are the boom."
+  },
+  {
+   "n": 4,
+   "cat": "detail",
+   "q": "The author lists all of the following as unequivocally dangerous EXCEPT",
+   "o": [
+    "selfishness",
+    "unchecked greed",
+    "organized crime",
+    "the government",
+    "excessive wealth"
+   ],
+   "a": 3,
+   "pick": 2,
+   "why": "He took (C), but “organized mob” is named as dangerous in line 27. Government is dangerous only when run by money or mob; the speaker’s own government “rolled up its sleeves.” So the government is the exception."
+  }
+ ]
+},
+{
+ "id": "tvr-n7",
+ "date": "2026-10-09",
+ "src": "The Tutorverse Reading · Nonfiction · p.167",
+ "title": "Nonfiction Passage 7 — The voyage of life",
+ "by": "",
+ "lines": [
+  "[Passage text not reproduced here. Read it in the book, p.167, lines 1–17. Line references below follow the book.]",
+  "Summary: every person is alone and must rely on herself, so women need education, freedom and a place in the trades.",
+  "Each must make “the voyage of life alone” and know “the laws of navigation” (lines 13–14) — captain of her own craft."
+ ],
+ "qs": [
+  {
+   "n": 2,
+   "cat": "device",
+   "q": "The “laws of navigation” (line 14) probably refers to",
+   "o": [
+    "the rules of sailing boat",
+    "something only learned in higher education",
+    "the skill needed to safely sail around the world",
+    "a person’s ability to survive and make good decisions",
+    "knowledge necessary for employment in certain professions"
+   ],
+   "a": 3,
+   "pick": 4,
+   "why": "He took (E), from “trades and professions” in line 10. But “the voyage of life” makes navigation a <strong>metaphor</strong>: steering your own life and handling emergencies."
+  }
+ ]
+},
+{
+ "id": "tvr-n8",
+ "date": "2026-10-09",
+ "src": "The Tutorverse Reading · Nonfiction · p.168",
+ "title": "Nonfiction Passage 8 — An address to the moon",
+ "by": "",
+ "lines": [
+  "[Passage text not reproduced here. Read it in the book, p.168, lines 1–19. Line references below follow the book.]",
+  "Summary: the writer playfully scolds “you”: once called Phoebe, twin to Phoebus, and blamed for being “moonstruck.”",
+  "Now we learn you only borrow the sun’s splendor (“borrowed finery,” line 12), change color, and wax. The tone is teasing, not angry."
+ ],
+ "qs": [
+  {
+   "n": 1,
+   "cat": "infer",
+   "q": "Based on the passage, it can be inferred that Phoebe is the name of",
+   "o": [
+    "a star",
+    "a fairy",
+    "a sprite",
+    "the sun",
+    "the moon"
+   ],
+   "a": 4,
+   "pick": 0,
+   "why": "He took (A), from “starry handmaidens.” But Phoebe is twin to the sun god, borrows the sun’s light, changes color and <strong>waxes</strong> — and “moonstruck” is in line 6. The moon."
+  },
+  {
+   "n": 2,
+   "cat": "vocab",
+   "q": "As used in line 2, “our cradle” refers to",
+   "o": [
+    "creative stories",
+    "a rocking motion",
+    "scientific evidence",
+    "furniture for a baby",
+    "early human society"
+   ],
+   "a": 4,
+   "pick": 0,
+   "why": "He took (A): the myths were creative stories, but they floated <strong>around</strong> the cradle. The cradle is humanity’s infancy — early human society, before science corrected the myths."
+  },
+  {
+   "n": 3,
+   "cat": "device",
+   "q": "In line 12, “borrowed finery” refers to",
+   "o": [
+    "legal troubles",
+    "stolen clothing",
+    "red or grey veils",
+    "light, or brightness",
+    "sprite and fairy clothes"
+   ],
+   "a": 3,
+   "pick": 1,
+   "why": "He took (B), reading “steal the garb” literally. The garb is “his splendor” — the <strong>sun’s light</strong>, which the moon reflects."
+  },
+  {
+   "n": 4,
+   "cat": "whole",
+   "q": "The author’s primary purpose of the passage is to",
+   "o": [
+    "compare and contrast two different objects",
+    "share a lesson or moral that can be learned",
+    "celebrate something mysterious and misunderstood",
+    "criticize housebreakers, conspirators, and those that help them",
+    "explain the movements and appearances of heavenly bodies"
+   ],
+   "a": 2,
+   "pick": 1,
+   "why": "He took (B), but no lesson is drawn. The mock accusations (“we are disposed to acquit you”) are affectionate: the moon is something we <strong>misunderstood</strong> and still admire."
+  }
+ ]
+},
+{
+ "id": "tvr-n9",
+ "date": "2026-10-09",
+ "src": "The Tutorverse Reading · Nonfiction · pp.169–170",
+ "title": "Nonfiction Passage 9 — National Poetry Month",
+ "by": "",
+ "lines": [
+  "[Passage text not reproduced here. Read it in the book, p.169, lines 1–29. Line references below follow the book.]",
+  "Summary: a speech praising poetry: it is beauty, it helps us look inward, and it records history.",
+  "Lines 23–27: a poet can bring tears with only a few lines, while a novelist needs plot twists — no form makes each word so important."
+ ],
+ "qs": [
+  {
+   "n": 6,
+   "cat": "infer",
+   "q": "In the author’s opinion, poetry is the greatest of art forms because",
+   "o": [
+    "it is an ancient form of writing",
+    "it uses music to help engage the reader",
+    "it accomplishes a great deal with very little",
+    "it is widely read by children and adults alike",
+    "it tells interesting and often complex stories"
+   ],
+   "a": 2,
+   "pick": 0,
+   "why": "He took (A): Homer and Virgil are old, but age is never the reason. Lines 23–27 give it — tears “with only a few lines” versus a novelist’s plot twists. A lot from <strong>very little</strong>."
+  }
+ ]
+},
+{
+ "id": "tvr-n10",
+ "date": "2026-10-09",
+ "src": "The Tutorverse Reading · Nonfiction · p.170",
+ "title": "Nonfiction Passage 10 — Vocational education",
+ "by": "",
+ "lines": [
+  "[Passage text not reproduced here. Read it in the book, p.170, lines 1–18. Line references below follow the book.]",
+  "Summary: the speaker supports college but wants trade and technical schools to be a national priority.",
+  "Lines 12–14: technical and vocational careers are “just as important as” white-collar careers."
+ ],
+ "qs": [
+  {
+   "n": 4,
+   "cat": "infer",
+   "q": "According to the passage, the author most likely views which of the following as a problem?",
+   "o": [
+    "an overemphasis on white-collar careers",
+    "a wide range of higher-education options",
+    "too many students becoming electricians",
+    "the cost of attending colleges and universities",
+    "the unprofitability of technical and vocational careers"
+   ],
+   "a": 0,
+   "pick": 3,
+   "why": "He took (D), a real problem but never mentioned. Insisting vocational careers are “<strong>just as important</strong> as” white-collar ones implies those careers get too little weight now."
+  }
+ ]
+},
+{
+ "id": "tvr-n11",
+ "date": "2026-10-09",
+ "src": "The Tutorverse Reading · Nonfiction · p.171",
+ "title": "Nonfiction Passage 11 — Fund music education",
+ "by": "",
+ "lines": [
+  "[Passage text not reproduced here. Read it in the book, p.171, lines 1–23. Line references below follow the book.]",
+  "Summary: music education helps SAT scores, test gains and behavior, and is “a key solution to youth violence” (line 4).",
+  "The speaker urges funding programs like the NEA’s “Challenge America”; line 19 mentions students learning about music careers."
+ ],
+ "qs": [
+  {
+   "n": 2,
+   "cat": "detail",
+   "q": "The author cites all of the following as benefits of arts education EXCEPT",
+   "o": [
+    "higher scores on the SAT",
+    "advanced brain development",
+    "greater participation in the NEA",
+    "advice about jobs and career paths",
+    "better behavior and lower violence"
+   ],
+   "a": 2,
+   "pick": 3,
+   "why": "He took (D), but lines 18–19 state it: students “learning about music-related careers.” The NEA is named only as a <strong>sponsor</strong>, never as a benefit. In EXCEPT questions, find each choice in the text."
+  },
+  {
+   "n": 5,
+   "cat": "infer",
+   "q": "It is most reasonable to infer from the passage that the author would support which of the following initiatives?",
+   "o": [
+    "a law making all students take the SAT",
+    "a pledge drive to raise money for physical education",
+    "a proposal to eliminate standardized tests like the SAT",
+    "a plan to reduce the amount of money given to the NEA",
+    "a rule banning violent students from cultural education programming"
+   ],
+   "a": 1,
+   "pick": 4,
+   "why": "He took (E), which reverses the argument: arts education is meant to <strong>reduce</strong> violence, so banning violent students defeats the purpose. The author keeps asking for more education funding. (Answer from the red mark; check the key.)"
+  }
+ ]
+},
+{
+ "id": "tvr-n12",
+ "date": "2026-10-09",
+ "src": "The Tutorverse Reading · Nonfiction · pp.172–173",
+ "title": "Nonfiction Passage 12 — National Public Lands Day",
+ "by": "",
+ "lines": [
+  "[Passage text not reproduced here. Read it in the book, p.172, lines 1–31. Line references below follow the book.]",
+  "Summary: a speech praising America’s public lands: places where “we go to find ourselves” (line 8), visited by overseas tourists,",
+  "a source of timber and ore for rural economies, some kept as wilderness. Volunteers will fight invasive weeds (lines 23–26)."
+ ],
+ "qs": [
+  {
+   "n": 1,
+   "cat": "detail",
+   "q": "All of the following are given as benefits of public lands EXCEPT",
+   "o": [
+    "they attract tourists from overseas",
+    "they are important to the economy",
+    "they provide psychological benefits to visitors",
+    "they are a source for valuable natural resources",
+    "they are examples of an unchanged wilderness"
+   ],
+   "a": 4,
+   "pick": 2,
+   "why": "He took (C), but line 8 gives it: public lands are where “we go to <strong>find ourselves</strong>” — a psychological benefit. Wilderness areas are mentioned (lines 13–14) only as a label Congress gave, not as a benefit. (Answer from the red mark.)"
+  },
+  {
+   "n": 4,
+   "cat": "detail",
+   "q": "According to the passage, a major threat to conservation efforts are",
+   "o": [
+    "unusually dry and hot weather",
+    "lack of funding from the government",
+    "a lack of public interest in public lands",
+    "non-native species of plants and animals",
+    "lack of human caretakers and volunteers"
+   ],
+   "a": 3,
+   "pick": 2,
+   "why": "He took (C), which contradicts the passage: millions visit and volunteers sign up. Lines 23–26 name the threat — invasive weeds that push out native plants: <strong>non-native species</strong>."
+  }
+ ]
+},
+{
+ "id": "tvr-n13",
+ "date": "2026-10-09",
+ "src": "The Tutorverse Reading · Nonfiction · p.173",
+ "title": "Nonfiction Passage 13 — Education as a right",
+ "by": "",
+ "lines": [
+  "[Passage text not reproduced here. Read it in the book, p.173, lines 1–11. Line references below follow the book.]",
+  "Summary: education is the most important job of state and local government (line 1). It is the foundation of good citizenship,",
+  "teaches cultural values, prepares children for work, and is needed to succeed — so it must be open to all on equal terms."
+ ],
+ "qs": [
+  {
+   "n": 1,
+   "cat": "detail",
+   "q": "The author cites all of the following as ways in which education has positive effects on children EXCEPT that it",
+   "o": [
+    "increases the chances for success",
+    "prepares them to join the workforce",
+    "makes them better-informed citizens",
+    "is a basic function of the government",
+    "helps instill certain morals and beliefs"
+   ],
+   "a": 3,
+   "pick": 2,
+   "why": "He took (C), but lines 5–6 call education “the very foundation of good <strong>citizenship</strong>.” (D) is true in line 1, yet it describes the government, not an effect on children — that is the exception."
+  }
+ ]
 }
 ];
 /* =========================================================
@@ -4058,7 +6016,8 @@ const DATES = [
   {key:"2026-09-24", label:"Sep 24, 2026", note:"Ivy Global UL Test 1 + Analogy practice"},
   {key:"2026-09-28", label:"Sep 28, 2026", note:"The Tutorverse"},
   {key:"2026-10-03", label:"Oct 3, 2026", note:"vocabulary words marked"},
-  {key:"2026-10-04", label:"Oct 4, 2026", note:"Upper Level PT2 + Practice Test 3"}
+  {key:"2026-10-04", label:"Oct 4, 2026", note:"Upper Level PT2 + Practice Test 3"},
+  {key:"2026-10-09", label:"Oct 9, 2026", note:"Kaplan + Ivy Global + Princeton Review + Tutorverse"}
 ];
 const LEVELS = [
   {key:"Basic", ko:"Basic"},
@@ -4090,7 +6049,9 @@ const LEVELS = [
   {key:"TV1 Introductory", ko:"The Tutorverse · Introductory"},
   {key:"TV1 Intermediate", ko:"The Tutorverse · Intermediate"},
   {key:"TV1 Advanced", ko:"The Tutorverse · Advanced"},
-  {key:"TV1 Analogies", ko:"The Tutorverse · Analogies"}
+  {key:"TV1 Analogies", ko:"The Tutorverse · Analogies"},
+  {key:"KP1 Synonyms", ko:"Kaplan · Synonyms"},
+  {key:"KP1 Analogies", ko:"Kaplan · SSAT Workshop Analogies"}
 ];
 const isAna = d => d.t === "an";
 const SYN = DATA.filter(d=>!isAna(d));
@@ -4527,6 +6488,15 @@ const UV_SECS = [
   {k:"h9", book:"HIT Vocabulary", from:308, to:323, label:"HIT Vocabulary · Lessons 9-1 to 9-5 (pp.308–317)"},
   {k:"h10", book:"HIT Vocabulary", from:324, to:999, label:"HIT Vocabulary · Lessons 10-1 to 10-5 (pp.324–333)"}
 ];
+/* "Review first": the words that keep coming back (see the Oct 3 note) */
+const UV_PRIORITY = ["indefatigable","tenacious","recalcitrant","poignant","preposterous",
+  "acquiesce","altercation","bulwark","censure","cogent","commend","defer","diminutive","dispel","divulge",
+  "edifice","equitable","imminent","incumbent","invigorate","latent","lineage","palatable","sumptuous"];
+function uvPriority(){
+  const seen = new Set(), out = [];
+  UV_PRIORITY.forEach(w=>{ const d = VOCAB.find(v=>v.w===w); if(d && !seen.has(w)){ seen.add(w); out.push(d); } });
+  return out;
+}
 const uvPage = d => { const m = /p\.(\d+)/.exec(d.ref||""); return m ? +m[1] : 0; };
 const uvSec = d => (UV_SECS.find(S=>(S.book||"Vocabulary 22000")===d.lv && uvPage(d)>=S.from && uvPage(d)<=S.to)||{}).k;
 const ANA = DATA.filter(isAna);
@@ -4536,7 +6506,19 @@ function lvLabel(d){
   const L = LEVELS.find(x=>x.key===d.lv);
   return (L ? L.ko : d.lv) + (d.pg ? " \u00b7 " + d.pg : "");
 }
-function bookMisses(d){ return d.miss || DATA.filter(x=>x.w===d.w).length; }
+function bookMisses(d){ return d.miss || DATA.filter(x=>x.w===d.w).reduce((n,x)=>n+1+(x.re?x.re.length:0),0); }
+/* retest misses stored in the data (re:[{d:date,p:pick}]) so they show in every browser */
+const reLabel = k => { const D = DATES.find(x=>x.key===k); if(D) return D.label;
+  const [y,m,dd] = k.split("-").map(Number); return new Date(y,m-1,dd).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"}); };
+function reBadge(d){
+  if(!d.re || !d.re.length) return "";
+  const same = d.re.some(r=>r.p===d.pick);
+  return `<span class="badge re">\u2717 missed again on retest${same?" \u00b7 same trap":""}</span>`;
+}
+function reLines(d){
+  if(!d.re || !d.re.length) return "";
+  return d.re.map(r=>`<span class="re-line">Retest ${reLabel(r.d)}: picked (${LT[r.p]}) ${d.o[r.p]}${r.p===d.pick?" \u2014 <b>the same trap again</b>":""}</span>`).join("");
+}
 
 /* ---- per-device progress ---- */
 const KKEY = "ssat-v2-known", SKEY = "ssat-v2-stats";
@@ -4606,6 +6588,8 @@ function buildSetMenu(sel, pool, current, extra, count){
   if(kn && un) o += opt("unlearned","Not yet known", un);
   const rep = pool.filter(d=>bookMisses(d)>1).length;
   if(rep) o += opt("repeat","Repeat misses in the books", rep);
+  const ret = pool.filter(d=>d.re && d.re.length).length;
+  if(ret) o += opt("retest","\u2717 Missed again on retest", ret);
   if(o) html += `<optgroup label="\u2500\u2500 OTHER \u2500\u2500">${o}</optgroup>`;
 
   if(extra) html += extra;
@@ -4640,6 +6624,7 @@ function applySet(pool, v){
   if(v==="unlearned") return pool.filter(d=>!isKnown(d));
   if(v==="known") return pool.filter(d=>isKnown(d));
   if(v==="repeat") return pool.filter(d=>bookMisses(d)>1);
+  if(v==="retest") return pool.filter(d=>d.re && d.re.length);
   if(v.startsWith("qw:")){ const n=+v.slice(3); return pool.filter(d=>st(d).w>=n); }
   if(v.startsWith("date:")){
     const [ks,t] = v.slice(5).split("|");
@@ -4839,7 +6824,7 @@ function Board(id, pool){
       const an = isAna(d);
       const rep = bookMisses(d)>1 ? `<span class="badge">missed \u00d7${bookMisses(d)} in the books</span>` : "";
       const s = st(d);
-      const qb = s.a ? `<span class="badge soft">quiz ${s.w}\u2717 / ${s.a}</span>` : "";
+      const qb = (s.a ? `<span class="badge soft">quiz ${s.w}\u2717 / ${s.a}</span>` : "") + reBadge(d);
       return `<div class="qz${an?" an":""}${isKnown(d)?" is-known":""}" id="${id}-q${qi}" data-a="${d.a}">
         <div class="stem"><span class="num">${qi+1}.</span>${d.w}${an?"":":"}${rep}${qb}<button class="kbtn${isKnown(d)?" on":""}" data-k="${qi}" aria-pressed="${isKnown(d)}" title="Mark as known">${isKnown(d)?"\u2713 Known":"Known?"}</button></div>
         <div class="opts">` +
@@ -4903,7 +6888,7 @@ function Board(id, pool){
       why.hidden = false;
       why.innerHTML =
         `<span class="verdict ${ok?"ok":"no"}">${ok?"CORRECT":"WRONG"}</span>` +
-        `<b>(${LT[d.a]}) ${d.o[d.a]}</b> \u2014 ${d.ko}<br>${d.tip}`;
+        `<b>(${LT[d.a]}) ${d.o[d.a]}</b> \u2014 ${d.ko}<br>${d.tip}` + reLines(d);
     });
     saveStats();
 
@@ -4980,9 +6965,9 @@ function setPrintHead(sec, withAnswers, extra){
   const h = document.getElementById("print-head");
   let what = "", n = 0, kind = "";
   if(sec==="wc"){
-    const n = document.querySelectorAll("#wc-print .wp-row").length;
+    const n = document.querySelectorAll("#wc-print .wp-row, #wc-print .wp-q").length;
     h.innerHTML = `<div class="ph-main"><b>Word cards</b> \u00b7 ${setLabel(document.getElementById("wc-set"))}</div>` +
-      `<div class="ph-sub">${n} word${n===1?"":"s"} \u00b7 ${extra==="test" ? "write the meaning; answer key on the last page" : "word list with meanings"} \u00b7 printed ${fmtDate(new Date())}</div>` +
+      `<div class="ph-sub">${n} word${n===1?"":"s"} \u00b7 ${extra==="test" ? "choose the meaning; answer key on the last page" : "word list with meanings"} \u00b7 printed ${fmtDate(new Date())}</div>` +
       (extra==="test" ? `<div class="ph-score">Name ________________ &nbsp; Score ______ / ${n}</div>` : "");
     return;
   }
@@ -5127,8 +7112,10 @@ function buildReadView(){
   readDates().forEach(D=>{
     const ps = PASSAGES.filter(P=>P.date===D.key);
     const qn = ps.reduce((n,P)=>n+P.qs.length,0);
-    html += `<option value="date:${D.key}">${D.label} \u2014 ${ps.length} passages, ${qn} questions</option>`;
     const srcs = [...new Set(ps.map(pSrc))];
+    /* one book that day: name it on the date line (e.g. "Oct 9, 2026 · Ivy Global SSAT Reading Practice") */
+    const one = srcs.length === 1 ? ` \u00b7 ${pSrcName(ps[0])}` : "";
+    html += `<option value="date:${D.key}">${D.label}${one} \u2014 ${ps.length} passages, ${qn} questions</option>`;
     if(srcs.length > 1) srcs.forEach(k=>{
       const g = ps.filter(P=>pSrc(P)===k);
       html += `<option value="date:${D.key}@${k}">\u2003\u21b3 ${pSrcName(g[0])} \u2014 ${g.length} passages, ${g.reduce((n,P)=>n+P.qs.length,0)} questions</option>`;
@@ -5348,6 +7335,8 @@ function buildDeckMenu(){
   if(kn && un) o += opt("unlearned","Not yet known", un);
   const rep = DATA.filter(d=>bookMisses(d)>1).length;
   if(rep) o += opt("repeat","Repeat misses in the books", rep);
+  const ret = DATA.filter(d=>d.re && d.re.length).length;
+  if(ret) o += opt("retest","\u2717 Missed again on retest", ret);
   if(o) html += `<optgroup label="\u2500\u2500 OTHER \u2500\u2500">${o}</optgroup>`;
   deckSel.innerHTML = html;
   keepMulti(deckSel, deckVal, v=>applySet(DATA, v).length);
@@ -5421,7 +7410,7 @@ function paintCard(){
   document.getElementById("fc-count").textContent = `${di+1} / ${deck.length}`;
   const sv = st(d), m = bookMisses(d);
   document.getElementById("fc-tag").textContent =
-    lvLabel(d) + (m>1 ? ` \u00b7 missed \u00d7${m}` : "") + (sv.a ? ` \u00b7 quiz ${sv.w}\u2717/${sv.a}` : "");
+    lvLabel(d) + (m>1 ? ` \u00b7 missed \u00d7${m}` : "") + (d.re && d.re.length ? " \u00b7 \u2717 missed again on retest" : "") + (sv.a ? ` \u00b7 quiz ${sv.w}\u2717/${sv.a}` : "");
   document.getElementById("fc-bar").style.width = ((di+1)/deck.length*100) + "%";
   document.getElementById("fc-prev").disabled = di===0;
   document.getElementById("fc-next").disabled = di===deck.length-1;
@@ -5463,6 +7452,11 @@ function checkCard(record){
             `<span class="val">(${LT[d.pick]}) ${d.o[d.pick]}${again}</span>` +
             `<span class="mk">\u2717</span></div>`;
   }
+  (d.re||[]).forEach(r=>{
+    rows += `<div class="row no"><span class="lbl">Missed again on retest \u00b7 ${reLabel(r.d)}</span>` +
+            `<span class="val">(${LT[r.p]}) ${d.o[r.p]}${r.p===d.pick?`<span class="again">SAME TRAP</span>`:""}</span>` +
+            `<span class="mk">\u2717</span></div>`;
+  });
   document.getElementById("b-rows").innerHTML = rows;
 
   document.querySelectorAll("#f-opts .opt").forEach((el,i)=>{
@@ -5794,6 +7788,13 @@ const SESSION_NOTES = {
   todo:"<b>Next</b> — On detail questions, find the sentence in the passage before looking at the choices and underline markers like <b>may / could / some / had + past participle</b>. All four detail misses here fall to that one habit. Pages 13–14, 18, 20, 22, 25–26, 28 (questions 1–5, 12–13, 18, 21–22, 28–35, 40) were not scanned."}
 ],
 "2026-09-28": [
+  {h:"Workbook retest · printed Sep 29 · Tutorverse synonyms 17/31, analogies 26/63",
+   li:["Re-solved the Sep 28 Tutorverse misses from a printout of this workbook. <b>51 of 94 missed again</b> (synonyms 14/31, analogies 37/63). Each one now carries a red <i>missed again on retest</i> badge and counts toward <i>missed ×N in the books</i>.",
+       "<b>33 of the 51 are the exact same wrong choice as the first time</b> \u2014 11 of 14 synonyms (IRRATIONAL\u2192sparse, TENACIOUS\u2192secure, VACILLATE\u2192vacuum up, CONCEIVE\u2192agree to, HINDER\u2192kindle \u2026) and 22 of 37 analogies.",
+       "Synonyms by type: look 6 \u00b7 unknown 4 \u00b7 affix 3 \u00b7 effect 1. New wrong picks only on PRECLUDE, ENGENDER, RETICENT.",
+       "Analogies by type: <b>char (set phrases / association) 12</b> \u00b7 same 7 \u00b7 func 7 \u00b7 part 5 \u00b7 type 4. Set phrases (under the weather, rank and file, beck and call, null and void, cloak and dagger) are still the weakest group.",
+       "Repeating the same trap means the explanations were not read after the first miss \u2014 re-solving without reviewing does not move the score."],
+   todo:"Before re-solving anything, read the explanation of each item under <i>\u2717 Missed again on retest</i> (Set menu) and say out loud why the trap is wrong. Then re-test only those 51."},
  {h:"The Tutorverse synonyms pp.116–123 (Introductory / Intermediate / Advanced) · 31 misses",
   li:["Misses by section: Introductory 6 of 47, Intermediate 11 of 47, Advanced 14 of 47 (no score written, so the count could not be checked).",
       "By type: <b>look-alike 13</b>, not knowing the answer word 8, affix 5, opposite 3, effect 2. Look-alike is the biggest group this time, and <b>his own margin notes show it</b>: preclude→include, exorcise→exercise, engender→gender, respite→spite, conceive→perceive/receive/deceive, ponderous→ponder, chicanery→chic, vacillate→vacuum, deduce→deduct, hinder→kindle.",
@@ -5840,6 +7841,44 @@ const SESSION_NOTES = {
       "Analogies (6): synonym–antonym direction 2 (trivial : trifling marked ant; innate : acquired read as “already acquired”), part 2, char 1, type 1. Pungent : odor ↔ poignant : emotion links to POIGNANT, also missed in today’s PT2.",
       "Reading #32 is arguable: traffic chaos is also named in the passage."],
   todo:"<b>Not scanned:</b> Section 3 p.158 (#1–4), p.163 (#39–41, 44–49), most of p.164 (#50, 52–55). #55 shows a red slash but the stem was cut off. Section 3 score was not visible. Reading questions 7–11 and 20–28 (pp.143–144, 148–151) and 38–40 were not in the screenshots."}
+],
+"2026-10-09": [
+  {h:"Kaplan SSAT Workshop · Chapter 2 analogy practice · 69/110 shown",
+   li:["Pages 18–24 and 27–30 (#1–70, #91–130). 41 misses. Pages 25–26 (#71–90) were not uploaded.",
+       "By type: <b>func 10</b> · degree 7 · place 7 · same 6 · type 4 · part 4 · trait 3. Across all analogies, func (59) now passes same (58) as the largest group; degree went from 15 to 22.",
+       "<b>Degree is the new leak.</b> He labelled Paranoid:suspicious and Concerned:apprehensive as <i>syn</i> and picked pairs of equal strength (wealthy:affluent, appealing:attractive). Scalding:tepid and Gathering:mob went the same way.",
+       "Good sign: he now writes the relation in the margin (syn, ant, a short sentence) on most items. But on 8 of the misses the label was right and the pick still was not an <i>exact</i> match (rude:kind for an exact antonym, stirring:sudden for abrupt:gradual).",
+       "Repeats of an earlier relation: units of measure (Mile:length, Acre:land, after Acre:field on Sep 23), Stoic = without (Stoic:reaction, after Stoic:passion on Sep 24), Chide (synonym miss on Oct 4). Bison:plains and Bison:plain were both missed in this set.",
+       "Unknown words behind misses: arboretum, boorish, matriculant, ungulate, chandler, isthmus, fathom."],
+   todo:"When he writes <i>syn</i>, he should add one more word: <i>same</i> or <i>stronger</i>. Paranoid is not just suspicious; it is much more."},
+  {h:"Kaplan · Chapter 7 synonym practice · 29/47",
+   li:["Pages 113–117 (#1–47). 18 misses.",
+       "By type: <b>look 8</b> · unknown 4 · effect 4 · affix 2. The look-alike trap is back on top: ingenuous → ingenious (inventive), hallow → hollow (dig), imperious → imperial (royal), levy → levee, delve → dive, conciliate → council (advise).",
+       "<b>Four of the misses are words he highlighted as unknown in the vocabulary books on Oct 3–4:</b> ingenuous, criterion, acquiesce (acquiescence), conciliatory (conciliate). Marking a word does not mean he has learned it.",
+       "Repeat: OBSCURE (Sep 5, answer cryptic; now enigmatic) — both times the sense <i>hard to understand</i>.",
+       "Good news: TENACIOUS, missed on Sep 8, Sep 28 and the Sep 29 retest, was right this time (determined)."],
+   todo:"Before the next set, quiz the four words he had already marked (ingenuous, criterion, acquiesce, conciliate) with Print test. Highlighting is not the same as learning."},
+  {h:"Ivy Global · SSAT Reading Practice · 40/59",
+   li:["Thirteen passages from the practice book (pp.169–179, Challenge pp.190–198, Upper-Level Challenge pp.201–208). 19 misses.",
+       "By type: <b>detail 7</b> · <b>whole 5</b> · infer 3 · tone 2 · vocab 1 · device 1.",
+       "<b>Titles: 5 of the 7 title questions missed.</b> Each time he chose a title built from a surface detail — the setting (A Day in the Country), a side remark (Lives of the Rich and Ridiculous), the speaker (The Deaf Speak), a phrase near the end (The Future is Now) — instead of the point the whole passage builds to.",
+       "Detail misses come from skipped words in the question: <i>original</i> purpose (Hanami), <i>EXCEPT</i> (Handel), <i>NOT</i> (Obama, Wagner) — the same habit seen on Sep 24 with condition and tense markers.",
+       "Tone: upbeat (not aloof) for Helen Keller, informative (not worshiping) for Bell. Across all reading, whole + tone remain the core weakness."],
+   todo:"For every title or main-idea question: before looking at the choices, write one sentence that says what the passage is doing. Then pick the choice closest to that sentence. Circle EXCEPT / NOT / original in the question stem."},
+  {h:"Princeton Review · 1,000+ Practice Questions · reading drills",
+   li:["Short passages from the Finding Information, Understanding Purpose, Tone, Miscellaneous and ISEE Full Passages drills (pp.305–351). The same passage often appears in two chapters with a different question. 8 misses out of about 27 graded.",
+       "By type: infer 3 · device 2 · tone 2 · whole 1.",
+       "Every miss picked a choice built on a <b>word that really is in the passage</b>, used for the wrong job: the reporter in line 8 (Juarez), the roof-diving joke (amusement), <i>solitude</i> → trepidation, <i>overcome</i> → cure, the opening fact about Russian art.",
+       "Purpose-of-a-phrase questions (Edgar, Douglass): the answer is what the phrase <i>sets up</i> — a second blow, a contrast — not a restatement of the phrase.",
+       "Good: the five full-passage Edison and Matryoshka questions on main idea, organization and vocabulary were all right."],
+   todo:"For each answer choice, point to the line that supports it. If the only link is a shared word, cross it out."},
+  {h:"The Tutorverse · Reading · Fiction 3–12 and Nonfiction 1–13 · about 61/100",
+   li:["37 misses entered (2 more held until the answer is confirmed). Passage text is not reproduced; read it in the book (pp.150–173) — line references follow the book.",
+       "By type: <b>infer 11</b> · device 7 · detail 6 · whole 6 · vocab 5 · tone 2.",
+       "Figurative meaning is the clearest leak: beads = moods, twilight = end of life, borrowed finery = light, laws of navigation = handling life, cradle = early society. Each time he took the literal reading.",
+       "Whole-passage questions again picked one paragraph’s side point (social potential of Election Day, roses in the autumn poem) instead of the thread that runs through every paragraph.",
+       "Several picks reversed the passage: “only the largest works remain forever” for Ozymandias, “unavoidable” for things the speaker says can be changed.", "EXCEPT questions: 4 misses (music benefits, FDR dangers, public lands, education). Each time he picked a choice that <i>is</i> in the passage — cross out each choice you can find before choosing."],
+   todo:"For any quoted phrase in a question, ask: is it literal or a picture of something else? Then find what it stands for elsewhere in the passage before reading the choices."}
 ]
 };
 
@@ -5910,13 +7949,14 @@ const WC = (function(){
   function list(v){
     if(v.includes("+")){ const seen=new Set(), out=[]; v.split("+").forEach(p=>list(p).forEach(d=>{ if(!seen.has(d)){ seen.add(d); out.push(d); } })); return out; }
     if(v==="uv:all") return VOCAB.slice();
+    if(v==="uv:pri") return uvPriority();
     if(v.startsWith("uv:date:")) return VOCAB.filter(d=>d.date===v.slice(8));
     if(v.startsWith("uv:sec:")) return VOCAB.filter(d=>uvSec(d)===v.slice(7));
     return applySet(SYN, v);
   }
   function uvMenu(){
     const opt = (v,t,n)=>`<option value="${v}">${t} \u2014 ${n}</option>`;
-    let h = opt("uv:all","All unknown words", VOCAB.length);
+    let h = opt("uv:all","All unknown words", VOCAB.length) + opt("uv:pri","\u2605 Review first (keep coming back)", uvPriority().length);
     /* each date, then its page-range sets underneath */
     DATES.filter(D=>VOCAB.some(d=>d.date===D.key)).forEach(D=>{
       h += opt("uv:date:"+D.key, "\u2003\u21b3 " + D.label, VOCAB.filter(d=>d.date===D.key).length);
@@ -5976,7 +8016,8 @@ const WC = (function(){
     const d = cur;
     $("wc-w").textContent = d.w;
     $("wc-p").textContent = d.pos || "";
-    $("wc-kn").textContent = isKnown(d) ? "✓ KNOWN" : "";
+    $("wc-kn").textContent = isKnown(d) ? "✓ KNOWN" : (d.re && d.re.length ? "✗ MISSED AGAIN ON RETEST" : "");
+    $("wc-kn").classList.toggle("re", !isKnown(d) && !!(d.re && d.re.length));
     const dl = d.date ? (DATES.find(x=>x.key===d.date)||{}).label : "";
     if(d.uv){
       $("wc-a").textContent = d.ko;
@@ -5988,7 +8029,7 @@ const WC = (function(){
     $("wc-d").textContent = d.ko;
     const trap = d.pick!==undefined && d.pick!==d.a
       ? `<b>The trap:</b> ${d.o[d.pick]}${dl ? " · " + dl : ""}` : "";
-    $("wc-t").innerHTML = trap;
+    $("wc-t").innerHTML = trap + reLines(d);
   }
   function next(){
     cur = queue.shift() || null;
@@ -6047,9 +8088,23 @@ const WC = (function(){
     const ans = d => d.uv ? d.ko : `${d.o[d.a]} \u2014 ${d.ko}`;
     const src = d => [d.ref || (d.pg ? lvLabel(d) : ""), d.date ? (DATES.find(x=>x.key===d.date)||{}).label : ""].filter(Boolean).join(" \u00b7 ");
     if(test){
-      box.innerHTML = `<div class="wp-test">` + l.map((d,i)=>`<div class="wp-row"><span class="wp-n">${i+1}.</span><b>${d.w}</b> <span class="wp-pos">${d.pos||""}</span><span class="wp-line"></span></div>`).join("") + `</div>` +
+      /* multiple choice: the word, then pick its meaning.
+         synonym cards keep their original five choices; unknown words get
+         their definition plus three definitions of other words (same part of speech when possible) */
+      const shuffle = a=>{ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+      const qs = l.map(d=>{
+        if(!d.uv) return {d, o:d.o.slice(), a:d.a};
+        const pool = VOCAB.filter(v=>v.ko!==d.ko && v.w!==d.w);
+        const same = shuffle(pool.filter(v=>v.pos===d.pos)), other = shuffle(pool.filter(v=>v.pos!==d.pos));
+        const picks = [];
+        same.concat(other).forEach(v=>{ if(picks.length<3 && !picks.includes(v.ko)) picks.push(v.ko); });
+        const o = shuffle([d.ko, ...picks]);
+        return {d, o, a:o.indexOf(d.ko)};
+      });
+      box.innerHTML = `<div class="wp-mc">` + qs.map((q,i)=>`<div class="wp-q"><div class="wp-stem"><span class="wp-n">${i+1}.</span><b>${q.d.w.toUpperCase()}</b> <span class="wp-pos">${q.d.uv ? (q.d.pos||"") : ""}</span></div>` +
+          q.o.map((t,j)=>`<div class="wp-opt">(${LT[j]}) ${stripTags(t)}</div>`).join("") + `</div>`).join("") + `</div>` +
         `<div class="wp-keypage"><div class="ak-head"><b>Answer key</b> \u00b7 Word cards \u00b7 ${setLabel(sel)}</div><div class="ak-body wp-key">` +
-        l.map((d,i)=>`<div class="ak-row"><span class="ak-n">${i+1}.</span><b>${d.w}</b> ${ans(d)}</div>`).join("") + `</div></div>`;
+        qs.map((q,i)=>`<div class="ak-row"><span class="ak-n">${i+1}.</span><b>${LT[q.a]}</b> ${q.d.w} \u2014 ${stripTags(q.o[q.a])}</div>`).join("") + `</div></div>`;
     } else {
       box.innerHTML = `<div class="wp-list">` + l.map((d,i)=>`<div class="wp-row"><span class="wp-n">${i+1}.</span><div><b>${d.w}</b> <span class="wp-pos">${d.pos||""}</span><div class="wp-def">${ans(d)}</div>${d.uv && d.ex ? `<div class="wp-ex">${d.ex}</div>` : ""}<div class="wp-src">${src(d)}</div></div></div>`).join("") + `</div>`;
     }
